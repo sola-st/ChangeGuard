@@ -26,18 +26,22 @@ def fetch_repo(repo_name, repo_path):
             diffs = commit.diff(NULL_TREE, create_patch=True, unified=0)
         changes = []
         parent_hexsha = parent.hexsha if parent else None
-        for diff in diffs.iter_change_type('M'):
+        modifying_diffs = list(diffs.iter_change_type('M'))
+        if len(modifying_diffs) == 0:
+            continue
+        for diff in modifying_diffs:
             if not diff.a_path.endswith('.py'):
                 continue
             diff_content = str(diff)
             hunks = []
             diff_lines = [line for line in diff_content.splitlines() if '@@' in line]
             for diff_line in diff_lines:
-                start_lines = re.findall('[0-9]+,', diff_line)
-                if len(start_lines) != 2:
-                    continue
-                old_line = int(start_lines[0][:-1])
-                new_line = int(start_lines[1][:-1])
+                old_line = re.search('-[0-9]+', diff_line)
+                if old_line:
+                    old_line = int(old_line.group()[1:])
+                new_line = re.search('\+[0-9]+', diff_line)
+                if new_line:
+                    new_line = int(new_line.group()[1:])
                 hunks.append({'old_line': old_line, 'new_line': new_line})
             file_change = {'path': diff.a_path, 'prev': parent_hexsha, 'next': commit.hexsha,
                            'hunks': hunks}

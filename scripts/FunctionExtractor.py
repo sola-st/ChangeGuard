@@ -1,5 +1,3 @@
-from typing import Optional
-
 from git import Repo
 import libcst as cst
 import libcst.matchers as m
