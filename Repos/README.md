@@ -1,1 +1,0 @@
-Directory that contains the cloned repositories from which we gather commits.
