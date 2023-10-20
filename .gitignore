@@ -2,3 +2,4 @@
 /extracted_commits/*
 .idea
 */__pycache__
+/test
