@@ -1,3 +1,4 @@
 /repos/*/
 /extracted_commits/*
 .idea
+*/__pycache__
