@@ -17,6 +17,13 @@ class IsMethodProvider(cst.BatchableMetadataProvider[bool]):
             self.set_metadata(node, False)
 
 
+def _is_multiline_comment(node: cst.SimpleStatementLine):
+    return len(node.body) == 1 and m.matches(node.body[0], m.Expr(value=m.SimpleString()))
+
+
+
+
+
 class CodeCleaner(cst.CSTTransformer):
     """
     Transformer for removing type annotations and comments from cst.
@@ -43,7 +50,7 @@ class CodeCleaner(cst.CSTTransformer):
         return cst.RemoveFromParent()
 
     def leave_SimpleStatementLine(self, original_node: cst.SimpleStatementLine, updated_node: cst.SimpleStatementLine):
-        if len(original_node.body) == 1 and m.matches(original_node.body[0], m.Expr(value=m.SimpleString())):
+        if _is_multiline_comment(original_node):
             return cst.RemoveFromParent()
         return updated_node
 
@@ -57,7 +64,7 @@ class Extractor(cst.CSTVisitor):
     def __init__(self, lines):
         super().__init__()
         self.lines = lines
-        self.extracted_functions = []
+        self.extracted_functions = set()
         self.inside_function = 0
 
     def visit_FunctionDef(self, node: cst.FunctionDef):
@@ -65,15 +72,24 @@ class Extractor(cst.CSTVisitor):
             return
         lines = self.get_metadata(cst.metadata.PositionProvider, node)
 
-        for idx, line_number in enumerate(self.lines):
+        for line_number in self.lines:
             if lines.start.line <= line_number <= lines.end.line:  # change happens within function
-                print(lines)
-                if node not in [n[1] for n in self.extracted_functions]:
-                    self.extracted_functions.append((idx, node))
+                self.extracted_functions.add(node)
         self.inside_function += 1
 
     def leave_FunctionDef(self, original_node: cst.FunctionDef):
         self.inside_function -= 1
+
+
+def code_to_node(code):
+    try:
+        return cst.MetadataWrapper(cst.parse_module(code))
+    except cst.ParserSyntaxError:
+        pass
+
+
+def node_to_code(node):
+    return cst.Module([node]).code
 
 
 if __name__ == '__main__':

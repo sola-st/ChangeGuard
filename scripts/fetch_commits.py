@@ -3,10 +3,10 @@ import os
 import re
 
 from git import Repo, NULL_TREE
+from cst_utils import Extractor, code_to_node, node_to_code
 
-
-# REFACTOR = True
-REFACTOR = False
+REFACTOR = True
+# REFACTOR = False
 
 REPO_PATH = r'../Repos'
 REPOS = [(entry.name, entry.path) for entry in os.scandir(REPO_PATH) if entry.is_dir()]
@@ -27,18 +27,18 @@ def _early_stop(commit, idx):
         return True
     # file is not a python file
     file, *_ = commit.stats.files.keys()
-    if not file.endswith('.py'):
+    if not file.endswith('.py') or 'test' in file:
         return True
     return False
 
 
 def _extract_line_numbers(diff_line):
     old_line = re.search('-[0-9]+', diff_line)
-    if old_line:
-        old_line = int(old_line.group()[1:])
     new_line = re.search('\+[0-9]+', diff_line)
-    if new_line:
-        new_line = int(new_line.group()[1:])
+    if not (old_line and new_line):
+        return None
+    old_line = int(old_line.group()[1:])
+    new_line = int(new_line.group()[1:])
     return old_line, new_line
 
 
@@ -49,6 +49,15 @@ def _write_json(repo_name, content):
         os.mkdir(destination_directory)
     with open(f'{destination_directory}{repo_name}_{commit_type}_commits.json', 'w') as f:
         json.dump(content, f, indent=4)
+
+
+def _extract_functions(code, lines):
+    extractor = Extractor(lines)
+    cst = code_to_node(code)  # returns None if something went wrong during parsing the node
+    if not cst:
+        return set()
+    cst.visit(extractor)
+    return extractor.extracted_functions
 
 
 def fetch_repo(repo_name, repo_path):
@@ -63,13 +72,11 @@ def fetch_repo(repo_name, repo_path):
 
         if len(commit.parents) > 0:
             parent = commit.parents[0]
-            # W=True makes hunks span whole function, make sure to set diff=python in gitattributes
-            # to ensure correct hunk header is created as otherwise methods do not work correctly
             # unified=0 removes additional context from hunk
-            diffs = parent.diff(commit, create_patch=True, W=True, unified=0)
+            diffs = parent.diff(commit, create_patch=True, unified=0)
         else:
             parent = None
-            diffs = commit.diff(NULL_TREE, create_patch=True, W=True, unified=0)
+            diffs = commit.diff(NULL_TREE, create_patch=True, unified=0)
         parent_hexsha = parent.hexsha if parent else None
 
         assert len(diffs) == 1  # since we only consider single file commits
@@ -80,11 +87,23 @@ def fetch_repo(repo_name, repo_path):
 
         diff_content = str(diff)
         diff_lines = [line for line in diff_content.splitlines() if '@@' in line]
-        if len(diff_lines) != 1:  # only care about single function changes
-            continue
-        diff_line = diff_lines[0]
+        lines_to_check = []
+        for diff_line in diff_lines:
+            line = _extract_line_numbers(diff_line)
+            if line:
+                lines_to_check.append(line)
 
-        old_line, new_line = _extract_line_numbers(diff_line)
+        old_code = repo.git.show(f'{parent.hexsha}:{diff.a_path}')
+        changed_functions = _extract_functions(old_code, [entry[0] for entry in lines_to_check])
+        if len(changed_functions) != 1:
+            continue
+        old_function = node_to_code(changed_functions.pop())
+
+        new_code = repo.git.show(f'{commit.hexsha}:{diff.b_path}')
+        changed_functions = _extract_functions(new_code, [entry[1] for entry in lines_to_check])
+        if len(changed_functions) != 1:
+            continue
+        new_function = node_to_code(changed_functions.pop())
 
         commit_stats = commit.stats.total
         commit_json = {
@@ -98,11 +117,13 @@ def fetch_repo(repo_name, repo_path):
             'new_commit': commit.hexsha,
             'old_file': diff.a_path,
             'new_file': diff.b_path,
-            'old_line': old_line,
-            'new_line': new_line
+            'old_function': old_function,
+            'new_function': new_function
 
         }
         found_commits.append(commit_json)
+        if not REFACTOR and len(found_commits) == 20:
+            break
 
     print(f'\nFound {len(found_commits)} commits')
     _write_json(repo_name, found_commits)
