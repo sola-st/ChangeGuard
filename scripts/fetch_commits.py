@@ -33,13 +33,15 @@ def _early_stop(commit, idx):
 
 
 def _extract_line_numbers(diff_line):
-    old_line = re.search('-[0-9]+', diff_line)
-    new_line = re.search('\+[0-9]+', diff_line)
-    if not (old_line and new_line):
+    old_line_pos = re.search('-([0-9]+)(?:,([0-9])+)?', diff_line)
+    new_line_pos = re.search('\+([0-9]+)(?:,([0-9])+)?', diff_line)
+    if not (old_line_pos and new_line_pos):
         return None
-    old_line = int(old_line.group()[1:])
-    new_line = int(new_line.group()[1:])
-    return old_line, new_line
+    old_line_start = int(old_line_pos.group(1))
+    old_line_end = old_line_start if not old_line_pos.group(2) else old_line_start + int(old_line_pos.group(2)) - 1
+    new_line_start = int(new_line_pos.group(1))
+    new_line_end = new_line_start if not new_line_pos.group(2) else new_line_start + int(new_line_pos.group(2)) - 1
+    return {'old': (old_line_start, old_line_end), 'new': (new_line_start, new_line_end)}
 
 
 def _write_json(repo_name, content):
@@ -57,6 +59,9 @@ def _extract_functions(code, lines):
     if not cst:
         return set()
     cst.visit(extractor)
+    # TODO if we remove lines that have been covered in functions we need to store the initial length to still be able to perfom this check
+    if extractor.changes_to_comments == len(extractor.lines):
+        return set()
     return extractor.extracted_functions
 
 
@@ -94,13 +99,13 @@ def fetch_repo(repo_name, repo_path):
                 lines_to_check.append(line)
 
         old_code = repo.git.show(f'{parent.hexsha}:{diff.a_path}')
-        changed_functions = _extract_functions(old_code, [entry[0] for entry in lines_to_check])
+        changed_functions = _extract_functions(old_code, [entry['old'] for entry in lines_to_check])
         if len(changed_functions) != 1:
             continue
         old_function = node_to_code(changed_functions.pop())
 
         new_code = repo.git.show(f'{commit.hexsha}:{diff.b_path}')
-        changed_functions = _extract_functions(new_code, [entry[1] for entry in lines_to_check])
+        changed_functions = _extract_functions(new_code, [entry['new'] for entry in lines_to_check])
         if len(changed_functions) != 1:
             continue
         new_function = node_to_code(changed_functions.pop())
