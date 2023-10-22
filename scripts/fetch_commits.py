@@ -1,12 +1,16 @@
 import json
 import os
 import re
+import time
 
 from git import Repo, NULL_TREE
 from cst_utils import Extractor, code_to_node, node_to_code
+from logger import skip_logger
 
-REFACTOR = True
-# REFACTOR = False
+# REFACTOR = True
+REFACTOR = False
+
+log_info = ()  # global place holder for logging information
 
 REPO_PATH = r'../Repos'
 REPOS = [(entry.name, entry.path) for entry in os.scandir(REPO_PATH) if entry.is_dir()]
@@ -24,10 +28,12 @@ def _early_stop(commit, idx):
             return True
     # commit contains more than one file (or no file)
     if len(commit.stats.files) != 1:
+        skip_logger.info(f'{log_info[0]}::{log_info[1]}::file_amount')
         return True
     # file is not a python file
     file, *_ = commit.stats.files.keys()
     if not file.endswith('.py') or 'test' in file:
+        skip_logger.info(f'{log_info[0]}::{log_info[1]}::file_type')
         return True
     return False
 
@@ -53,25 +59,35 @@ def _write_json(repo_name, content):
         json.dump(content, f, indent=4)
 
 
-def _extract_functions(code, lines):
+def _extract_function(code, lines):
     extractor = Extractor(lines)
     cst = code_to_node(code)  # returns None if something went wrong during parsing the node
     if not cst:
-        return set()
+        skip_logger.info(f'{log_info[0]}::{log_info[1]}::parse_error')
+        return None
     cst.visit(extractor)
+    changed_functions = extractor.extracted_functions
+    if len(changed_functions) != 1:
+        skip_logger.info(f'{log_info[0]}::{log_info[1]}::function_amount')
+        return None
+
     # TODO if we remove lines that have been covered in functions we need to store the initial length to still be able to perfom this check
-    if extractor.changes_to_comments == len(extractor.lines):
-        return set()
-    return extractor.extracted_functions
+    only_comment_changes = extractor.changes_to_comments == len(extractor.lines)
+    if only_comment_changes:
+        skip_logger.info(f'{log_info[0]}::{log_info[1]}::only_comments')
+        return None
+    return node_to_code(changed_functions.pop())
 
 
 def fetch_repo(repo_name, repo_path):
+    global log_info
     repo = Repo(repo_path)
     repo_base_url = list(repo.remotes[0].urls)[0].replace('.git', '')
     found_commits = []
     commits = list(repo.iter_commits(None))
     for idx, commit in enumerate(commits, start=1):
         print(f'\rCommits: {idx} / {len(commits)}', end='', flush=True)
+        log_info = (repo_name, commit.hexsha)  # setting global log_info so that other functions can access it
         if _early_stop(commit, idx):
             continue
 
@@ -88,6 +104,7 @@ def fetch_repo(repo_name, repo_path):
         diff = diffs[0]
         # INFO: have to manually compute change type since change_type attribute of diff seems to always be None
         if not diff.a_blob and diff.b_blob and diff.a_blob != diff.b_blob:  # only care about modifying commits
+            skip_logger.info(f'{log_info[0]}::{log_info[1]}::commit_type')
             continue
 
         diff_content = str(diff)
@@ -99,16 +116,14 @@ def fetch_repo(repo_name, repo_path):
                 lines_to_check.append(line)
 
         old_code = repo.git.show(f'{parent.hexsha}:{diff.a_path}')
-        changed_functions = _extract_functions(old_code, [entry['old'] for entry in lines_to_check])
-        if len(changed_functions) != 1:
+        old_function = _extract_function(old_code, [entry['old'] for entry in lines_to_check])
+        if not old_function:
             continue
-        old_function = node_to_code(changed_functions.pop())
 
         new_code = repo.git.show(f'{commit.hexsha}:{diff.b_path}')
-        changed_functions = _extract_functions(new_code, [entry['new'] for entry in lines_to_check])
-        if len(changed_functions) != 1:
+        new_function = _extract_function(new_code, [entry['new'] for entry in lines_to_check])
+        if not new_function:
             continue
-        new_function = node_to_code(changed_functions.pop())
 
         commit_stats = commit.stats.total
         commit_json = {
@@ -135,6 +150,9 @@ def fetch_repo(repo_name, repo_path):
 
 
 if __name__ == '__main__':
+    start = time.time()
     for repo in REPOS:
         print(f'Fetching commits for {repo[0]}')
         fetch_repo(*repo)
+    end = time.time()
+    print(f'Finished fetching took: {end-start}s')
