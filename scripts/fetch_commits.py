@@ -5,12 +5,13 @@ import time
 
 from git import Repo, NULL_TREE
 from cst_utils import Extractor, code_to_node, node_to_code
-from logger import skip_logger
+from logger import get_logger
 
 # REFACTOR = True
 REFACTOR = False
 
 log_info = ()  # global place holder for logging information
+logger = get_logger(__name__, 'refactor' if REFACTOR else 'change')
 
 REPO_PATH = r'../Repos'
 REPOS = [(entry.name, entry.path) for entry in os.scandir(REPO_PATH) if entry.is_dir()]
@@ -28,12 +29,12 @@ def _early_stop(commit, idx):
             return True
     # commit contains more than one file (or no file)
     if len(commit.stats.files) != 1:
-        skip_logger.info(f'{log_info[0]}::{log_info[1]}::file_amount')
+        logger.info(f'{log_info[0]}::{log_info[1]}::file_amount')
         return True
     # file is not a python file
     file, *_ = commit.stats.files.keys()
     if not file.endswith('.py') or 'test' in file:
-        skip_logger.info(f'{log_info[0]}::{log_info[1]}::file_type')
+        logger.info(f'{log_info[0]}::{log_info[1]}::file_type')
         return True
     return False
 
@@ -63,18 +64,18 @@ def _extract_function(code, lines):
     extractor = Extractor(lines)
     cst = code_to_node(code)  # returns None if something went wrong during parsing the node
     if not cst:
-        skip_logger.info(f'{log_info[0]}::{log_info[1]}::parse_error')
+        logger.info(f'{log_info[0]}::{log_info[1]}::parse_error')
         return None
     cst.visit(extractor)
     changed_functions = extractor.extracted_functions
     if len(changed_functions) != 1:
-        skip_logger.info(f'{log_info[0]}::{log_info[1]}::function_amount')
+        logger.info(f'{log_info[0]}::{log_info[1]}::function_amount')
         return None
 
     # TODO if we remove lines that have been covered in functions we need to store the initial length to still be able to perfom this check
     only_comment_changes = extractor.changes_to_comments == len(extractor.lines)
     if only_comment_changes:
-        skip_logger.info(f'{log_info[0]}::{log_info[1]}::only_comments')
+        logger.info(f'{log_info[0]}::{log_info[1]}::comments_only')
         return None
     return node_to_code(changed_functions.pop())
 
@@ -104,7 +105,7 @@ def fetch_repo(repo_name, repo_path):
         diff = diffs[0]
         # INFO: have to manually compute change type since change_type attribute of diff seems to always be None
         if not diff.a_blob and diff.b_blob and diff.a_blob != diff.b_blob:  # only care about modifying commits
-            skip_logger.info(f'{log_info[0]}::{log_info[1]}::commit_type')
+            logger.info(f'{log_info[0]}::{log_info[1]}::commit_type')
             continue
 
         diff_content = str(diff)
