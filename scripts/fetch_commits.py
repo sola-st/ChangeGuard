@@ -40,14 +40,15 @@ def _early_stop(commit, idx):
 
 
 def _extract_line_numbers(diff_line):
-    old_line_pos = re.search('-([0-9]+)(?:,([0-9])+)?', diff_line)
-    new_line_pos = re.search('\+([0-9]+)(?:,([0-9])+)?', diff_line)
+
+    old_line_pos = re.search('-([0-9]+)(?:,([0-9]+))?', diff_line)
+    new_line_pos = re.search('\+([0-9]+)(?:,([0-9]+))?', diff_line)
     if not (old_line_pos and new_line_pos):
         return None
     old_line_start = int(old_line_pos.group(1))
-    old_line_end = old_line_start if not old_line_pos.group(2) else old_line_start + int(old_line_pos.group(2)) - 1
+    old_line_end = old_line_start if not old_line_pos.group(2) else old_line_start + max(int(old_line_pos.group(2)) - 1, 0)
     new_line_start = int(new_line_pos.group(1))
-    new_line_end = new_line_start if not new_line_pos.group(2) else new_line_start + int(new_line_pos.group(2)) - 1
+    new_line_end = new_line_start if not new_line_pos.group(2) else new_line_start + max(int(new_line_pos.group(2)) - 1, 0)
     return {'old': (old_line_start, old_line_end), 'new': (new_line_start, new_line_end)}
 
 
