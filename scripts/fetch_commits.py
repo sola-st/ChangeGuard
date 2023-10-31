@@ -2,9 +2,10 @@ import json
 import os
 import re
 import time
+import ast
 
 from git import Repo, NULL_TREE
-from cst_utils import Extractor, code_to_node, node_to_code
+from cst_utils import Extractor, CodeCleaner, code_to_node, node_to_code
 from logger import get_logger
 
 # REFACTOR = True
@@ -77,8 +78,23 @@ def _extract_function(code, lines):
     only_comment_changes = extractor.changes_to_comments == len(extractor.lines)
     if only_comment_changes:
         logger.info(f'{log_info[0]}::{log_info[1]}::comments_only')
-        return None
+    #     return None
     return node_to_code(changed_functions.pop())
+
+
+def _is_trivial_change(old, new):
+    """
+    Checks whether both functions pare to the same AST.
+    """
+    cleaner = CodeCleaner()
+
+    old_cst = code_to_node(old)
+    old_cleaned = node_to_code(old_cst.visit(cleaner))
+    old_tree = ast.parse(old_cleaned)
+    new_cst = code_to_node(new)
+    new_cleaned = node_to_code(new_cst.visit(cleaner))
+    new_tree = ast.parse(new_cleaned)
+    return ast.dump(old_tree) == ast.dump(new_tree)
 
 
 def fetch_repo(repo_name, repo_path):
@@ -126,7 +142,9 @@ def fetch_repo(repo_name, repo_path):
         new_function = _extract_function(new_code, [entry['new'] for entry in lines_to_check])
         if not new_function:
             continue
-
+        if _is_trivial_change(old_function, new_function):
+            logger.info(f'{log_info[0]}::{log_info[1]}::new_check')
+            continue
         commit_stats = commit.stats.total
         commit_json = {
             'sha': commit.hexsha,

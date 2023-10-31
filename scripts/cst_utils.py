@@ -23,9 +23,6 @@ def _is_multiline_comment(node: cst.SimpleStatementLine):
     return len(node.body) == 1 and m.matches(node.body[0], m.Expr(value=m.SimpleString()))
 
 
-
-
-
 class CodeCleaner(cst.CSTTransformer):
     """
     Transformer for removing type annotations and comments from cst.
