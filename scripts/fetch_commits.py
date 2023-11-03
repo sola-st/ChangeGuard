@@ -95,7 +95,7 @@ def fetch_repo(repo_name, repo_path):
     repo = Repo(repo_path)
     repo_base_url = list(repo.remotes[0].urls)[0].replace('.git', '')
     found_commits = []
-    commits = list(repo.iter_commits(None))
+    commits = [commit for commit in repo.iter_commits(None) if commit.committed_date < 1698796800]  # 1. November 2023
     for idx, commit in enumerate(commits, start=1):
         print(f'\rCommits: {idx} / {len(commits)}', end='', flush=True)
         log_info = (repo_name, commit.hexsha)  # setting global log_info so that other functions can access it
