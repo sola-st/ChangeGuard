@@ -17,17 +17,15 @@ logger = get_logger(__name__, 'refactor' if REFACTOR else 'change')
 REPO_PATH = r'../Repos'
 REPOS = [(entry.name, entry.path) for entry in os.scandir(REPO_PATH) if entry.is_dir()]
 
+KEYWORDS = ['refactor', 'simplify', 'cleanup', 'optimize']
+
 
 def _early_stop(commit, idx):
-    # stopping criteria differs for refactor and non-refactor commits
-    if REFACTOR:
-        if 'refactor' not in commit.message.lower():
-            return True
-    else:
-        # if idx > 100:
-        #     return True
-        if 'refactor' in commit.message.lower():
-            return True
+    if REFACTOR and all(keyword not in commit.message.lower() for keyword in KEYWORDS):
+        return True
+    if not REFACTOR and any(keyword in commit.message.lower() for keyword in KEYWORDS):
+        return True
+
     # commit contains more than one file (or no file)
     if len(commit.stats.files) != 1:
         logger.info(f'{log_info[0]}::{log_info[1]}::file_amount')
