@@ -101,7 +101,9 @@ def fetch_repo(repo_name, repo_path):
         log_info = (repo_name, commit.hexsha)  # setting global log_info so that other functions can access it
         if _early_stop(commit, idx):
             continue
-
+        if len(commit.parents) > 1:
+            logger.info(f'{log_info[0]}::{log_info[1]}::merge_commit')
+            continue
         if len(commit.parents) > 0:
             parent = commit.parents[0]
             # unified=0 removes additional context from hunk
