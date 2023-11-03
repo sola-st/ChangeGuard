@@ -65,16 +65,18 @@ class Extractor(cst.CSTVisitor):
         self.lines = lines
         self.extracted_functions = set()
         self.inside_function = 0
+        self.nb_changes_within_function = 0
 
     def visit_FunctionDef(self, node: cst.FunctionDef):
-        if self.inside_function > 0:  # ignore nested functions
+        self.inside_function += 1
+        if self.inside_function > 1:  # ignore nested functions
             return
         position = self.get_metadata(cst.metadata.PositionProvider, node)
 
         for line_number in self.lines:
             if position.start.line <= line_number[0] and line_number[1] <= position.end.line:  # change happens within function
                 self.extracted_functions.add(node)
-        self.inside_function += 1
+                self.nb_changes_within_function += 1
 
     def leave_FunctionDef(self, original_node: cst.FunctionDef):
         self.inside_function -= 1

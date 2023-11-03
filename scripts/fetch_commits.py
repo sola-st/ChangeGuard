@@ -71,6 +71,9 @@ def _extract_function(code, lines):
     if len(changed_functions) != 1:
         logger.info(f'{log_info[0]}::{log_info[1]}::function_amount')
         return None
+    if extractor.nb_changes_within_function != len(lines):
+        logger.info(f'{log_info[0]}::{log_info[1]}::change_outside_function')
+        return None
 
     return node_to_code(changed_functions.pop())
 
