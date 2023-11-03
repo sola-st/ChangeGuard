@@ -65,7 +65,6 @@ class Extractor(cst.CSTVisitor):
         self.lines = lines
         self.extracted_functions = set()
         self.inside_function = 0
-        self.changes_to_comments = 0
 
     def visit_FunctionDef(self, node: cst.FunctionDef):
         if self.inside_function > 0:  # ignore nested functions
@@ -79,21 +78,6 @@ class Extractor(cst.CSTVisitor):
 
     def leave_FunctionDef(self, original_node: cst.FunctionDef):
         self.inside_function -= 1
-
-    def visit_Comment(self, node: cst.Comment):
-        position = self.get_metadata(cst.metadata.PositionProvider, node)
-
-        for line_number in self.lines:
-            if position.start.line <= line_number[0] and line_number[1] <= position.end.line:  # change happens within comment
-                self.changes_to_comments += 1
-
-    def visit_SimpleStatementLine(self, node: cst.SimpleStatementLine):
-        if not _is_multiline_comment(node):
-            return
-        position = self.get_metadata(cst.metadata.PositionProvider, node)
-        for line_number in self.lines:
-            if position.start.line <= line_number[0] and line_number[1] <= position.end.line:  # change happens within comment
-                self.changes_to_comments += 1
 
 
 def code_to_node(code):

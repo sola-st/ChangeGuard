@@ -74,17 +74,12 @@ def _extract_function(code, lines):
         logger.info(f'{log_info[0]}::{log_info[1]}::function_amount')
         return None
 
-    # TODO if we remove lines that have been covered in functions we need to store the initial length to still be able to perfom this check
-    only_comment_changes = extractor.changes_to_comments == len(extractor.lines)
-    if only_comment_changes:
-        logger.info(f'{log_info[0]}::{log_info[1]}::comments_only')
-    #     return None
     return node_to_code(changed_functions.pop())
 
 
 def _is_trivial_change(old, new):
     """
-    Checks whether both functions pare to the same AST.
+    Checks whether both functions parse to the same AST.
     """
     cleaner = CodeCleaner()
 
@@ -143,7 +138,7 @@ def fetch_repo(repo_name, repo_path):
         if not new_function:
             continue
         if _is_trivial_change(old_function, new_function):
-            logger.info(f'{log_info[0]}::{log_info[1]}::new_check')
+            logger.info(f'{log_info[0]}::{log_info[1]}::trivial_change')
             continue
         commit_stats = commit.stats.total
         commit_json = {
