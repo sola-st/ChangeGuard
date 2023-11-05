@@ -7,7 +7,8 @@ repos = [
     'https://github.com/pandas-dev/pandas.git',
     'https://github.com/TheAlgorithms/Python.git',
     'https://github.com/scikit-learn/scikit-learn.git',
-    'https://github.com/scrapy/scrapy.git'
+    'https://github.com/scrapy/scrapy.git',
+    'https://github.com/Textualize/rich.git'
 ]
 
 for repo in repos:
