@@ -8,8 +8,8 @@ from git import Repo, NULL_TREE
 from cst_utils import Extractor, CodeCleaner, code_to_node, node_to_code
 from logger import get_logger
 
-# REFACTOR = True
-REFACTOR = False
+REFACTOR = True
+# REFACTOR = False
 
 log_info = ()  # global place holder for logging information
 logger = get_logger(__name__, 'refactor' if REFACTOR else 'change')
@@ -39,7 +39,6 @@ def _early_stop(commit, idx):
 
 
 def _extract_line_numbers(diff_line):
-
     old_line_pos = re.search('-([0-9]+)(?:,([0-9]+))?', diff_line)
     new_line_pos = re.search('\+([0-9]+)(?:,([0-9]+))?', diff_line)
     if not (old_line_pos and new_line_pos):
@@ -140,6 +139,7 @@ def fetch_repo(repo_name, repo_path):
         new_function = _extract_function(new_code, [entry['new'] for entry in lines_to_check])
         if not new_function:
             continue
+
         if _is_trivial_change(old_function, new_function):
             logger.info(f'{log_info[0]}::{log_info[1]}::trivial_change')
             continue
@@ -156,11 +156,12 @@ def fetch_repo(repo_name, repo_path):
             'old_file': diff.a_path,
             'new_file': diff.b_path,
             'old_function': old_function,
-            'new_function': new_function
-
+            'new_function': new_function,
+            #'old_changes': [{'start': line['old'][0], 'end': line['old'][1]} for line in lines_to_check],
+            #'new_changes': [{'start': line['new'][0], 'end': line['new'][1]} for line in lines_to_check]
         }
         found_commits.append(commit_json)
-        if not REFACTOR and len(found_commits) == 20:
+        if not REFACTOR and len(found_commits) == 15:
             break
 
     print(f'\nFound {len(found_commits)} commits')
