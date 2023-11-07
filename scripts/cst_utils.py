@@ -31,7 +31,10 @@ class CodeCleaner(cst.CSTTransformer):
         super().__init__()
 
     def leave_FunctionDef(self, node: cst.FunctionDef, updated_node: cst.FunctionDef) -> cst.FunctionDef:
-        return updated_node.with_changes(returns=None, leading_lines=[])
+        return updated_node.with_changes(returns=None, leading_lines=[], decorators=())
+
+    def leave_Module(self, node: cst.Module, updated_node: cst.Module) -> cst.Module:
+        return updated_node.with_changes(header=())
 
     def leave_AnnAssign(self, original_node: cst.AnnAssign, updated_node: cst.AnnAssign):
         if updated_node.value:
