@@ -4,6 +4,7 @@ import re
 import time
 import ast
 
+from collections import namedtuple
 from git import Repo, NULL_TREE
 from cst_utils import Extractor, CodeCleaner, code_to_node, node_to_code
 from logger import get_logger
@@ -19,6 +20,7 @@ REPOS = [(entry.name, entry.path) for entry in os.scandir(REPO_PATH) if entry.is
 
 KEYWORDS = ['refactor', 'simplify', 'cleanup', 'optimize']
 
+Position = namedtuple('Position', 'start end')
 
 def _early_stop(commit, idx):
     if REFACTOR and all(keyword not in commit.message.lower() for keyword in KEYWORDS):
@@ -47,7 +49,7 @@ def _extract_line_numbers(diff_line):
     old_line_end = old_line_start if not old_line_pos.group(2) else old_line_start + max(int(old_line_pos.group(2)) - 1, 0)
     new_line_start = int(new_line_pos.group(1))
     new_line_end = new_line_start if not new_line_pos.group(2) else new_line_start + max(int(new_line_pos.group(2)) - 1, 0)
-    return {'old': (old_line_start, old_line_end), 'new': (new_line_start, new_line_end)}
+    return {'old': Position(old_line_start, old_line_end), 'new': Position(new_line_start, new_line_end)}
 
 
 def _write_json(repo_name, content):

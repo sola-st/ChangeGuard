@@ -77,7 +77,7 @@ class Extractor(cst.CSTVisitor):
         position = self.get_metadata(cst.metadata.PositionProvider, node)
 
         for line_number in self.lines:
-            if position.start.line <= line_number[0] and line_number[1] <= position.end.line:  # change happens within function
+            if position.start.line <= line_number.start and line_number.end <= position.end.line:  # change happens within function
                 self.extracted_functions.add(node)
                 self.nb_changes_within_function += 1
 
