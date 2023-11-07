@@ -79,18 +79,18 @@ def _extract_function(code, lines):
     return node_to_code(changed_functions.pop())
 
 
+def _clean_function(fun):
+    cleaner = CodeCleaner()
+    fun_cst = code_to_node(fun)
+    return node_to_code(fun_cst.visit(cleaner))
+
+
 def _is_trivial_change(old, new):
     """
     Checks whether both functions parse to the same AST.
     """
-    cleaner = CodeCleaner()
-
-    old_cst = code_to_node(old)
-    old_cleaned = node_to_code(old_cst.visit(cleaner))
-    old_tree = ast.parse(old_cleaned)
-    new_cst = code_to_node(new)
-    new_cleaned = node_to_code(new_cst.visit(cleaner))
-    new_tree = ast.parse(new_cleaned)
+    old_tree = ast.parse(old)
+    new_tree = ast.parse(new)
     return ast.dump(old_tree) == ast.dump(new_tree)
 
 
@@ -133,16 +133,20 @@ def fetch_repo(repo_name, repo_path):
                 lines_to_check.append(line)
 
         old_code = repo.git.show(f'{parent.hexsha}:{diff.a_path}')
-        old_function = _extract_function(old_code, [entry['old'] for entry in lines_to_check])
+        old_lines = [entry['old'] for entry in lines_to_check]
+        old_function = _extract_function(old_code, old_lines)
         if not old_function:
             continue
 
+        new_lines = [entry['new'] for entry in lines_to_check]
         new_code = repo.git.show(f'{commit.hexsha}:{diff.b_path}')
-        new_function = _extract_function(new_code, [entry['new'] for entry in lines_to_check])
+        new_function = _extract_function(new_code, new_lines)
         if not new_function:
             continue
 
-        if _is_trivial_change(old_function, new_function):
+        old_function_cleaned = _clean_function(old_function)
+        new_function_cleaned = _clean_function(new_function)
+        if _is_trivial_change(old_function_cleaned, new_function_cleaned):
             logger.info(f'{log_info[0]}::{log_info[1]}::trivial_change')
             continue
         commit_stats = commit.stats.total
