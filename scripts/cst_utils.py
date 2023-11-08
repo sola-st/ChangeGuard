@@ -61,25 +61,29 @@ class Extractor(cst.CSTVisitor):
     """
     Class for extracting functions from a module. Extracted functions are stored in self.extracted_functions
     """
-    METADATA_DEPENDENCIES = (cst.metadata.PositionProvider,)
+    METADATA_DEPENDENCIES = (cst.metadata.PositionProvider, cst.metadata.ParentNodeProvider)
 
     def __init__(self, lines):
         super().__init__()
         self.lines = lines
-        self.extracted_functions = set()
+        self.extracted_function = None
         self.inside_function = 0
-        self.nb_changes_within_function = 0
 
     def visit_FunctionDef(self, node: cst.FunctionDef):
         self.inside_function += 1
-        if self.inside_function > 1:  # ignore nested functions
+        pos = self.get_metadata(cst.metadata.PositionProvider, node)
+        is_within = all(pos.start.line <= line.start and line.end <= pos.end.line for line in self.lines)
+        if self.inside_function > 1:
+            if is_within:
+                indented_block = self.get_metadata(cst.metadata.ParentNodeProvider, node)
+                parent_function = self.get_metadata(cst.metadata.ParentNodeProvider, indented_block)
+                # self.extracted_functions.remove(parent_function)
+                # self.extracted_functions.add(node)
             return
         position = self.get_metadata(cst.metadata.PositionProvider, node)
 
-        for line_number in self.lines:
-            if position.start.line <= line_number.start and line_number.end <= position.end.line:  # change happens within function
-                self.extracted_functions.add(node)
-                self.nb_changes_within_function += 1
+        if is_within:
+            self.extracted_function = node
 
     def leave_FunctionDef(self, original_node: cst.FunctionDef):
         self.inside_function -= 1
