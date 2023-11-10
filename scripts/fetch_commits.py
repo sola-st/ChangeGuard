@@ -62,7 +62,7 @@ def _write_json(repo_name, content):
     if not os.path.isdir(destination_directory):
         os.mkdir(destination_directory)
     with open(f'{destination_directory}{repo_name}_{commit_type}_commits.json', 'w') as f:
-        json.dump(content, f, indent=4)
+        json.dump(content, f, indent=2)
 
 
 def _extract_function(code, lines, max_level=1_000_000):

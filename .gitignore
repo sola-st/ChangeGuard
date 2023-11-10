@@ -1,5 +1,6 @@
 /repos/*/
 /extracted_commits/*
+/annotated_changes/*
 .idea
 */__pycache__
 /test

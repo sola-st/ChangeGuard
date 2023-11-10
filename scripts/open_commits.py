@@ -3,18 +3,25 @@ import sys
 import webbrowser
 import atexit
 import os
+import time
+
+from logger import get_logger
 
 
 TYPE = 'refactor'
 # TYPE = 'change'
-repo = sys.argv[1]
+
+if len(sys.argv) > 1:
+    repo = sys.argv[1]
+else:
+    repo = input('Enter repo: ')
 
 if len(sys.argv) > 2:
     TYPE = sys.argv[2]
 
+logger = get_logger(__name__, f'{TYPE}_annotation')
 
 JSON_SUFFIX = f'_{TYPE}_commits.json'
-
 
 
 name = repo + JSON_SUFFIX
@@ -29,20 +36,48 @@ if os.path.isfile(counter_file_name):
 else:
     counter = 0
 
+annotated_directory = '../annotated_changes/'
+if not os.path.isdir(annotated_directory):
+    os.mkdir(annotated_directory)
+
+annotated_file_name = f'{annotated_directory}{TYPE}_changes.json'
+
+if os.path.isfile(annotated_file_name):
+    with open(annotated_file_name, 'r') as f:
+        annotated_changes = json.load(f)
+else:
+    annotated_changes = []
+
+start = time.time()
 
 def save():
     with open(counter_file_name, 'w') as f:
         f.write(str(counter))
+    with open(annotated_file_name, 'w') as f:
+        json.dump(annotated_changes, f, indent=2)
+    end = time.time()
+    print(f'Annotating took: {end - start}s')
 
 
 atexit.register(save)
 with open(f'{directory}{name}', 'r') as f:
     commits = json.load(f)
-for idx, commit in enumerate(commits[counter:]):
+
+remaining_commits = commits[counter:]
+for idx, commit in enumerate(remaining_commits, start=1):
     webbrowser.open(commit['url'], 2)
-    # print('Commit:', commit['sha'])
-    print('URL:', commit['url'])
-    # print('File:', commit['old_file'])
     print('----------------------------------------------------------')
-    input()
+    print(f'{idx}/{len(remaining_commits)}')
+    inp = input()
+    commit['repo'] = repo
+    if inp == 'y':
+        commit['annotation'] = 'semantics_preserving'
+        commit = {'repo': commit.pop('repo'), **commit}
+        annotated_changes.append(commit)
+    elif inp == 'n':
+        commit['annotation'] = 'semantics_changing'
+        annotated_changes.append(commit)
+    else:
+        print('skipped')
+        logger.info(f'{repo}::{commit["sha"]}::skipped')
     counter += 1
