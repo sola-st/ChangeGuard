@@ -5,6 +5,7 @@ import time
 import ast
 
 from collections import namedtuple
+
 from git import Repo, NULL_TREE
 from cst_utils import Extractor, CodeCleaner, code_to_node, node_to_code
 from logger import get_logger
@@ -21,6 +22,9 @@ REPOS = [(entry.name, entry.path) for entry in os.scandir(REPO_PATH) if entry.is
 KEYWORDS = ['refactor', 'simplify', 'cleanup', 'optimize']
 
 Position = namedtuple('Position', 'start end')
+ExtractedData = namedtuple('ExtractedData', 'function level line')
+CleanedData = namedtuple('CleanedData', 'function start removed_lines')
+
 
 def _early_stop(commit, idx):
     if REFACTOR and all(keyword not in commit.message.lower() for keyword in KEYWORDS):
@@ -61,8 +65,8 @@ def _write_json(repo_name, content):
         json.dump(content, f, indent=4)
 
 
-def _extract_function(code, lines):
-    extractor = Extractor(lines)
+def _extract_function(code, lines, max_level=1_000_000):
+    extractor = Extractor(lines, max_level)
     cst = code_to_node(code)  # returns None if something went wrong during parsing the node
     if not cst:
         logger.info(f'{log_info[0]}::{log_info[1]}::parse_error')
@@ -72,13 +76,13 @@ def _extract_function(code, lines):
     if not changed_function:
         logger.info(f'{log_info[0]}::{log_info[1]}::change_outside_function')
         return None
-    return node_to_code(changed_function)
+    return ExtractedData(node_to_code(changed_function), extractor.level, extractor.fun_start)
 
 
 def _clean_function(fun):
     cleaner = CodeCleaner()
     fun_cst = code_to_node(fun)
-    return node_to_code(fun_cst.visit(cleaner))
+    return CleanedData(node_to_code(fun_cst.visit(cleaner)), cleaner.start, cleaner.removed_lines)
 
 
 def _is_trivial_change(old, new):
@@ -88,6 +92,26 @@ def _is_trivial_change(old, new):
     old_tree = ast.parse(old)
     new_tree = ast.parse(new)
     return ast.dump(old_tree) == ast.dump(new_tree)
+
+
+def _extract_changed_line_numbers(code_start, changed_code_lines, fun_start, fun_removed_lines):
+    """
+    Extracts the line numbers of the changed lines for the provided function.
+    """
+    # compute the difference between the start of the function and the changed lines (context: whole code)
+    changed_line_deltas = [(line.start - code_start, line.end - code_start) for line in changed_code_lines]
+    # compute the difference between the start of the function and the removed lines (context: extracted function)
+    removed_line_deltas = sorted([line - fun_start for line in fun_removed_lines if line > fun_start])
+    # discard changes that haven been completely removed during cleaning
+    changed_line_deltas = list(filter(lambda line: not all(change in removed_line_deltas for change in range(line[0], line[1]+1)), changed_line_deltas))
+    changed_lines = []
+    for changed_line_delta in changed_line_deltas:
+        nb_skip = len([rem_line_del for rem_line_del in removed_line_deltas if rem_line_del < changed_line_delta[0]])
+        start_line = changed_line_delta[0] - nb_skip + 1
+        nb_skip = len([rem_line_del for rem_line_del in removed_line_deltas if rem_line_del <= changed_line_delta[1]])
+        end_line = changed_line_delta[1] - nb_skip + 1
+        changed_lines.append(Position(start_line, end_line))
+    return changed_lines
 
 
 def fetch_repo(repo_name, repo_path):
@@ -127,24 +151,31 @@ def fetch_repo(repo_name, repo_path):
             line = _extract_line_numbers(diff_line)
             if line:
                 lines_to_check.append(line)
-
         old_code = repo.git.show(f'{parent.hexsha}:{diff.a_path}')
         old_lines = [entry['old'] for entry in lines_to_check]
-        old_function = _extract_function(old_code, old_lines)
-        if not old_function:
+        old_extracted = _extract_function(old_code, old_lines)
+        if not old_extracted:
             continue
-
         new_lines = [entry['new'] for entry in lines_to_check]
         new_code = repo.git.show(f'{commit.hexsha}:{diff.b_path}')
-        new_function = _extract_function(new_code, new_lines)
-        if not new_function:
+        new_extracted = _extract_function(new_code, new_lines)
+        if not new_extracted:
             continue
+        if old_extracted.level != new_extracted.level:
+            logger.info(f'{log_info[0]}::{log_info[1]}::unequal_level')
+            # if nesting level does not match use outer one
+            outer_level = min(old_extracted.level, new_extracted.level)
+            old_extracted = _extract_function(old_code, old_lines,  max_level=outer_level)
+            new_extracted = _extract_function(new_code, new_lines, max_level=outer_level)
 
-        old_function_cleaned = _clean_function(old_function)
-        new_function_cleaned = _clean_function(new_function)
-        if _is_trivial_change(old_function_cleaned, new_function_cleaned):
+        old_clean_extracted = _clean_function(old_extracted.function)
+        new_clean_extracted = _clean_function(new_extracted.function)
+        if _is_trivial_change(old_clean_extracted.function, new_clean_extracted.function):
             logger.info(f'{log_info[0]}::{log_info[1]}::trivial_change')
             continue
+
+        old_changed_lines = _extract_changed_line_numbers(old_extracted.line, old_lines, old_clean_extracted.start, old_clean_extracted.removed_lines)
+        new_changed_lines = _extract_changed_line_numbers(new_extracted.line, new_lines, new_clean_extracted.start, new_clean_extracted.removed_lines)
         commit_stats = commit.stats.total
         commit_json = {
             'sha': commit.hexsha,
@@ -157,10 +188,12 @@ def fetch_repo(repo_name, repo_path):
             'new_commit': commit.hexsha,
             'old_file': diff.a_path,
             'new_file': diff.b_path,
-            'old_function': old_function,
-            'new_function': new_function,
-            #'old_changes': [{'start': line['old'][0], 'end': line['old'][1]} for line in lines_to_check],
-            #'new_changes': [{'start': line['new'][0], 'end': line['new'][1]} for line in lines_to_check]
+            'old_function': old_extracted.function,
+            'new_function': new_extracted.function,
+            'old_clean_function': old_clean_extracted.function,
+            'new_clean_function': new_clean_extracted.function,
+            'old_changed_lines': old_changed_lines,
+            'new_changed_lines': new_changed_lines
         }
         found_commits.append(commit_json)
         if not REFACTOR and len(found_commits) == 15:
