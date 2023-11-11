@@ -8,8 +8,8 @@ import time
 from logger import get_logger
 
 
-TYPE = 'refactor'
-# TYPE = 'change'
+# TYPE = 'refactor'
+TYPE = 'change'
 
 if len(sys.argv) > 1:
     repo = sys.argv[1]
@@ -40,7 +40,7 @@ annotated_directory = '../annotated_changes/'
 if not os.path.isdir(annotated_directory):
     os.mkdir(annotated_directory)
 
-annotated_file_name = f'{annotated_directory}{TYPE}_changes.json'
+annotated_file_name = f'{annotated_directory}annotated_changes.json'
 
 if os.path.isfile(annotated_file_name):
     with open(annotated_file_name, 'r') as f:
@@ -49,6 +49,7 @@ else:
     annotated_changes = []
 
 start = time.time()
+
 
 def save():
     with open(counter_file_name, 'w') as f:
@@ -69,15 +70,14 @@ for idx, commit in enumerate(remaining_commits, start=1):
     print('----------------------------------------------------------')
     print(f'{idx}/{len(remaining_commits)}')
     inp = input()
-    commit['repo'] = repo
     if inp == 'y':
         commit['annotation'] = 'semantics_preserving'
-        commit = {'repo': commit.pop('repo'), **commit}
-        annotated_changes.append(commit)
     elif inp == 'n':
         commit['annotation'] = 'semantics_changing'
-        annotated_changes.append(commit)
     else:
         print('skipped')
         logger.info(f'{repo}::{commit["sha"]}::skipped')
+        continue
+    commit = {'repo': repo, 'source': TYPE, **commit}
+    annotated_changes.append(commit)
     counter += 1
