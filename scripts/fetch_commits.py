@@ -161,8 +161,9 @@ def fetch_repo(repo_name, repo_path):
         new_extracted = _extract_function(new_code, new_lines)
         if not new_extracted:
             continue
+        if old_extracted.level > 1:
+            logger.info(f'{log_info[0]}::{log_info[1]}::nested_function')
         if old_extracted.level != new_extracted.level:
-            logger.info(f'{log_info[0]}::{log_info[1]}::unequal_level')
             # if nesting level does not match use outer one
             outer_level = min(old_extracted.level, new_extracted.level)
             old_extracted = _extract_function(old_code, old_lines,  max_level=outer_level)

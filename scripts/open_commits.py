@@ -68,16 +68,21 @@ remaining_commits = commits[counter:]
 for idx, commit in enumerate(remaining_commits, start=1):
     webbrowser.open(commit['url'], 2)
     print('----------------------------------------------------------')
-    print(f'{idx}/{len(remaining_commits)}')
-    inp = input()
-    if inp == 'y':
-        commit['annotation'] = 'semantics_preserving'
-    elif inp == 'n':
-        commit['annotation'] = 'semantics_changing'
-    else:
-        print('skipped')
-        logger.info(f'{repo}::{commit["sha"]}::skipped')
-        continue
+    print(f'{idx}/{len(remaining_commits)}', end=' ')
+    while True:
+        inp = input()
+        if inp == 'y':
+            commit['annotation'] = 'semantics_preserving'
+            print('preserving')
+        elif inp == 'n':
+            commit['annotation'] = 'semantics_changing'
+            print('changing')
+        elif inp == 'x':
+            commit['annotation'] = 'unclear'
+            print('unclear')
+        else:
+            continue
+        break
     commit = {'repo': repo, 'source': TYPE, **commit}
     annotated_changes.append(commit)
     counter += 1
