@@ -4,13 +4,15 @@ import json
 import argparse
 import os
 import subprocess
-import sys
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
     "--dest", help="Destination directory", required=True)
+parser.add_argument(
+    "--commits", help="Path to commits.json", required=True)
+parser.add_argument("--action", help="Which action to perform either instrument or run", choices=['instrument', 'run'], required=True)
 
-
+# Copied From original LExecutor
 class FunctionExtractor(cst.CSTTransformer):
     METADATA_DEPENDENCIES = (cst.metadata.PositionProvider,)
 
@@ -136,7 +138,7 @@ if __name__ == "__main__":
     with open(file_name, "w", encoding='utf-8') as f:
         f.write(all_code)
 
-
+# Copied From original LExecutor
 def extract_function(function):
     tree = cst.parse_module(function)
     tree = cst.MetadataWrapper(tree)
@@ -144,7 +146,7 @@ def extract_function(function):
     tree.visit(extractor)
     return extractor
 
-
+# Copied From original LExecutor
 def extract_function_pair(commit, dest_dir):
     # get old function
     old_function_extractor = extract_function(commit['old_clean_function'])
@@ -168,27 +170,44 @@ def extract_function_pair(commit, dest_dir):
     print(f"Extracted function pair to {dest_dir}")
 
 
-with open('../annotated_changes/annotated_changes_old.json') as f:
-    commits = json.load(f)
-outputs = {}
-for commit in commits:
-    # create comparison files
-    args = parser.parse_args()
-    identifier = f"{commit['repo']}_{commit['source']}_{commit['sha']}"
-    dest_dir = join(args.dest, identifier)
+def instrument_commit(commit, dest_dir):
     if not os.path.exists(dest_dir):
         os.mkdir(dest_dir)
     try:
         extract_function_pair(commit, dest_dir)
     except Exception as e:
-        print(f"Something went wrong when extracting from code change {commit['repo']}_{commit['source']}_{commit['sha']} -- ignoring  {e}")
+        print(
+            f"Something went wrong when extracting from code change {commit['repo']}_{commit['source']}_{commit['sha']} -- ignoring  {e}")
     else:
         # instrument them
         script_path = os.path.abspath(os.path.join(dest_dir, 'compare.py'))
-        subprocess.run(f'python -m lexecutor.Instrument --files {script_path} --verbose', cwd=os.path.abspath('../LExecutor/src'))
-        # run them
-        completed_process = subprocess.run(f'python compare.py', cwd=dest_dir, capture_output=True)
-        outputs[identifier] = completed_process.stdout
+        print(script_path)
+        subprocess.run(f'python -m lexecutor.Instrument --files {script_path}', cwd=os.path.abspath('./src'),
+                       shell=True)
 
-with open('std_out.json', 'w') as f:
-    json.dump(outputs, f)
+
+def run_commit(commit, dest_dir):
+    script_path = os.path.abspath(os.path.join(dest_dir, 'compare.py'))
+    try:
+        completed_process = subprocess.run(f'python {script_path}', cwd=os.path.abspath('./src'), capture_output=True, shell=True, timeout=30)
+        result = {'out': completed_process.stdout.decode('utf-8'), 'err': completed_process.stderr.decode('utf-8')}
+    except subprocess.TimeoutExpired:
+        result = {'out': '', 'err': 'timeout'}
+    result.update(commit)
+    return result
+
+
+if __name__ == '__main__':
+    with open('annotated_changes_old.json') as f:
+        commits = json.load(f)
+    args = parser.parse_args()
+    outputs = []
+    for commit in commits:
+        identifier = f"{commit['repo']}_{commit['source']}_{commit['sha']}"
+        dest_dir = join(args.dest, identifier)
+        if args.action == 'instrument':
+            instrument_commit(commit, dest_dir)
+        if args.action == 'run':
+            outputs.append(run_commit(commit, dest_dir))
+            with open('std_out.json', 'w') as f:
+                json.dump(outputs, f, indent=4)
