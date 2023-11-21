@@ -198,9 +198,9 @@ def run_commit(commit, dest_dir):
 
 
 if __name__ == '__main__':
-    with open('annotated_changes_old.json') as f:
-        commits = json.load(f)
     args = parser.parse_args()
+    with open(args.commits) as f:
+        commits = json.load(f)
     outputs = []
     for commit in commits:
         identifier = f"{commit['repo']}_{commit['source']}_{commit['sha']}"
@@ -209,5 +209,5 @@ if __name__ == '__main__':
             instrument_commit(commit, dest_dir)
         if args.action == 'run':
             outputs.append(run_commit(commit, dest_dir))
-            with open('std_out.json', 'w') as f:
-                json.dump(outputs, f, indent=4)
+        with open('std_out.json', 'w') as f:
+            json.dump(outputs, f, indent=4)
