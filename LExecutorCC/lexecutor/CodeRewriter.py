@@ -324,12 +324,18 @@ class CodeRewriter(cst.CSTTransformer):
                     return wrapped_import
         return cst.FlattenSentinel([updated_node, stmt])
     
-    def leave_For(self, node, updated_node):
-        return self.__update_indented_block(node, updated_node)
+    def leave_For(self, node: cst.For, updated_node: cst.For):
+        line_call = self.__create_line_call(node, updated_node)
+        line_call = line_call.with_changes(args=[*line_call.args, cst.Arg(value=updated_node.iter)])
+        ws = node.whitespace_after_for if node.whitespace_after_for.value else cst.SimpleWhitespace(value=' ')
+        return updated_node.with_changes(iter=line_call, whitespace_after_for=ws)
     
-    def leave_While(self, node, updated_node):
-        return self.__update_indented_block(node, updated_node)
-    
+    def leave_While(self, node: cst.While, updated_node: cst.While):
+        line_call = self.__create_line_call(node, updated_node)
+        line_call = line_call.with_changes(args=[*line_call.args, cst.Arg(value=updated_node.test)])
+        ws = node.whitespace_after_while if node.whitespace_after_while.value else cst.SimpleWhitespace(value=' ')
+        return updated_node.with_changes(test=line_call, whitespace_after_while=ws)
+
     def leave_FunctionDef(self, node, updated_node):
         return self.__update_indented_block(node, updated_node)
 
@@ -339,9 +345,15 @@ class CodeRewriter(cst.CSTTransformer):
     def leave_With(self, node, updated_node):
         return self.__update_indented_block(node, updated_node)
     
-    def leave_If(self, node, updated_node: cst.If):
+    def leave_If(self, node: cst.If, updated_node: cst.If):
+        line_call = self.__create_line_call(node, updated_node)
+        line_call = line_call.with_changes(args=[*line_call.args, cst.Arg(value=updated_node.test)])
+        ws = node.whitespace_before_test if node.whitespace_before_test.value else cst.SimpleWhitespace(value=' ')
+        return updated_node.with_changes(test=line_call, whitespace_before_test=ws)
+
+    def leave_Else(self, node, updated_node):
         return self.__update_indented_block(node, updated_node)
-    
+
     def leave_Try(self, node, updated_node):
         return self.__update_indented_block(node, updated_node)
     
