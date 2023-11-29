@@ -339,10 +339,7 @@ class CodeRewriter(cst.CSTTransformer):
     def leave_With(self, node, updated_node):
         return self.__update_indented_block(node, updated_node)
     
-    def leave_If(self, node, updated_node):
-        return self.__update_indented_block(node, updated_node)
-    
-    def leave_Elif(self, node, updated_node):
+    def leave_If(self, node, updated_node: cst.If):
         return self.__update_indented_block(node, updated_node)
     
     def leave_Try(self, node, updated_node):
