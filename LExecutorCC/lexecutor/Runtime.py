@@ -75,6 +75,8 @@ logger.info(f"### LExecutor running in {mode} mode ###")
 # map kind+name to predicted value to ensure consistent predictions for the same name
 kind_and_name_to_value = {}
 
+class IntentionalException(Exception):
+    pass
 
 def _n_(iid, name, lambada):
     if params.verbose:

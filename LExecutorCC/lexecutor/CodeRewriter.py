@@ -182,6 +182,27 @@ class CodeRewriter(cst.CSTTransformer):
         else:
             return False
 
+    def __get_exception_name(self, exception_node):
+        exception = exception_node.exc
+        if isinstance(exception, cst.Call):
+            return '"' + exception.func.value + '"'
+        elif isinstance(exception, cst.Name):
+            return '"' + exception.value + '"'
+        elif exception is None:
+            try:
+                parent = self.get_metadata(cst.metadata.ParentNodeProvider, exception_node)
+                while not isinstance(parent, cst.ExceptHandler):
+                    parent = self.get_metadata(cst.metadata.ParentNodeProvider, parent)
+            except KeyError:
+                return '"unknown"'
+            else:
+                if isinstance(parent.type, cst.Name):
+                    return '"' + parent.type.value + '"'
+                elif isinstance(parent.type, cst.Tuple):
+                    return '"' + "+".join(map(lambda x: x.value.value, parent.type.elements)) + '"'
+                else:
+                    return '"unknown"'
+
     def visit_SimpleStatementLine(self, node):
         # don't visit lines marked with special comment
         c = node.trailing_whitespace.comment
@@ -362,6 +383,14 @@ class CodeRewriter(cst.CSTTransformer):
     
     def leave_Finally(self, node, updated_node):
         return self.__update_indented_block(node, updated_node)
+
+    def leave_Raise(self, original_node, updated_node):
+        old_exception = updated_node.exc
+        args = old_exception.args if isinstance(old_exception, cst.Call) else []
+        name = self.__get_exception_name(original_node)
+        custom_exception: cst.Call = cst.Call(
+            args=[cst.Arg(value=cst.SimpleString(value=name)), *args], func=cst.Name('IntentionalException'))
+        return updated_node.with_changes(exc=custom_exception)
         
     def leave_Module(self, node, updated_node):
         if not self.instrument:
