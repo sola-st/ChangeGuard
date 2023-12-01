@@ -185,7 +185,21 @@ class CodeRewriter(cst.CSTTransformer):
     def __get_exception_name(self, exception_node):
         exception = exception_node.exc
         if isinstance(exception, cst.Call):
-            return '"' + exception.func.value + '"'
+            if isinstance(exception.func, cst.Name):
+                return '"' + exception.func.value + '"'
+            elif isinstance(exception.func, cst.Attribute):
+                names = []
+                # unfolding x.y.z.Exception
+                base = exception.func.value
+                while not isinstance(base, cst.Name):
+                    names.append(base.attr.value)
+                    base = base.value
+                names.append(base.value)
+                names.reverse()
+                names.append(exception.func.attr.value)
+                return '"' + '.'.join(names) + '"'
+            else:
+                return "unknown"
         elif isinstance(exception, cst.Name):
             return '"' + exception.value + '"'
         elif exception is None:
