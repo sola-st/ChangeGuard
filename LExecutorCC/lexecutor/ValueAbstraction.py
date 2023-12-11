@@ -76,9 +76,361 @@ class DummyResource(object):
         return True
 
 
-class DummyObject():
+class DummyObject:
+
+    id_counter = 0
+
     def __init__(self, *a, **b):
+        self.initial_store = []
+        self.iterable = []
+        self.dict = {}
+        self.int = 1
+        self.float = 1.0
+        self.str = "a"
+        self.bool = True
+        self.id = DummyObject.id_counter
+        DummyObject.id_counter += 1
         pass
+
+    def __operation(self, other, operator, right=False, comparison=False):
+        if isinstance(other, int):
+            if right:
+                return eval(f"{other} {operator} {self.int}")
+            return eval(f"{self.int} {operator} {other}")
+        if isinstance(other, float):
+            if right:
+                return eval(f"{other} {operator} {self.float}")
+            return eval(f"{self.float} {operator} {other}")
+        if isinstance(other, complex):
+            if right:
+                return eval(f"{other} {operator} {complex(self.int)}")
+            return eval(f"{complex(self.int)} {operator} {other}")
+        if isinstance(other, bool):
+            if right:
+                return eval(f"{other} {operator} {self.bool}")
+            return eval(f"{self.bool} {operator} {other}")
+        if isinstance(other, str):
+            if right:
+                return eval(f"'{other}' {operator} '{self.str}'")
+            return eval(f"'{self.str}' {operator} '{other}'")
+        if comparison:
+            if right:
+                return eval(f"{other.id} {operator} {self.id}")
+            return eval(f"{self.id} {operator} {other.id}")
+        return DummyObject()
+
+    def __abs__(self):
+        return abs(self.int)
+
+    def __add__(self, other):
+        return self.__operation(other, "+")
+
+    # def __aenter__(self):
+    #     pass  # TODO / REMOVE
+
+    # def __aexit__(self, exc_type, exc_val, exc_tb):
+    #     pass  # TODO / REMOVE
+
+    # def __aiter__(self):
+    #     pass  # TODO / REMOVE
+
+    def __and__(self, other):
+        return self.__operation(other, "and")
+
+    # def __anext__(self):
+    #     pass  # TODO / REMOVE
+
+    # def __await__(self):
+    #     pass  # TODO / REMOVE
+
+    def __bool__(self):
+        return self.bool
+
+    def __bytes__(self):
+        return bytes(self.str, "utf-8")
+
+    # def __call__(self, *args, **kwargs):
+    #     pass  # TODO / REMOVE
+
+    # def __ceil__(self):
+    #     pass
+
+    def __complex__(self):
+        return complex(self.int)
+
+    def __contains__(self, item):
+        return item in self.iterable
+
+    # def __del__(self):
+    #     pass  # TODO / REMOVE
+
+    # def __delattr__(self, item):
+    #     pass  # TODO / REMOVE
+
+    # def __delete__(self, instance):
+    #     pass  # TODO / REMOVE
+
+    # def __delitem__(self, key):
+    #     pass  # TODO
+
+    # def __dir__(self):
+    #     pass
+
+    def __divmod__(self, other):
+        return self.__operation(other, "//"), self.__operation(other, "%")
+
+    # def __enter__(self):
+    #     pass  # TODO / REMOVE
+
+    def __eq__(self, other):
+        return self.__operation(other, "==", comparison=True)
+
+    # def __exit__(self, exc_type, exc_val, exc_tb):
+    #     pass  # TODO / REMOVE
+
+    def __float__(self):
+        return self.float
+
+    # def __floor__(self):
+    #     pass  # REMOVE
+
+    def __floordiv__(self, other):
+        return self.__operation(other, "//")
+
+    # def __format__(self, format_spec):
+    #     pass  # REMOVE
+
+    def __ge__(self, other):
+        return self.__operation(other, ">=", comparison=True)
+
+    # def __get__(self, instance, owner):
+    #     pass  # TODO
+
+    # def __getattr__(self, item):
+    #     pass  # TODO
+
+    # def __getattribute__(self, item):
+    #     pass  # TODO
+
+    def __getitem__(self, item):
+        if isinstance(item, int):
+            return self.iterable[item]
+        else:
+            return self.dict[item]
+
+    def __gt__(self, other):
+        return self.__operation(other, ">", comparison=True)
+
+    def __hash__(self):
+        return hash(f"DummyObject{self.id}")
+
+    def __iadd__(self, other):
+        return self.__operation(other, "+")
+
+    def __iand__(self, other):
+        return self.__operation(other, "and")
+
+    def __idiv__(self, other):
+        return self.__operation(other, "/")
+
+    def __ifloordiv__(self, other):
+        return self.__operation(other, "//")
+
+    def __ilshift__(self, other):
+        return self.__operation(other, "<<")
+
+    def __imatmul__(self, other):
+        return self.__operation(other, "@")
+
+    def __imod__(self, other):
+        return self.__operation(other, "%")
+
+    def __imul__(self, other):
+        return self.__operation(other, "*")
+
+    def __index__(self):
+        return self.int
+
+    # def __init_subclass__(cls, **kwargs):
+    #     pass  # REMOVE
+
+    # def __instancecheck__(self, instance):
+    #     pass  # TODO!
+
+    def __int__(self):
+        return self.int
+
+    def __invert__(self):
+        return ~self.int
+
+    def __ior__(self, other):
+        return self.__operation(other, "or")
+
+    def __ipow__(self, other):
+        pass  # TODO
+
+    def __irshift__(self, other):
+        return self.__operation(other, ">>")
+
+    def __isub__(self, other):
+        return self.__operation(other, "-")
+
+    def __iter__(self):
+        return iter(self.iterable)
+
+    def __itruediv__(self, other):
+        return self.__operation(other, "/")
+
+    def __ixor__(self, other):
+        return self.__operation(other, "^")
+
+    def __le__(self, other):
+        return self.__operation(other, "<=", comparison=True)
+
+    def __len__(self):
+        return len(self.iterable)
+
+    def __lshift__(self, other):
+        return self.__operation(other, "<<")
+
+    def __lt__(self, other):
+        return self.__operation(other, "<", comparison=True)
+
+    def __matmul__(self, other):
+        return self.__operation(other, "@")
+
+    # def __missing__(self, key):
+    #     pass  # REMOVE?
+
+    def __mod__(self, other):
+        return self.__operation(other, "%")
+
+    def __mul__(self, other):
+        return self.__operation(other, "*")
+
+    def __ne__(self, other):
+        return self.__operation(other, "!=", comparison=True)
+
+    def __neg__(self):
+        return -self.int
+
+    # def __new__(cls, *args, **kwargs):
+    #     pass
+
+    # def __next__(self):
+    #     pass  # TODO
+
+    def __or__(self, other):
+        return self.__operation(other, "or")
+
+    def __pos__(self):
+        return +self.int
+
+    def __instancecheck__(self, instance):
+        print('Happened')
+        return True
+
+    def __pow__(self, power, modulo=None):
+        pass  # TODO
+
+    def __radd__(self, other):
+        return self.__operation(other, "+", right=True)
+
+    def __rand__(self, other):
+        return self.__operation(other, "and", right=True)
+
+    def __rdiv__(self, other):
+        return self.__operation(other, "/", right=True)
+
+    def __rdivmod__(self, other):
+        return self.__operation(other, "//"), self.__operation(other, "%")
+
+    def __repr__(self):
+        return f"DummyObject with id: {self.id}"
+
+    def __reversed__(self):
+        return reversed(self.iterable)
+
+    def __rfloordiv__(self, other):
+        return self.__operation(other, "//", right=True)
+
+    def __rlshift__(self, other):
+        return self.__operation(other, "<<", right=True)
+
+    def __rmatmul__(self, other):
+        return self.__operation(other, "@", right=True)
+
+    def __rmod__(self, other):
+        return self.__operation(other, "%", right=True)
+
+    def __rmul__(self, other):
+        return self.__operation(other, "*", right=True)
+
+    def __ror__(self, other):
+        return self.__operation(other, "or", right=True)
+
+    # def __round__(self, n=None):
+    #     pass  # REMOVE
+
+    def __rpow__(self, other):
+        pass  # TODO
+
+    def __rrshift__(self, other):
+        return self.__operation(other, ">>", right=True)
+
+    def __rshift__(self, other):
+        return self.__operation(other, ">>", right=True)
+
+    def __rsub__(self, other):
+        return self.__operation(other, "-", right=True)
+
+    def __rtruediv__(self, other):
+        return self.__operation(other, "/", right=True)
+
+    def __rxor__(self, other):
+        return self.__operation(other, "^", right=True)
+
+    # def __set__(self, instance, value):
+    #     pass  # TODO
+
+    # def __set_name__(self, owner, name):
+    #     pass  # TODO
+
+    # def __setattr__(self, key, value):
+    #     pass  # TODO
+
+    def __setitem__(self, key, value):
+        if isinstance(key, int):
+            self.iterable.insert(key, value)
+        else:
+            self.dict[key] = value
+
+    # def __sizeof__(self):
+    #     pass  # REMOVE
+
+    def __str__(self):
+        return self.str
+
+    def __sub__(self, other):
+        return self.__operation(other, "-")
+
+    # def __subclasscheck__(self, subclass):
+    #     pass  # TODO
+
+    def __truediv__(self, other):
+        return self.__operation(other, "/")
+
+    # def __trunc__(self):
+    #     pass  # REMOVE
+
+    def __xor__(self, other):
+        return self.__operation(other, "^")
+
+    def __copy__(self):
+        pass  # TODO
+
+    def __fspath__(self):
+        pass  # TODO
 
 
 fine_to_coarse_grained = {
