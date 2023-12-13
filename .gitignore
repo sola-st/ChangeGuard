@@ -4,6 +4,7 @@
 .idea
 __pycache__
 /test
-/logs
+**/logs
 /LExecutor
 iids.json
+**/generated

@@ -427,9 +427,10 @@ class CodeRewriter(cst.CSTTransformer):
         import_a = self.__create_import("_a_")
         import_c = self.__create_import("_c_")
         import_l = self.__create_import("_l_")
+        import_e = self.__create_import("IntentionalException")
 
         new_body = (list(new_body[:target_idx])
-                    + [import_n, import_a, import_c, import_l]
+                    + [import_n, import_a, import_c, import_l, import_e]
                     + list(new_body[target_idx:]))
 
         return updated_node.with_changes(body=new_body)
