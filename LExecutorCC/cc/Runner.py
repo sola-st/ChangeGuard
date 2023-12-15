@@ -2,12 +2,14 @@ import argparse
 import json
 import os
 import subprocess
+import time
 
 import libcst as cst
 
 from .logger import get_logger
 
-log = get_logger(__name__, 'instrument')
+instrumentation_logger = get_logger(__name__, 'instrument')
+run_logger = get_logger('run', 'run')
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -35,7 +37,8 @@ class FunctionPreparator(cst.CSTTransformer):
         return updated_node
 
     def leave_SimpleString(self, original_node: cst.SimpleString, updated_node: cst.SimpleString):
-        self.strings.add(updated_node.evaluated_value)
+        if updated_node.prefix not in ["b", "br", "rb"]:  # skip bytes for now
+            self.strings.add(updated_node.evaluated_value)
         return updated_node
 
     def leave_FunctionDef(self, original_node: cst.FunctionDef, updated_node: cst.FunctionDef):
@@ -108,25 +111,24 @@ if __name__ == "__main__":
     with open(script_path, 'w', encoding='utf-8') as f:
         f.write(compare_script)
 
-    meta_path = f'{directory}/meta.json'
     meta = {
-        'old_params': old_params,
-        'new_params': new_params,
-       # 'string_literals': list(old_literals[0] | new_literals[0]), currently buggy with bytes
-        'integer_literals':  list(old_literals[1] | new_literals[1]),
-        'float_literals':   list(old_literals[2] | new_literals[2])
-
+        os.path.abspath(script_path): {
+            'old_params': old_params,
+            'new_params': new_params,
+            'string_literals': list(old_literals[0] | new_literals[0]),  # currently buggy with bytes
+            'integer_literals':  list(old_literals[1] | new_literals[1]),
+            'float_literals':   list(old_literals[2] | new_literals[2])
+        }
     }
-    with open(meta_path, 'w', encoding='utf-8') as f:
-        json.dump(meta, f, indent=4)
+    return meta
 
 
 def instrument_compare_script(directory):
     script_path = os.path.abspath(os.path.join(directory, 'compare.py'))
     process = subprocess.run(f'python -m lexecutor.Instrument --files {script_path} --verbose',
                              cwd=os.path.abspath('.'), shell=True, capture_output=True)
-    log.info(process.stdout.decode('utf-8'))
-    log.info(process.stderr.decode('utf-8'))
+    instrumentation_logger.info(process.stdout.decode('utf-8'))
+    instrumentation_logger.info(process.stderr.decode('utf-8'))
 
 
 def run_instrumentation(path_to_commits):
@@ -135,14 +137,17 @@ def run_instrumentation(path_to_commits):
         os.mkdir(root)
     with open(path_to_commits, 'r', encoding='utf-8') as f:
         commits = json.load(f)
+    meta = {}
     for idx, commit in enumerate(commits, start=1):
         print(f"creating compare.py: {idx} / {len(commits)}", end='\r' if idx < len(commits) else '\n', flush=True)
         directory_name = f'{commit["repo"]}_{commit["sha"]}'
         directory = f'{root}/{directory_name}'
         if not os.path.exists(directory):
             os.mkdir(directory)
-        generate_compare_script(commit, directory)
+        meta.update(generate_compare_script(commit, directory))
         instrument_compare_script(directory)
+    with open('./meta.json', 'w') as f:
+        json.dump(meta, f, indent=4)
 
 
 def run():
@@ -153,23 +158,44 @@ def run():
         print(f'Lexecuting script: {idx} / {len(dirs)}', end='\r' if idx < len(dirs) else '\n', flush=True)
         script_path = os.path.abspath(os.path.join(folder_path, 'compare.py'))
         repo, sha = folder_name.split('_')
-        try:
-            completed_process = subprocess.run(f'python {script_path}', cwd=os.path.abspath('.'), capture_output=True,
-                                               shell=True, timeout=30)
-            result = {
-                'repo': repo,
-                'sha': sha,
-                'out': completed_process.stdout.decode('utf-8'),
-                'err': completed_process.stderr.decode('utf-8')
-            }
-        except subprocess.TimeoutExpired:
-            result = {
-                'repo': repo,
-                'sha': sha,
-                'out': '',
-                'err': 'timeout'
-            }
-        results.append(result)
+        iterations = {}
+        for i in range(1, 6):
+            try:
+                start = time.time()
+
+                completed_process = subprocess.run(f'python {script_path}', cwd=os.path.abspath('.'),
+                                                   capture_output=True, shell=True, timeout=30)
+                end = time.time()
+                run_logger.info(end-start)
+                output = completed_process.stdout.decode('utf-8')
+                error = completed_process.stderr.decode('utf-8')
+                if 'Both functions returned the same value' in output:
+                    result = 'preserving'
+                elif 'Functions returned different values' in output:
+                    result = 'changing'
+                elif 'Function(s) raised an exception' in output:
+                    result = 'error'
+                else:
+                    result = 'unknown'
+            except subprocess.TimeoutExpired:
+                output = ''
+                error = ''
+                result = 'timeout'
+
+            iterations[f'iteration_{i}'] = {'out': output, 'err': error, 'result': result}
+            if result == 'changing' or result == 'timeout':
+                break
+        final_result = 'non_conclusive'
+        if 'preserving' in (it['result'] for it in iterations.values()):
+            final_result = 'preserving'
+        if 'changing' in (it['result'] for it in iterations.values()):
+            final_result = 'changing'
+        results.append({
+            'repo': repo,
+            'sha': sha,
+            'final_result': final_result,
+            'iterations': iterations
+        })
     with open('std_out.json', 'w') as f:
         json.dump(results, f, indent=4)
 

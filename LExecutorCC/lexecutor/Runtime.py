@@ -4,10 +4,12 @@ import time
 from os import path
 from .Hyperparams import Hyperparams as params
 from .TraceWriter import TraceWriter
-from .ValueAbstraction import restore_value, DummyObject
+from .ValueAbstraction import restore_value, DummyObject, load_meta
 from .RuntimeStats import RuntimeStats
 from .Logging import logger
 
+
+load_meta()
 
 logger.info("Runtime starting")
 

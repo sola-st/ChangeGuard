@@ -1,6 +1,27 @@
+import json
+
 from .Logging import logger
 from .Hyperparams import Hyperparams as params
 import random
+import sys
+import os
+
+
+INTEGER_OPTIONS = [-1, 0, 1]
+FLOAT_OPTIONS = [-1.0, 0.0, 1.0]
+STR_OPTIONS = ["", "a"]
+
+
+def load_meta():
+    with open('./meta.json', 'r', encoding='utf-8') as f:
+        meta_data = json.load(f)
+    script_path = os.path.abspath(sys.argv[0])
+    meta = meta_data[script_path]
+    INTEGER_OPTIONS.extend(meta['integer_literals'])
+    FLOAT_OPTIONS.extend(meta['float_literals'])
+    STR_OPTIONS.extend(meta['string_literals'])
+
+
 
 
 def abstract_value(value):
