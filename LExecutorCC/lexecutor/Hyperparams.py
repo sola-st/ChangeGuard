@@ -11,9 +11,9 @@ class Hyperparams(object):
     # split = "file"
     split = "mixed"
 
-    value_abstraction = "fine-grained"
+    # value_abstraction = "fine-grained"
     # value_abstraction = "coarse-grained-deterministic"
-    # value_abstraction = "coarse-grained-randomized"
+    value_abstraction = "coarse-grained-randomized"
 
     perc_train = 0.95
 
