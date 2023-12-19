@@ -8,3 +8,5 @@ __pycache__
 /LExecutor
 iids.json
 **/generated
+**/data
+**/lexecutor.egg-info

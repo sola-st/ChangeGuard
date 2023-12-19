@@ -11,15 +11,13 @@ INTEGER_OPTIONS = [-1, 0, 1]
 FLOAT_OPTIONS = [-1.0, 0.0, 1.0]
 STR_OPTIONS = ["", "a"]
 
-
-def load_meta():
-    with open('./meta.json', 'r', encoding='utf-8') as f:
-        meta_data = json.load(f)
-    script_path = os.path.abspath(sys.argv[0])
-    meta = meta_data[script_path]
-    INTEGER_OPTIONS.extend(meta['integer_literals'])
-    FLOAT_OPTIONS.extend(meta['float_literals'])
-    STR_OPTIONS.extend(meta['string_literals'])
+with open('./meta.json', 'r', encoding='utf-8') as f:
+    meta_data = json.load(f)
+script_path = os.path.abspath(sys.argv[0])
+meta = meta_data[script_path]
+INTEGER_OPTIONS.extend(meta['integer_literals'])
+FLOAT_OPTIONS.extend(meta['float_literals'])
+STR_OPTIONS.extend(meta['string_literals'])
 
 
 
@@ -526,12 +524,12 @@ if params.value_abstraction.startswith("coarse-grained"):
                 return random.choice([True, False])
             # strings
             elif abstract_value == "str":
-                return random.choice(["", "a"])
+                return random.choice(STR_OPTIONS)
             # built-in numeric types
             elif abstract_value == "int":
-                return random.choice([-1, 0, 1])
+                return random.choice(INTEGER_OPTIONS)
             elif abstract_value == "float":
-                return random.choice([-1.0, 0.0, 1.0])
+                return random.choice(FLOAT_OPTIONS)
             # built-in sequence types
             elif abstract_value == "list":
                 return random.choice([[], [DummyObject()]])
