@@ -151,6 +151,7 @@ def run_instrumentation(path_to_commits):
 
 
 def run():
+    run_logger.info(f'Started execution: {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}')
     root = r'generated'
     dirs = [(entry.name, entry.path) for entry in os.scandir(root) if entry.is_dir()]
     results = []
@@ -162,11 +163,10 @@ def run():
         for i in range(1, 6):
             try:
                 start = time.time()
-
                 completed_process = subprocess.run(f'python {script_path}', cwd=os.path.abspath('.'),
                                                    capture_output=True, shell=True, timeout=30)
                 end = time.time()
-                run_logger.info(end-start)
+                run_logger.info(f'iteration_{i} took {end-start} seconds')
                 output = completed_process.stdout.decode('utf-8')
                 error = completed_process.stderr.decode('utf-8')
                 if 'Both functions returned the same value' in output:
@@ -198,6 +198,7 @@ def run():
         })
     with open('std_out.json', 'w') as f:
         json.dump(results, f, indent=4)
+    run_logger.info(f'Finished execution: {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}')
 
 
 if __name__ == '__main__':
