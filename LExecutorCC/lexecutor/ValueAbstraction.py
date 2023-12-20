@@ -108,6 +108,7 @@ class DummyObject:
         self.float = 1.0
         self.str = "a"
         self.bool = True
+        self.pass_instance_check = random.choice([True, False])
         self.id = DummyObject.id_counter
         DummyObject.id_counter += 1
         pass

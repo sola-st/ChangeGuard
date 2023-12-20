@@ -83,6 +83,11 @@ class IntentionalException(Exception):
     pass
 
 
+def _isinstance(value, clazz):
+    if isinstance(value, DummyObject):
+        return value.pass_instance_check
+    return isinstance(value, clazz)
+
 def _n_(iid, name, lambada):
     if params.verbose:
         logger.info(f"\nAt iid={iid}, looking up name '{name}'")

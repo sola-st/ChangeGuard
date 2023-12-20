@@ -6,7 +6,7 @@ class CodeRewriter(cst.CSTTransformer):
 
     METADATA_DEPENDENCIES = (ParentNodeProvider, PositionProvider,)
 
-    ignored_names = ["True", "False", "None"]
+    ignored_names = ["True", "False", "None", "isinstance"]
     ignored_calls = ["super"]  # special function names to not instrument
 
     def __init__(self, file_path, iids, line_coverage_instrumentation, used_names):
@@ -259,7 +259,10 @@ class CodeRewriter(cst.CSTTransformer):
                 self.instrument = True
         return updated_node
 
-    def leave_Call(self, node, updated_node):
+    def leave_Call(self, node, updated_node: cst.Call):
+        # replace isinstance checks with modified check
+        if isinstance(updated_node.func, cst.Name) and updated_node.func.value == 'isinstance':
+            return updated_node.with_changes(func=cst.Name('_isinstance'))
         # rewrite Call nodes to intercept function calls
         if not self.__is_ignored_call(node) and not self.line_coverage_instrumentation:
             wrapped_call = self.__create_call_call(node, updated_node)
@@ -428,9 +431,10 @@ class CodeRewriter(cst.CSTTransformer):
         import_c = self.__create_import("_c_")
         import_l = self.__create_import("_l_")
         import_e = self.__create_import("IntentionalException")
+        import_i = self.__create_import("_isinstance")
 
         new_body = (list(new_body[:target_idx])
-                    + [import_n, import_a, import_c, import_l, import_e]
+                    + [import_n, import_a, import_c, import_l, import_e, import_i]
                     + list(new_body[target_idx:]))
 
         return updated_node.with_changes(body=new_body)
