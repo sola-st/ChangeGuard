@@ -93,9 +93,11 @@ def different(val1, val2):
 if __name__ == "__main__":
     import pathlib
     p = str(pathlib.Path(__file__).parent.resolve())
+    from lexecutor.Runtime import switch_state
 
     try:
         val1 = {old_fun_name}()
+        switch_state()
         val2 = {new_fun_name}()
     except Exception as e:
         print(p + ": Function(s) raised an exception: " + str(type(e)) + " -- " + str(e))

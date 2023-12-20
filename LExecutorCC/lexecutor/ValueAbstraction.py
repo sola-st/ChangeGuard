@@ -1,15 +1,18 @@
 import json
-
-from .Logging import logger
-from .Hyperparams import Hyperparams as params
 import random
 import sys
 import os
+import copy
+from collections import namedtuple
 
+from .Logging import logger
+from .Hyperparams import Hyperparams as params
 
 INTEGER_OPTIONS = [-1, 0, 1]
 FLOAT_OPTIONS = [-1.0, 0.0, 1.0]
 STR_OPTIONS = ["", "a"]
+
+Values = namedtuple('Values', 'old new')
 
 with open('./meta.json', 'r', encoding='utf-8') as f:
     meta_data = json.load(f)
@@ -20,71 +23,69 @@ FLOAT_OPTIONS.extend(meta['float_literals'])
 STR_OPTIONS.extend(meta['string_literals'])
 
 
-
-
 def abstract_value(value):
     t = type(value)
     # common primitive values
     if value is None:
-        abtract_value = "@None"
+        abstract_value = "@None"
     elif value is True:
-        abtract_value = "@True"
+        abstract_value = "@True"
     elif value is False:
-        abtract_value = "@False"
+        abstract_value = "@False"
     # strings
     elif t is str:
         if len(value) == 0:
-            abtract_value = "@str_empty"
+            abstract_value = "@str_empty"
         else:
-            abtract_value = "@str_nonempty"
+            abstract_value = "@str_nonempty"
     # built-in numeric types
     elif t is int:
         if value < 0:
-            abtract_value = "@int_neg"
+            abstract_value = "@int_neg"
         elif value == 0:
-            abtract_value = "@int_zero"
+            abstract_value = "@int_zero"
         else:
-            abtract_value = "@int_pos"
+            abstract_value = "@int_pos"
     elif t is float:
         if value < 0:
-            abtract_value = "@float_neg"
+            abstract_value = "@float_neg"
         elif value == 0:
-            abtract_value = "@float_zero"
+            abstract_value = "@float_zero"
         else:
-            abtract_value = "@float_pos"
+            abstract_value = "@float_pos"
     # built-in sequence types
     elif t is list:
         if len(value) == 0:
-            abtract_value = "@list_empty"
+            abstract_value = "@list_empty"
         else:
-            abtract_value = "@list_nonempty"
+            abstract_value = "@list_nonempty"
     elif t is tuple:
         if len(value) == 0:
-            abtract_value = "@tuple_empty"
+            abstract_value = "@tuple_empty"
         else:
-            abtract_value = "@tuple_nonempty"
+            abstract_value = "@tuple_nonempty"
     # built-in set and dict types
     elif t is set:
         if len(value) == 0:
-            abtract_value = "@set_empty"
+            abstract_value = "@set_empty"
         else:
-            abtract_value = "@set_nonempty"
+            abstract_value = "@set_nonempty"
     elif t is dict:
         if len(value) == 0:
-            abtract_value = "@dict_empty"
+            abstract_value = "@dict_empty"
         else:
-            abtract_value = "@dict_nonempty"
+            abstract_value = "@dict_nonempty"
     # functions and methods
     elif callable(value):
         if hasattr(value, "__enter__") and hasattr(value, "__exit__"):
-            abtract_value = "@resource"
+            abstract_value = "@resource"
         else:
-            abtract_value = "@callable"
+            abstract_value = "@callable"
     # all other types
     else:
-        abtract_value = "@object"
+        abstract_value = "@object"
 
-    return abtract_value, str(t)[:20]
+    return abstract_value, str(t)[:20]
 
 
 class DummyResource(object):
@@ -478,6 +479,10 @@ fine_to_coarse_grained = {
 }
 
 
+def _get_value_pairs(value):
+    return Values(copy.deepcopy(value), copy.deepcopy(value))
+
+
 if params.value_abstraction.startswith("coarse-grained"):
     if params.value_abstraction == "coarse-grained-deterministic":
         def restore_value(abstract_value):
@@ -519,38 +524,38 @@ if params.value_abstraction.startswith("coarse-grained"):
         def restore_value(abstract_value):
             # common primitive values
             if abstract_value == "None":
-                return None
+                return _get_value_pairs(None)
             elif abstract_value == "bool":
-                return random.choice([True, False])
+                return _get_value_pairs(random.choice([True, False]))
             # strings
             elif abstract_value == "str":
-                return random.choice(STR_OPTIONS)
+                return _get_value_pairs(random.choice(STR_OPTIONS))
             # built-in numeric types
             elif abstract_value == "int":
-                return random.choice(INTEGER_OPTIONS)
+                return _get_value_pairs(random.choice(INTEGER_OPTIONS))
             elif abstract_value == "float":
-                return random.choice(FLOAT_OPTIONS)
+                return _get_value_pairs(random.choice(FLOAT_OPTIONS))
             # built-in sequence types
             elif abstract_value == "list":
-                return random.choice([[], [DummyObject()]])
+                return _get_value_pairs(random.choice([[], [DummyObject()]]))
             elif abstract_value == "tuple":
-                return random.choice([(), (DummyObject(),)])
+                return _get_value_pairs(random.choice([(), (DummyObject(),)]))
             # built-in set and dict types
             elif abstract_value == "set":
-                return random.choice([{}, {DummyObject()}])
+                return _get_value_pairs(random.choice([{}, {DummyObject()}]))
             elif abstract_value == "dict":
-                return random.choice([{}, {"a": DummyObject()}])
+                return _get_value_pairs(random.choice([{}, {"a": DummyObject()}]))
             # functions and methods
             elif abstract_value == "resource":
-                return DummyResource()
+                return _get_value_pairs(DummyResource())
             elif abstract_value == "callable":
-                return DummyObject
+                return _get_value_pairs(DummyObject)
             elif abstract_value == "object":
-                return DummyObject()
+                return _get_value_pairs(DummyObject())
             # all other types
             else:
                 logger.info("Unknown abstract value: %s", abstract_value)
-                return DummyObject()
+                return _get_value_pairs(DummyObject())
 
 elif params.value_abstraction == "fine-grained":
     def restore_value(abstract_value):
