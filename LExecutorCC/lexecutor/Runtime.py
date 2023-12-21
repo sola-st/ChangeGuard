@@ -3,7 +3,7 @@ import sys
 import time
 from .Hyperparams import Hyperparams as params
 from .TraceWriter import TraceWriter
-from .ValueAbstraction import restore_value, DummyObject
+from .ValueAbstraction import restore_value, DummyObject, get_value_pairs
 from .RuntimeStats import RuntimeStats
 from .Logging import logger
 
@@ -107,7 +107,9 @@ def _n_(iid, name, lambada):
             return kind_and_name_to_value[key][state]
         else:
             if name == 'self':
-                return DummyObject()
+                v = get_value_pairs(DummyObject())
+                kind_and_name_to_value[key] = v
+                return v[state]
             v = predictor.name(iid, name)
             kind_and_name_to_value[key] = v
             return v[state]

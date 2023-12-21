@@ -480,8 +480,8 @@ fine_to_coarse_grained = {
 }
 
 
-def _get_value_pairs(value):
-    return Values(copy.deepcopy(value), copy.deepcopy(value))
+def get_value_pairs(value):
+    return Values(value, copy.deepcopy(value))
 
 
 if params.value_abstraction.startswith("coarse-grained"):
@@ -525,38 +525,38 @@ if params.value_abstraction.startswith("coarse-grained"):
         def restore_value(abstract_value):
             # common primitive values
             if abstract_value == "None":
-                return _get_value_pairs(None)
+                return get_value_pairs(None)
             elif abstract_value == "bool":
-                return _get_value_pairs(random.choice([True, False]))
+                return get_value_pairs(random.choice([True, False]))
             # strings
             elif abstract_value == "str":
-                return _get_value_pairs(random.choice(STR_OPTIONS))
+                return get_value_pairs(random.choice(STR_OPTIONS))
             # built-in numeric types
             elif abstract_value == "int":
-                return _get_value_pairs(random.choice(INTEGER_OPTIONS))
+                return get_value_pairs(random.choice(INTEGER_OPTIONS))
             elif abstract_value == "float":
-                return _get_value_pairs(random.choice(FLOAT_OPTIONS))
+                return get_value_pairs(random.choice(FLOAT_OPTIONS))
             # built-in sequence types
             elif abstract_value == "list":
-                return _get_value_pairs(random.choice([[], [DummyObject()]]))
+                return get_value_pairs(random.choice([[], [DummyObject()]]))
             elif abstract_value == "tuple":
-                return _get_value_pairs(random.choice([(), (DummyObject(),)]))
+                return get_value_pairs(random.choice([(), (DummyObject(),)]))
             # built-in set and dict types
             elif abstract_value == "set":
-                return _get_value_pairs(random.choice([{}, {DummyObject()}]))
+                return get_value_pairs(random.choice([{}, {DummyObject()}]))
             elif abstract_value == "dict":
-                return _get_value_pairs(random.choice([{}, {"a": DummyObject()}]))
+                return get_value_pairs(random.choice([{}, {"a": DummyObject()}]))
             # functions and methods
             elif abstract_value == "resource":
-                return _get_value_pairs(DummyResource())
+                return get_value_pairs(DummyResource())
             elif abstract_value == "callable":
-                return _get_value_pairs(DummyObject)
+                return get_value_pairs(DummyObject)
             elif abstract_value == "object":
-                return _get_value_pairs(DummyObject())
+                return get_value_pairs(DummyObject())
             # all other types
             else:
                 logger.info("Unknown abstract value: %s", abstract_value)
-                return _get_value_pairs(DummyObject())
+                return get_value_pairs(DummyObject())
 
 elif params.value_abstraction == "fine-grained":
     def restore_value(abstract_value):
