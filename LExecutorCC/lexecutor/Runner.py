@@ -8,6 +8,9 @@ import libcst as cst
 
 from cc.logger import get_logger
 from lexecutor.Util import shutdown_server, start_server
+from lexecutor.CleanedCodeChange import CleanedCodeChange
+from lexecutor.Metadata import Metadata
+from lexecutor.Hyperparams import Hyperparams
 
 instrumentation_logger = get_logger(__name__, 'instrument')
 run_logger = get_logger('run', 'run')
@@ -67,12 +70,12 @@ def prepare_function(fun, suffix):
     return cst.Module([tree]).code,  p.fun_name, p.params, p.strings, p.integers, p.floats,
 
 
-def generate_compare_script(commit, directory):
-    old_fun, old_fun_name, old_params, *old_literals = prepare_function(commit['old_clean_function'], '_old')
-    new_fun, new_fun_name, new_params, *new_literals = prepare_function(commit['new_clean_function'], '_new')
+def generate_compare_script(code_change, directory):
+    old_fun, old_fun_name, old_params, *old_literals = prepare_function(code_change.old_code, '_old')
+    new_fun, new_fun_name, new_params, *new_literals = prepare_function(code_change.new_code, '_new')
 
     # assemble compare.py (old way)
-    comment = f"# {commit['old_commit']} -- {commit['new_commit']}\n\n"
+    comment = f"# {code_change.old_sha} -- {code_change.new_sha}\n\n"
     fct_def_code = old_fun + "\n\n" + new_fun
     main_code_template = f"""
 def different(val1, val2):
@@ -128,87 +131,96 @@ if __name__ == "__main__":
 
 def instrument_compare_script(directory):
     script_path = os.path.abspath(os.path.join(directory, 'compare.py'))
+    print(script_path)
     process = subprocess.run(f'python -m lexecutor.Instrument --files {script_path} --verbose',
-                             cwd=os.path.abspath('../cc'), shell=True, capture_output=True)
+                             shell=True, capture_output=True)
     instrumentation_logger.info(process.stdout.decode('utf-8'))
     instrumentation_logger.info(process.stderr.decode('utf-8'))
 
 
-def run_instrumentation(path_to_commits):
-    root = r'generated'
-    if not os.path.exists(root):
-        os.mkdir(root)
-    with open(path_to_commits, 'r', encoding='utf-8') as f:
-        commits = json.load(f)
-    meta = {}
-    for idx, commit in enumerate(commits, start=1):
-        print(f"creating compare.py: {idx} / {len(commits)}", end='\r' if idx < len(commits) else '\n', flush=True)
-        directory_name = f'{commit["repo"]}_{commit["sha"]}'
-        directory = f'{root}/{directory_name}'
-        if not os.path.exists(directory):
-            os.mkdir(directory)
-        meta.update(generate_compare_script(commit, directory))
-        instrument_compare_script(directory)
-    with open('./meta.json', 'w') as f:
-        json.dump(meta, f, indent=4)
+def run_instrumentation(code_change):
+    metadata = Metadata()
+    directory_name = f'{code_change.repo}_{code_change.new_sha}'
+    target_directory = f'{ROOT}/{directory_name}'
+    if not os.path.exists(target_directory):
+        os.mkdir(target_directory)
+    meta = generate_compare_script(code_change, target_directory)
+    instrument_compare_script(target_directory)
+    # TODO add changed lines to metadata
+    metadata.update(meta)
+    metadata.store()
 
 
-def run():
-    run_logger.info(f'Started execution: {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}')
-    start_server()
-    root = r'generated'
-    dirs = [(entry.name, entry.path) for entry in os.scandir(root) if entry.is_dir()]
-    results = []
-    for idx, (folder_name, folder_path) in enumerate(dirs, start=1):
-        print(f'Lexecuting script: {idx} / {len(dirs)}', end='\r' if idx < len(dirs) else '\n', flush=True)
-        script_path = os.path.abspath(os.path.join(folder_path, 'compare.py'))
-        repo, sha = folder_name.split('_')
-        iterations = {}
-        for i in range(1, 6):
-            try:
-                start = time.time()
-                completed_process = subprocess.run(f'python {script_path}', cwd=os.path.abspath('../cc'),
-                                                   capture_output=True, shell=True, timeout=30)
-                end = time.time()
-                run_logger.info(f'iteration_{i} took {end-start} seconds')
-                output = completed_process.stdout.decode('utf-8')
-                error = completed_process.stderr.decode('utf-8')
-                if 'Both functions returned the same value' in output:
-                    result = 'preserving'
-                elif 'Functions returned different values' in output:
-                    result = 'changing'
-                elif 'Function(s) raised an exception' in output:
-                    result = 'error'
-                else:
-                    result = 'unknown'
-            except subprocess.TimeoutExpired:
-                output = ''
-                error = ''
-                result = 'timeout'
+def run_lexecutor(code_change):
+    script_path = os.path.abspath(f'{ROOT}/{code_change.repo}_{code_change.new_sha}/compare.py')
+    iterations = {}
+    for i in range(1, Hyperparams.nb_of_iterations+1):
+        try:
+            start = time.time()
+            completed_process = subprocess.run(f'python {script_path}',
+                                               capture_output=True, shell=True, timeout=30)
+            end = time.time()
+            run_logger.info(f'iteration_{i} took {end-start} seconds')
+            output = completed_process.stdout.decode('utf-8')
+            error = completed_process.stderr.decode('utf-8')
+            if 'Both functions returned the same value' in output:
+                result = 'preserving'
+            elif 'Functions returned different values' in output:
+                result = 'changing'
+            elif 'Function(s) raised an exception' in output:
+                result = 'error'
+            else:
+                result = 'unknown'
+        except subprocess.TimeoutExpired:
+            output = ''
+            error = ''
+            result = 'timeout'
 
-            iterations[f'iteration_{i}'] = {'out': output, 'err': error, 'result': result}
-            if result == 'changing' or result == 'timeout':
-                break
-        final_result = 'non_conclusive'
-        if 'preserving' in (it['result'] for it in iterations.values()):
-            final_result = 'preserving'
-        if 'changing' in (it['result'] for it in iterations.values()):
-            final_result = 'changing'
-        results.append({
-            'repo': repo,
-            'sha': sha,
-            'final_result': final_result,
-            'iterations': iterations
-        })
-    shutdown_server()
-    with open('std_out.json', 'w') as f:
-        json.dump(results, f, indent=4)
-    run_logger.info(f'Finished execution: {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}')
+        iterations[f'iteration_{i}'] = {'out': output, 'err': error, 'result': result}
+        if result == 'changing' or result == 'timeout':
+            break
+    final_result = 'non_conclusive'
+    if 'preserving' in (it['result'] for it in iterations.values()):
+        final_result = 'preserving'
+    if 'changing' in (it['result'] for it in iterations.values()):
+        final_result = 'changing'
+    return {
+        'repo': code_change.repo,
+        'sha': code_change.new_sha,
+        'final_result': final_result,
+        'iterations': iterations
+    }
 
 
 if __name__ == '__main__':
     args = parser.parse_args()
+    with open(args.commits, 'r', encoding='utf-8') as f:
+        commits = json.load(f)
+    ROOT = r'generated'
     if args.action == 'instrument':
-        run_instrumentation(args.commits)
+        if not os.path.exists(ROOT):
+            os.mkdir(ROOT)
+        for idx, commit in enumerate(commits, start=1):
+            cleaned_code_change = CleanedCodeChange(commit['repo'], commit['old_commit'], commit['new_commit'],
+                                                    commit['old_clean_function'], commit['new_clean_function'],
+                                                    commit['old_changed_lines'], commit['new_changed_lines'])
+            print(f"creating compare.py: {idx} / {len(commits)}", end='\r' if idx < len(commits) else '\n', flush=True)
+            run_instrumentation(cleaned_code_change)
+
     if args.action == 'run':
-        run()
+        if not os.path.exists(ROOT):
+            exit('Run Instrument first')
+        run_logger.info(f'Started execution: {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}')
+        start_server()
+        results = []
+        for idx, commit in enumerate(commits, start=1):
+            cleaned_code_change = CleanedCodeChange(commit['repo'], commit['old_commit'], commit['new_commit'],
+                                                    commit['old_clean_function'], commit['new_clean_function'],
+                                                    commit['old_changed_lines'], commit['new_changed_lines'])
+            print(f'Lexecuting script: {idx} / {len(commits)}', end='\r' if idx < len(commits) else '\n', flush=True)
+            results.append(run_lexecutor(cleaned_code_change))
+        shutdown_server()
+        with open('std_out.json', 'w') as f:
+            json.dump(results, f, indent=4)
+        run_logger.info(f'Finished execution: {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}')
+

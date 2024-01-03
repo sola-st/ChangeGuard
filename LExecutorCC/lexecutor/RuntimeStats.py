@@ -108,6 +108,6 @@ class RuntimeStats:
             fp.write("\n".join(self.event_trace))
 
     def save(self, file, predictor_name, start_time):
-        self._save_summary_metrics(file, predictor_name, time.time() - start_time)
+        # self._save_summary_metrics(file, predictor_name, time.time() - start_time)
         if write_event_trace:
             self._save_event_trace()

@@ -1,15 +1,12 @@
 import setuptools
 
-with open("../README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
-
 setuptools.setup(
     name="lexecutor",
     version="0.0.1",
     author="Michael Pradel",
     author_email="michael@binaervarianz.de",
     description="Learning-guided execution",
-    long_description=long_description,
+    long_description="long_description",
     long_description_content_type="text/markdown",
     url="https://github.com/michaelpradel/LExecutor",
     project_urls={
@@ -20,8 +17,8 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    package_dir={"": "lexecutor"},
-    packages=setuptools.find_packages(where="lexecutor"),
+    package_dir={"": "."},
+    packages=setuptools.find_packages(where="."),
     python_requires=">=3.6",
     install_requires=[
         'libcst',

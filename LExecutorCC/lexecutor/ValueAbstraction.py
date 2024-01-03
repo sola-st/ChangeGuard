@@ -1,4 +1,3 @@
-import json
 import random
 import sys
 import os
@@ -6,6 +5,7 @@ import copy
 from collections import namedtuple
 
 from .Logging import logger
+from .Metadata import Metadata
 from .Hyperparams import Hyperparams as params
 
 INTEGER_OPTIONS = [-1, 0, 1]
@@ -14,13 +14,12 @@ STR_OPTIONS = ["", "a"]
 
 Values = namedtuple('Values', 'old new')
 
-with open('./meta.json', 'r', encoding='utf-8') as f:
-    meta_data = json.load(f)
+metadata = Metadata()
 script_path = os.path.abspath(sys.argv[0])
-meta = meta_data[script_path]
-INTEGER_OPTIONS.extend(meta['integer_literals'])
-FLOAT_OPTIONS.extend(meta['float_literals'])
-STR_OPTIONS.extend(meta['string_literals'])
+script_meta = metadata.get(script_path)
+INTEGER_OPTIONS.extend(script_meta['integer_literals'])
+FLOAT_OPTIONS.extend(script_meta['float_literals'])
+STR_OPTIONS.extend(script_meta['string_literals'])
 
 
 def abstract_value(value):
