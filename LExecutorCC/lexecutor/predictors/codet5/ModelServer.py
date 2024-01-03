@@ -1,6 +1,7 @@
 from pathlib import Path
 import torch as t
 import numpy as np
+import subprocess
 from flask import Flask, json, request
 import requests
 from ..DLUtil import device
@@ -15,6 +16,9 @@ import logging
 
 
 class ModelServer:
+
+    cache = {}
+
     def __init__(self):
         self._initialize_model()
         self._initialize_http_server()
@@ -58,6 +62,9 @@ class ModelServer:
             entry = {"iid": request.args.get("iid"),
                      "name": request.args.get("name"),
                      "kind": request.args.get("kind")}
+            entry_tuple = tuple(entry.values())
+            if entry_tuple in ModelServer.cache:
+                return ModelServer.cache[entry_tuple]
 
             # turn query into vectors
             input_ids, _ = self.input_factory.entry_to_inputs(entry)
@@ -78,8 +85,9 @@ class ModelServer:
                         f"Warning: CodeT5 likely produced a garbage value: {predicted_value}")
 
             # respond with a JSON object
-            result = {"v": predicted_value}
-            return json.dumps(result)
+            result = json.dumps({"v": predicted_value})
+            ModelServer.cache[entry_tuple] = result
+            return result
 
         api.run()
 

@@ -6,7 +6,8 @@ import time
 
 import libcst as cst
 
-from .logger import get_logger
+from cc.logger import get_logger
+from lexecutor.Util import shutdown_server, start_server
 
 instrumentation_logger = get_logger(__name__, 'instrument')
 run_logger = get_logger('run', 'run')
@@ -128,7 +129,7 @@ if __name__ == "__main__":
 def instrument_compare_script(directory):
     script_path = os.path.abspath(os.path.join(directory, 'compare.py'))
     process = subprocess.run(f'python -m lexecutor.Instrument --files {script_path} --verbose',
-                             cwd=os.path.abspath('.'), shell=True, capture_output=True)
+                             cwd=os.path.abspath('../cc'), shell=True, capture_output=True)
     instrumentation_logger.info(process.stdout.decode('utf-8'))
     instrumentation_logger.info(process.stderr.decode('utf-8'))
 
@@ -154,6 +155,7 @@ def run_instrumentation(path_to_commits):
 
 def run():
     run_logger.info(f'Started execution: {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}')
+    start_server()
     root = r'generated'
     dirs = [(entry.name, entry.path) for entry in os.scandir(root) if entry.is_dir()]
     results = []
@@ -165,7 +167,7 @@ def run():
         for i in range(1, 6):
             try:
                 start = time.time()
-                completed_process = subprocess.run(f'python {script_path}', cwd=os.path.abspath('.'),
+                completed_process = subprocess.run(f'python {script_path}', cwd=os.path.abspath('../cc'),
                                                    capture_output=True, shell=True, timeout=30)
                 end = time.time()
                 run_logger.info(f'iteration_{i} took {end-start} seconds')
@@ -198,6 +200,7 @@ def run():
             'final_result': final_result,
             'iterations': iterations
         })
+    shutdown_server()
     with open('std_out.json', 'w') as f:
         json.dump(results, f, indent=4)
     run_logger.info(f'Finished execution: {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}')
