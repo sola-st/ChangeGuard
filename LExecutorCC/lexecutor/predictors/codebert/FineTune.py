@@ -2,7 +2,6 @@ import os
 import argparse
 import random
 import torch as t
-import csv
 import pandas as pd
 import numpy as np
 from torch.utils.data import DataLoader, TensorDataset
@@ -10,7 +9,9 @@ from transformers import AdamW, pipeline
 from .CodeBERT import load_CodeBERT
 from ...Hyperparams import Hyperparams as params
 from ..DLUtil import device
-from ...Logging import logger
+from ...Logging import get_logger
+
+logger = get_logger(__name__)
 
 
 parser = argparse.ArgumentParser()

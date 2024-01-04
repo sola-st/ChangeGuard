@@ -10,8 +10,9 @@ from transformers import AdamW
 from .CodeT5 import load_CodeT5
 from ...Hyperparams import Hyperparams as params
 from ..DLUtil import device
-from ...Logging import logger
+from ...Logging import get_logger
 
+logger = get_logger(__name__)
 
 parser = argparse.ArgumentParser()
 parser.add_argument(

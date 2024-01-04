@@ -4,12 +4,14 @@ import os
 import copy
 from collections import namedtuple
 
-from .Logging import logger
+from .Logging import get_logger
 from .Metadata import Metadata
 from .Hyperparams import Hyperparams as params
 
-INTEGER_OPTIONS = [-1, 0, 1]
-FLOAT_OPTIONS = [-1.0, 0.0, 1.0]
+logger = get_logger(__name__)
+
+INTEGER_OPTIONS = [-100, -10, -1, 0, 1, 10, 100]
+FLOAT_OPTIONS = [-100.0, -10.0, -1.0, 0.0, 1.0, 10.0, 100.0]
 STR_OPTIONS = ["", "a"]
 
 Values = namedtuple('Values', 'old new')

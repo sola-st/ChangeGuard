@@ -1,10 +1,11 @@
 from ..ValuePredictor import ValuePredictor
-from ...Logging import logger
+from ...Logging import get_logger
 import time
 import requests
 from requests.exceptions import ConnectionError
 from ...ValueAbstraction import restore_value
 
+logger = get_logger(__name__)
 
 class CodeT5ValuePredictor(ValuePredictor):
     def __init__(self, stats):

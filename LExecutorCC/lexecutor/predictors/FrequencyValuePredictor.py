@@ -1,9 +1,11 @@
 from .ValuePredictor import ValuePredictor
 from .NaiveValuePredictor import NaiveValuePredictor
-from ..Logging import logger
+from ..Logging import get_logger
 from ..ValueAbstraction import restore_value
 from random import choices
 import json
+
+logger = get_logger(__name__)
 
 class FrequencyValuePredictor(ValuePredictor):
     def __init__(self, values_frequencies_file):

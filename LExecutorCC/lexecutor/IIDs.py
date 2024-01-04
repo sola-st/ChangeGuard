@@ -2,8 +2,9 @@ from collections import namedtuple
 import os
 from os import path
 import json
-from .Logging import logger
+from .Logging import get_logger
 
+logger = get_logger(__name__)
 
 Location = namedtuple(
     "Location", ["file", "line", "column_start", "column_end"])

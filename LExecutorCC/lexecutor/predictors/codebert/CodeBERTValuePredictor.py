@@ -1,21 +1,17 @@
 from pathlib import Path
 import torch as t
-import numpy as np
 from ..ValuePredictor import ValuePredictor
 from ..DLUtil import device
 from .CodeBERT import load_CodeBERT
 from .InputFactory import InputFactory
-from ...Logging import logger
+from ...Logging import get_logger
 from transformers import pipeline
-import time
 import requests
-from requests.exceptions import ConnectionError
-import subprocess
 from ...ValueAbstraction import restore_value
 from ...Hyperparams import Hyperparams as params
 from ...IIDs import IIDs
 
-
+logger = get_logger(__name__)
 class CodeBERTValuePredictor(ValuePredictor):
     def __init__(self, stats):
         self.stats = stats

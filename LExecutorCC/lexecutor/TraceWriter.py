@@ -1,8 +1,9 @@
 import pandas as pd
 from .ValueAbstraction import abstract_value
-from .Logging import logger
+from .Logging import get_logger
 from .Util import timestamp
 
+logger = get_logger(__name__)
 
 column_names = ["iid", "name", "value", "kind", "info"]
 

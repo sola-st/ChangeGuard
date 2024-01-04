@@ -1,7 +1,8 @@
 from transformers import AutoTokenizer, T5ForConditionalGeneration, AdamW
-from ...Logging import logger
+from ...Logging import get_logger
 from ..DLUtil import device
 
+logger = get_logger(__name__)
 
 def load_CodeT5():
     logger.info("Loading pre-trained codet5-small")

@@ -1,9 +1,5 @@
 import itertools
-import json
-import re
 import torch as t
-from ..DLUtil import dtype, device
-from ...Logging import logger
 from ...Hyperparams import Hyperparams as params
 
 

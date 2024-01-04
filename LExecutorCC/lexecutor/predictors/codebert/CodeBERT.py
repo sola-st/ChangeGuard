@@ -1,6 +1,8 @@
 from transformers import RobertaTokenizer, RobertaForMaskedLM
-from ...Logging import logger
+from ...Logging import get_logger
 from ..DLUtil import device
+
+logger = get_logger(__name__)
 
 def load_CodeBERT():
     logger.info("Loading pre-trained codebert-base-mlm")

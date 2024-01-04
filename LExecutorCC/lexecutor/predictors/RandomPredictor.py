@@ -1,7 +1,9 @@
 from .ValuePredictor import ValuePredictor
 from ..ValueAbstraction import DummyObject, DummyResource
-from ..Logging import logger
+from ..Logging import get_logger
 import random
+
+logger = get_logger(__name__)
 
 class RandomPredictor(ValuePredictor):
     def __init__(self):

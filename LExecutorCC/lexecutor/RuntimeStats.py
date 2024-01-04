@@ -1,15 +1,14 @@
 import pandas as pd
 import os
-from os import path
 import csv
-import time
-from .Logging import logger
+from .Logging import get_logger
 from .IIDs import IIDs
 from .Hyperparams import Hyperparams as param
 
 write_event_trace = True
 write_metrics = True
 
+logger = get_logger(__name__)
 
 class RuntimeStats:
     def __init__(self, execution):

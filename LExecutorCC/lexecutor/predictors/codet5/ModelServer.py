@@ -9,10 +9,12 @@ from ...Hyperparams import Hyperparams as params
 from ...IIDs import IIDs
 from .FineTune import load_CodeT5
 from .InputFactory import InputFactory
-from ...Logging import logger
+from ...Logging import get_logger
 import logging
 
 # TODO auto-kill the server after some time of inactivity
+
+logger = get_logger(__name__)
 
 
 class ModelServer:

@@ -6,14 +6,14 @@ import time
 
 import libcst as cst
 
-from cc.logger import get_logger
+from .Logging import get_logger
 from lexecutor.Util import shutdown_server, start_server
 from lexecutor.CleanedCodeChange import CleanedCodeChange
 from lexecutor.Metadata import Metadata
 from lexecutor.Hyperparams import Hyperparams
 
-instrumentation_logger = get_logger(__name__, 'instrument')
-run_logger = get_logger('run', 'run')
+instrumentation_logger = get_logger('Instrumentation', False, True)
+run_logger = get_logger('Runner', False, True)
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -131,7 +131,6 @@ if __name__ == "__main__":
 
 def instrument_compare_script(directory):
     script_path = os.path.abspath(os.path.join(directory, 'compare.py'))
-    print(script_path)
     process = subprocess.run(f'python -m lexecutor.Instrument --files {script_path} --verbose',
                              shell=True, capture_output=True)
     instrumentation_logger.info(process.stdout.decode('utf-8'))
@@ -158,7 +157,7 @@ def run_lexecutor(code_change):
         try:
             start = time.time()
             completed_process = subprocess.run(f'python {script_path}',
-                                               capture_output=True, shell=True, timeout=30)
+                                               capture_output=True, shell=True, timeout=60)
             end = time.time()
             run_logger.info(f'iteration_{i} took {end-start} seconds')
             output = completed_process.stdout.decode('utf-8')

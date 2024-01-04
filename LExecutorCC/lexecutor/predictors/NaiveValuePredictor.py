@@ -1,5 +1,7 @@
 from .ValuePredictor import ValuePredictor
-from ..Logging import logger
+from ..Logging import get_logger
+
+logger = get_logger(__name__)
 
 class Toy:
     pass

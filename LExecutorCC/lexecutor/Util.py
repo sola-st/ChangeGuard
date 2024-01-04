@@ -1,5 +1,7 @@
 from datetime import datetime
 import subprocess
+import time
+
 process = None
 
 
@@ -10,6 +12,7 @@ def start_server():
     process = subprocess.Popen(
         "python -m lexecutor.predictors.codet5.ModelServer".split(" "),
         stderr=server_log, stdout=server_log)
+    time.sleep(5)  # give server time to spin up
 
 
 def shutdown_server():

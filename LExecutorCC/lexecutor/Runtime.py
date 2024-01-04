@@ -5,7 +5,9 @@ from .Hyperparams import Hyperparams as params
 from .TraceWriter import TraceWriter
 from .ValueAbstraction import restore_value, DummyObject, get_value_pairs
 from .RuntimeStats import RuntimeStats
-from .Logging import logger
+from .Logging import get_logger
+
+logger = get_logger(__name__)
 
 logger.info("Runtime starting")
 

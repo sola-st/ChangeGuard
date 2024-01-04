@@ -1,8 +1,10 @@
 from .RandomPredictor import RandomPredictor
-from ..Logging import logger
+from ..Logging import get_logger
 from ..ValueAbstraction import restore_value
-from ..IIDs import IIDs
 import requests
+
+logger = get_logger(__name__)
+
 
 class Type4PyValuePredictor(RandomPredictor):
     def __init__(self, code_snippet_file, stats):
