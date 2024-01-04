@@ -151,7 +151,9 @@ def run_instrumentation(code_change):
 
 
 def run_lexecutor(code_change):
+    total_start = time.time()
     script_path = os.path.abspath(f'{ROOT}/{code_change.repo}_{code_change.new_sha}/compare.py')
+    run_logger.info(f'LExecuting: {script_path}')
     iterations = {}
     for i in range(1, Hyperparams.nb_of_iterations+1):
         try:
@@ -183,6 +185,7 @@ def run_lexecutor(code_change):
         final_result = 'preserving'
     if 'changing' in (it['result'] for it in iterations.values()):
         final_result = 'changing'
+    run_logger.info(f'Total time: {time.time()-total_start} seconds')
     return {
         'repo': code_change.repo,
         'sha': code_change.new_sha,
