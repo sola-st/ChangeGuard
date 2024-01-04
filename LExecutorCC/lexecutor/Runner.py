@@ -157,7 +157,7 @@ def run_lexecutor(code_change):
         try:
             start = time.time()
             completed_process = subprocess.run(f'python {script_path}',
-                                               capture_output=True, shell=True, timeout=60)
+                                               capture_output=True, shell=True, timeout=30)
             end = time.time()
             run_logger.info(f'iteration_{i} took {end-start} seconds')
             output = completed_process.stdout.decode('utf-8')
