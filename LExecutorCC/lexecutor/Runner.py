@@ -7,7 +7,7 @@ import time
 import libcst as cst
 
 from .Logging import get_logger
-from lexecutor.Util import shutdown_server, start_server
+from lexecutor.Util import shutdown_server, start_server, calc_changed_lines_coverage, extract_executed_lines
 from lexecutor.CleanedCodeChange import CleanedCodeChange
 from lexecutor.Metadata import Metadata
 from lexecutor.Hyperparams import Hyperparams
@@ -20,6 +20,23 @@ parser.add_argument(
     "--commits", help="Path to commits.json", required=True)
 parser.add_argument(
     "--action", help="Which action to perform either instrument or run", choices=['instrument', 'run'], required=True)
+
+METADATA = Metadata()
+
+
+class OffsetProvider(cst.CSTVisitor):
+    METADATA_DEPENDENCIES = (cst.metadata.PositionProvider,)
+
+    def __init__(self, *fct_names):
+        super().__init__()
+        self.fct_names = fct_names
+        self.offsets = {}
+
+    def leave_FunctionDef(self, original_node: cst.FunctionDef) -> None:
+        if original_node.name.value not in self.fct_names:
+            return
+        position = self.get_metadata(cst.metadata.PositionProvider, original_node)
+        self.offsets[original_node.name.value.split('_')[-1]] = position.start.line, position.end.line
 
 
 class FunctionPreparator(cst.CSTTransformer):
@@ -70,6 +87,13 @@ def prepare_function(fun, suffix):
     return cst.Module([tree]).code,  p.fun_name, p.params, p.strings, p.integers, p.floats,
 
 
+def get_offsets(script, *fct_names):
+    offset_provider = OffsetProvider(*fct_names)
+    code = cst.MetadataWrapper(cst.parse_module(script))
+    code.visit(offset_provider)
+    return offset_provider.offsets
+
+
 def generate_compare_script(code_change, directory):
     old_fun, old_fun_name, old_params, *old_literals = prepare_function(code_change.old_code, '_old')
     new_fun, new_fun_name, new_params, *new_literals = prepare_function(code_change.new_code, '_new')
@@ -78,6 +102,8 @@ def generate_compare_script(code_change, directory):
     comment = f"# {code_change.old_sha} -- {code_change.new_sha}\n\n"
     fct_def_code = old_fun + "\n\n" + new_fun
     main_code_template = f"""
+
+
 def different(val1, val2):
     if type(val1) != type(val2):
         return True
@@ -113,6 +139,7 @@ if __name__ == "__main__":
 """
 
     compare_script = comment + fct_def_code + main_code_template
+    offsets = get_offsets(compare_script, old_fun_name, new_fun_name)
     script_path = f'{directory}/compare.py'
     with open(script_path, 'w', encoding='utf-8') as f:
         f.write(compare_script)
@@ -123,7 +150,11 @@ if __name__ == "__main__":
             'new_params': new_params,
             'string_literals': list(old_literals[0] | new_literals[0]),  # currently buggy with bytes
             'integer_literals':  list(old_literals[1] | new_literals[1]),
-            'float_literals':   list(old_literals[2] | new_literals[2])
+            'float_literals':   list(old_literals[2] | new_literals[2]),
+            'old_changed_lines': code_change.old_changed_lines,
+            'new_changed_lines': code_change.new_changed_lines,
+            'line_offsets': offsets,
+
         }
     }
     return meta
@@ -138,16 +169,14 @@ def instrument_compare_script(directory):
 
 
 def run_instrumentation(code_change):
-    metadata = Metadata()
     directory_name = f'{code_change.repo}_{code_change.new_sha}'
     target_directory = f'{ROOT}/{directory_name}'
     if not os.path.exists(target_directory):
         os.mkdir(target_directory)
     meta = generate_compare_script(code_change, target_directory)
     instrument_compare_script(target_directory)
-    # TODO add changed lines to metadata
-    metadata.update(meta)
-    metadata.store()
+    METADATA.update(meta)
+    METADATA.store()
 
 
 def run_lexecutor(code_change):
@@ -155,6 +184,7 @@ def run_lexecutor(code_change):
     script_path = os.path.abspath(f'{ROOT}/{code_change.repo}_{code_change.new_sha}/compare.py')
     run_logger.info(f'LExecuting: {script_path}')
     iterations = {}
+    data = METADATA.get(script_path)
     for i in range(1, Hyperparams.nb_of_iterations+1):
         try:
             start = time.time()
@@ -176,8 +206,20 @@ def run_lexecutor(code_change):
             output = ''
             error = ''
             result = 'timeout'
-
-        iterations[f'iteration_{i}'] = {'out': output, 'err': error, 'result': result}
+        old_executed_lines, new_executed_lines = extract_executed_lines(error, data['line_offsets'])
+        old_ratio = calc_changed_lines_coverage(data['old_changed_lines'], old_executed_lines)
+        new_ratio = calc_changed_lines_coverage(data['new_changed_lines'], new_executed_lines)
+        iterations[f'iteration_{i}'] = {'out': output, 'err': error, 'result': result,
+                                        'coverage': {
+                                                'old': {
+                                                    'executed_lines': old_executed_lines,
+                                                    'ratio': old_ratio
+                                                },
+                                                'new': {
+                                                    'executed_lines': new_executed_lines,
+                                                    'ratio': new_ratio
+                                                }
+                                        }}
         if result == 'changing' or result == 'timeout':
             break
     final_result = 'non_conclusive'
@@ -185,12 +227,28 @@ def run_lexecutor(code_change):
         final_result = 'preserving'
     if 'changing' in (it['result'] for it in iterations.values()):
         final_result = 'changing'
+
+    old_tot_executed_lines = list(set().union(*(set(it['coverage']['old']['executed_lines']) for it in iterations.values())))
+    new_tot_executed_lines = list(set().union(*(set(it['coverage']['old']['executed_lines']) for it in iterations.values())))
+
     run_logger.info(f'Total time: {time.time()-total_start} seconds')
     return {
         'repo': code_change.repo,
         'sha': code_change.new_sha,
         'final_result': final_result,
-        'iterations': iterations
+        'iterations': iterations,
+        'coverage': {
+            'old': {
+                'changed_lines': data['old_changed_lines'],
+                'executed_lines': old_tot_executed_lines,
+                'ratio': calc_changed_lines_coverage(data['old_changed_lines'], old_tot_executed_lines)
+            },
+            'new': {
+                'changed_lines': data['new_changed_lines'],
+                'executed_lines': new_tot_executed_lines,
+                'ratio': calc_changed_lines_coverage(data['new_changed_lines'], new_tot_executed_lines)
+            }
+        }
     }
 
 

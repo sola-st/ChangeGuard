@@ -35,6 +35,29 @@ def gather_files(files_arg, suffix=".py"):
     return files
 
 
+def extract_executed_lines(result_string, offsets):
+    prefix = 'Lines executed: ['
+    if prefix not in result_string:
+        return [], []
+    temp = result_string[result_string.find(prefix) + len(prefix):]
+    all_lines = list(map(int, temp[:temp.find(']')].split(', ')))
+    return ([line-offsets['old'][0]+1 for line in all_lines if offsets['old'][0] <= line <= offsets['old'][1]],
+            [line-offsets['new'][0]+1 for line in all_lines if offsets['new'][0] <= line <= offsets['new'][1]])
+
+
+def calc_changed_lines_coverage(changed_lines, executed_lines):
+    if not executed_lines:
+        return 0.0
+    covered_lines = []
+    total_changed_lines = []
+    for changed_line in changed_lines:
+        total_changed_lines.extend(range(changed_line[0], changed_line[1]+1))
+        for executed_line in executed_lines:
+            if changed_line[0] <= executed_line <= changed_line[1]:
+                covered_lines.append(executed_line)
+    return len(covered_lines)/len(total_changed_lines)
+
+
 def timestamp():
     epoch = datetime.utcfromtimestamp(0)
     now = datetime.now()
