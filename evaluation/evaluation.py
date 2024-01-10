@@ -2,6 +2,7 @@ import json
 import os
 from typing import List
 import re
+import time
 
 REPO_PATH = r'../Repos'
 REPOS: List[str] = [entry.name for entry in os.scandir(REPO_PATH) if entry.is_dir()]
@@ -82,15 +83,107 @@ def evaluate_stdout():
 
 
 def evaluate_coverage():
-    with open('../annotated_changes/stdout_baseline.json') as f:
+    with open('../annotated_changes/stdout_SuperObject.json') as f:
         outputs = json.load(f)
-    covered_lines = [entry['err'].split('Lines Executed: ')[1] for entry in outputs if 'Lines Executed: ' in entry['err']]
+    covered_lines = [entry['err'].split('Lines executed: ')[1] for entry in outputs if 'Lines executed: ' in entry['err']]
     covered_lines = [entry[:entry.index(']')+1] for entry in covered_lines]
     print(covered_lines)
     covered_lines = [[int(line) for line in entry.strip('[]').split(', ')] for entry in covered_lines]
     print((sum(map(lambda x: len(x), covered_lines)))/len(covered_lines))
 
+
+def evaluate_iter():
+    with open(JSON_PATH, 'r') as f:
+        outputs = json.load(f)
+    print('Final Result Preserving', len([output for output in outputs if output['final_result'] == 'preserving']))
+    print('Final Result Changing', len([output for output in outputs if output['final_result'] == 'changing']))
+    print('Final Result Error', len([output for output in outputs if output['final_result'] == 'non_conclusive']))
+    nb_lines_covered = 0
+    for output in (output for output in outputs):
+        iterations = [o['err'] for o in output['iterations'].values()]
+        covered_lines = [iteration.split('Lines executed: ')[1] for iteration in iterations if 'Lines executed: ' in iteration]
+        covered_lines = [entry[:entry.index(']') + 1] for entry in covered_lines]
+        covered_lines = [{int(line) for line in entry.strip('[]').split(', ')} for entry in covered_lines]
+        unique_lines = set().union(*covered_lines)
+        # print(unique_lines)
+        # print(len(unique_lines))
+        nb_lines_covered += len(unique_lines)
+    print(nb_lines_covered / len(outputs))
+
+
+def get_final_results():
+    with open(JSON_PATH, 'r') as f:
+        results = json.load(f)
+    results = [result['final_result'] for result in results]
+    print('Number preserving:', results.count('preserving'))
+    print('Number changing:', results.count('changing'))
+    print('Number non_conclusive:', results.count('non_conclusive'))
+
+
+def get_errors():
+    with open(JSON_PATH, 'r') as f:
+        results = json.load(f)
+    results = [result['iterations'] for result in results]
+    errors = {}
+    for result in results:
+        for value in result.values():
+            out = value['out']
+            match = re.search('Function\\(s\\) raised an exception: <(.*?)>', out)
+            if match:
+                error = match.group(1)
+                errors[error] = errors.get(error, 0) + 1
+    print(json.dumps(errors, indent=2))
+
+
+def get_timing_profile():
+    with open(LOG_PATH, 'r') as f:
+        lines = f.read().splitlines()
+    start_time = lines[0]
+    end_time = lines[-1]
+    fmt = '%Y-%m-%d %H:%M:%S'
+    print(f'Full Duration: {time.mktime(time.strptime(end_time.split(": ")[2], fmt)) - time.mktime(time.strptime(start_time.split(": ")[2], fmt))}s')
+    print(f'Time spent executing compare scripts: {sum(float(line.split(" ")[4]) for line in lines[1:-1] if "iteration" in line )}s')
+
+
+def evaluate_run_log():
+    with open(r'C:\Users\Lars\Uni\Master\Masterarbeit\history\isinstance_mock\LExecutorCC\logs\run.log', 'r') as f:
+        lines = f.read().splitlines()
+    print(sum(float(line.split(' ')[2]) for line in lines[1:-1]))
+
+
+def get_changing_commits():
+    with open(r'C:\Users\Lars\Uni\Master\Masterarbeit\master-thesis-lars-groeninger\annotated_changes\annotated_changes.json', 'r') as f:
+        commits = json.load(f)
+    commits = [commit for commit in commits if commit['annotation'] == 'semantics_changing' and 'return' in commit['old_clean_function']]
+    with open(r'changes.json', 'w') as f:
+        json.dump(commits, f, indent=4)
+
+def foo():
+    with open(r'C:\Users\Lars\Uni\Master\Masterarbeit\master-thesis-lars-groeninger\annotated_changes\annotated_changes.json', 'r', encoding='utf-8') as f:
+        changes = json.load(f)
+    sha_to_change = {change['sha']: change for change in changes}
+    with open(r'C:\Users\Lars\Uni\Master\Masterarbeit\history\call_args\LExecutorCC\std_out.json') as f:
+        out = json.load(f)
+    counter = 0
+    important = []
+    for o in out:
+        if o['final_result'] == 'preserving' and sha_to_change[o['sha']]['annotation'] == 'semantics_changing':
+            counter += 1
+            important.append(sha_to_change[o['sha']])
+    print(f'Errors that would be changing: {counter}')
+    with open('important.json', 'w') as f:
+        json.dump(important, f, indent=4)
 if __name__ == '__main__':
+    prefix = r'C:\Users\Lars\Uni\Master\Masterarbeit\history\call_args'
+    JSON_PATH = rf'C:\Users\Lars\Uni\Master\Masterarbeit\master-thesis-lars-groeninger\LExecutorCC\coverage.json'
+    LOG_PATH = rf'{prefix}\LExecutorCC\logs\Runner.log'
     # evaluate_annotated_changes()
     # evaluate_stdout()
-    evaluate_coverage()
+    # evaluate_coverage()
+    # evaluate_run_log()
+    evaluate_iter()
+    # get_final_results()
+    get_errors()
+    # get_timing_profile()
+    # get_changing_commits()
+    foo()
