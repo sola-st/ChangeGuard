@@ -48,6 +48,8 @@ def extract_executed_lines(result_string, offsets):
 def calc_changed_lines_coverage(changed_lines, executed_lines):
     if not executed_lines:
         return 0.0
+    if not changed_lines:
+        return 1.0
     covered_lines = []
     total_changed_lines = []
     for changed_line in changed_lines:
