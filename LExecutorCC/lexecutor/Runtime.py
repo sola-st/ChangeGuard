@@ -194,6 +194,7 @@ def _a_(iid, base, attr_name):
         else:
             v = predictor.attribute(iid, base, attr_name)
             kind_and_name_to_value[key] = v
+            setattr(base, attr_name, v)  # TODO manual private name mangling
             return v[state]
 
     return mode_branch(iid, perform_fct, record_fct, predict_fct, kind="attribute")

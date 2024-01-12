@@ -19,9 +19,10 @@ Values = namedtuple('Values', 'old new')
 metadata = Metadata()
 script_path = os.path.abspath(sys.argv[0])
 script_meta = metadata.get(script_path)
-INTEGER_OPTIONS.extend(script_meta['integer_literals'])
-FLOAT_OPTIONS.extend(script_meta['float_literals'])
-STR_OPTIONS.extend(script_meta['string_literals'])
+if script_meta is not None:
+    INTEGER_OPTIONS.extend(script_meta['integer_literals'])
+    FLOAT_OPTIONS.extend(script_meta['float_literals'])
+    STR_OPTIONS.extend(script_meta['string_literals'])
 
 
 def abstract_value(value):
@@ -205,7 +206,8 @@ class DummyObject:
     #     pass  # TODO / REMOVE
 
     def __eq__(self, other):
-        return self.__operation(other, "==", comparison=True)
+        return self.__dict__ == other.__dict
+        # return self.__operation(other, "==", comparison=True)
 
     # def __exit__(self, exc_type, exc_val, exc_tb):
     #     pass  # TODO / REMOVE
@@ -347,10 +349,6 @@ class DummyObject:
 
     def __pos__(self):
         return +self.int
-
-    def __instancecheck__(self, instance):
-        print('Happened')
-        return True
 
     def __pow__(self, power, modulo=None):
         pass  # TODO
