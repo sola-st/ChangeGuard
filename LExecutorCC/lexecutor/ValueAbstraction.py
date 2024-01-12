@@ -101,6 +101,9 @@ class DummyResource(object):
 class DummyObject:
 
     id_counter = 0
+    seen_ids = []
+    __attributes = ['id', 'iterable', 'dict', 'int', 'float', 'str', 'bool', 'pass_instance_check']
+    __comparing = False
 
     def __init__(self, *a, **b):
         self.initial_store = []
@@ -113,7 +116,6 @@ class DummyObject:
         self.pass_instance_check = random.choice([True, False])
         self.id = DummyObject.id_counter
         DummyObject.id_counter += 1
-        pass
 
     def __operation(self, other, operator, right=False, comparison=False):
         if isinstance(other, int):
@@ -206,11 +208,14 @@ class DummyObject:
     #     pass  # TODO / REMOVE
 
     def __eq__(self, other):
-        return self.__dict__ == other.__dict
-        # return self.__operation(other, "==", comparison=True)
-
-    # def __exit__(self, exc_type, exc_val, exc_tb):
-    #     pass  # TODO / REMOVE
+        DummyObject.__comparing = True
+        DummyObject.seen_ids = [self.id, other.id]
+        serialized_self = repr({k: v for k, v in self.__dict__.items() if k not in DummyObject.__attributes})
+        DummyObject.seen_ids = [self.id, other.id]
+        serialized_other = repr({k: v for k, v in other.__dict__.items() if k not in DummyObject.__attributes})
+        DummyObject.seen_ids = []  # reset list
+        DummyObject.__comparing = False
+        return serialized_self == serialized_other
 
     def __float__(self):
         return self.float
@@ -366,7 +371,11 @@ class DummyObject:
         return self.__operation(other, "//"), self.__operation(other, "%")
 
     def __repr__(self):
-        return f"DummyObject with id: {self.id}"
+        if not DummyObject.__comparing or self.id in DummyObject.seen_ids:
+            return f"Dummy#{self.id}"
+        else:
+            DummyObject.seen_ids.append(self.id)
+            return repr({k: v for k, v in self.__dict__.items() if k not in DummyObject.__attributes})
 
     def __reversed__(self):
         return reversed(self.iterable)
@@ -429,7 +438,7 @@ class DummyObject:
     #     pass  # REMOVE
 
     def __str__(self):
-        return self.str
+        return f"Dummy#{self.id}"
 
     def __sub__(self, other):
         return self.__operation(other, "-")
