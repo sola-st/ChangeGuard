@@ -25,6 +25,34 @@ if script_meta is not None:
     STR_OPTIONS.extend(script_meta['string_literals'])
 
 
+def _get_random_integer():
+    return get_value_pairs(random.choice(INTEGER_OPTIONS))
+
+
+def _get_random_float():
+    return get_value_pairs(random.choice(FLOAT_OPTIONS))
+
+
+def _get_random_str():
+    return get_value_pairs(random.choice(STR_OPTIONS))
+
+
+def _get_random_bool():
+    return get_value_pairs(random.choice([True, False]))
+
+
+def _get_random_tuple():
+    return get_value_pairs(random.choice([(), (DummyObject(),)]))
+
+
+def _get_random_list():
+    return get_value_pairs(random.choice([[], [DummyObject()]]))
+
+
+def _get_random_sets():
+    return get_value_pairs(random.choice([set(), {DummyObject()}]))
+
+
 def abstract_value(value):
     t = type(value)
     # common primitive values
@@ -106,13 +134,12 @@ class DummyObject:
     __comparing = False
 
     def __init__(self, *a, **b):
-        self.initial_store = []
-        self.iterable = []
+        self.iterable = _get_random_list()
         self.dict = {}
-        self.int = 1
-        self.float = 1.0
-        self.str = "a"
-        self.bool = True
+        self.int = _get_random_integer()
+        self.float = _get_random_float()
+        self.str = _get_random_str()
+        self.bool = _get_random_bool()
         self.pass_instance_check = random.choice([True, False])
         self.id = DummyObject.id_counter
         DummyObject.id_counter += 1
@@ -140,8 +167,8 @@ class DummyObject:
             return eval(f"'{self.str}' {operator} '{other}'")
         if comparison:
             if right:
-                return eval(f"{other.id} {operator} {self.id}")
-            return eval(f"{self.id} {operator} {other.id}")
+                return eval(f"{other.int} {operator} {self.int}")
+            return eval(f"{self.int} {operator} {other.int}")
         return DummyObject()
 
     def __abs__(self):
@@ -538,20 +565,20 @@ if params.value_abstraction.startswith("coarse-grained"):
                 return get_value_pairs(random.choice([True, False]))
             # strings
             elif abstract_value == "str":
-                return get_value_pairs(random.choice(STR_OPTIONS))
+                return _get_random_str()
             # built-in numeric types
             elif abstract_value == "int":
-                return get_value_pairs(random.choice(INTEGER_OPTIONS))
+                return _get_random_integer()
             elif abstract_value == "float":
-                return get_value_pairs(random.choice(FLOAT_OPTIONS))
+                return _get_random_float()
             # built-in sequence types
             elif abstract_value == "list":
-                return get_value_pairs(random.choice([[], [DummyObject()]]))
+                return _get_random_list()
             elif abstract_value == "tuple":
-                return get_value_pairs(random.choice([(), (DummyObject(),)]))
+                return _get_random_tuple()
             # built-in set and dict types
             elif abstract_value == "set":
-                return get_value_pairs(random.choice([{}, {DummyObject()}]))
+                return get_random_sets()
             elif abstract_value == "dict":
                 return get_value_pairs(random.choice([{}, {"a": DummyObject()}]))
             # functions and methods
