@@ -25,7 +25,11 @@ class CodeRewriter(cst.CSTTransformer):
         line = location.start.line
         column_start = location.start.column
         column_end = location.end.column
-        iid = self.iids.new(self.file_path, line, column_start, column_end)
+        # only use final line number for SimpleStatementLine because we use this to measure which lines have been
+        # executed and block nodes such as FunctionDef would otherwise falsely claim we executed the whole function
+        # instead of only the definition
+        line_end = location.end.line if isinstance(node, cst.SimpleStatementLine) else location.start.line
+        iid = self.iids.new(self.file_path, line, column_start, column_end, line_end)
         return iid
 
     def __create_name_call(self, node, updated_node):
@@ -361,7 +365,8 @@ class CodeRewriter(cst.CSTTransformer):
                         node.body[0], updated_node.body[0])
                     return wrapped_import
         return cst.FlattenSentinel([updated_node, stmt])
-    
+
+
     def leave_For(self, node: cst.For, updated_node: cst.For):
         line_call = self.__create_line_call(node, updated_node)
         line_call = line_call.with_changes(args=[*line_call.args, cst.Arg(value=updated_node.iter)])

@@ -40,7 +40,7 @@ def extract_executed_lines(result_string, offsets):
     if prefix not in result_string:
         return [], []
     temp = result_string[result_string.find(prefix) + len(prefix):]
-    all_lines = list(map(int, temp[:temp.find(']')].split(', ')))
+    all_lines = set(map(int, temp[:temp.find(']')].split(', ')))
     return ([line-offsets['old'][0]+1 for line in all_lines if offsets['old'][0] <= line <= offsets['old'][1]],
             [line-offsets['new'][0]+1 for line in all_lines if offsets['new'][0] <= line <= offsets['new'][1]])
 
