@@ -42,11 +42,17 @@ def _get_random_bool():
 
 
 def _get_random_tuple():
-    return get_value_pairs(random.choice([(), (DummyObject(),)]))
+    return get_value_pairs(random.choice([(), (DummyObject(),),
+                                          (DummyObject(), DummyObject()),
+                                          (DummyObject(), DummyObject(), DummyObject()),
+                                          (DummyObject(), DummyObject(), DummyObject(), DummyObject())]))
 
 
 def _get_random_list():
-    return get_value_pairs(random.choice([[], [DummyObject()]]))
+    return get_value_pairs(random.choice([[], [DummyObject()],
+                                          [DummyObject(), DummyObject()],
+                                          [DummyObject(), DummyObject(), DummyObject()],
+                                          [DummyObject(), DummyObject(), DummyObject(), DummyObject()]]))
 
 
 def _get_random_sets():
@@ -134,7 +140,7 @@ class DummyObject:
     __comparing = False
 
     def __init__(self, *a, **b):
-        self.iterable = _get_random_list()
+        self.iterable = []
         self.dict = {}
         self.int = _get_random_integer()
         self.float = _get_random_float()
@@ -578,7 +584,7 @@ if params.value_abstraction.startswith("coarse-grained"):
                 return _get_random_tuple()
             # built-in set and dict types
             elif abstract_value == "set":
-                return get_random_sets()
+                return _get_random_sets()
             elif abstract_value == "dict":
                 return get_value_pairs(random.choice([{}, {"a": DummyObject()}]))
             # functions and methods
@@ -653,3 +659,6 @@ elif params.value_abstraction == "fine-grained":
 else:
     raise ValueError(
         f"Unknown setting for value_abstraction: {params.value_abstraction}")
+
+
+d = DummyObject()
