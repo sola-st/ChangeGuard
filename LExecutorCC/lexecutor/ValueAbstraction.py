@@ -26,37 +26,35 @@ if script_meta is not None:
 
 
 def _get_random_integer():
-    return get_value_pairs(random.choice(INTEGER_OPTIONS))
+    return random.choice(INTEGER_OPTIONS)
 
 
 def _get_random_float():
-    return get_value_pairs(random.choice(FLOAT_OPTIONS))
+    return random.choice(FLOAT_OPTIONS)
 
 
 def _get_random_str():
-    return get_value_pairs(random.choice(STR_OPTIONS))
+    return random.choice(STR_OPTIONS)
 
 
 def _get_random_bool():
-    return get_value_pairs(random.choice([True, False]))
+    return random.choice([True, False])
 
 
 def _get_random_tuple():
-    return get_value_pairs(random.choice([(), (DummyObject(),),
-                                          (DummyObject(), DummyObject()),
-                                          (DummyObject(), DummyObject(), DummyObject()),
-                                          (DummyObject(), DummyObject(), DummyObject(), DummyObject())]))
+    return random.choice([(), (DummyObject(),), (DummyObject(), DummyObject()),
+                          (DummyObject(), DummyObject(), DummyObject()),
+                          (DummyObject(), DummyObject(), DummyObject(), DummyObject())])
 
 
 def _get_random_list():
-    return get_value_pairs(random.choice([[], [DummyObject()],
-                                          [DummyObject(), DummyObject()],
-                                          [DummyObject(), DummyObject(), DummyObject()],
-                                          [DummyObject(), DummyObject(), DummyObject(), DummyObject()]]))
+    return random.choice([[], [DummyObject()], [DummyObject(), DummyObject()],
+                          [DummyObject(), DummyObject(), DummyObject()],
+                          [DummyObject(), DummyObject(), DummyObject(), DummyObject()]])
 
 
 def _get_random_sets():
-    return get_value_pairs(random.choice([set(), {DummyObject()}]))
+    return random.choice([set(), {DummyObject()}])
 
 
 def abstract_value(value):
@@ -571,22 +569,22 @@ if params.value_abstraction.startswith("coarse-grained"):
                 return get_value_pairs(random.choice([True, False]))
             # strings
             elif abstract_value == "str":
-                return _get_random_str()
+                return get_value_pairs(_get_random_str())
             # built-in numeric types
             elif abstract_value == "int":
-                return _get_random_integer()
+                return get_value_pairs(_get_random_integer())
             elif abstract_value == "float":
-                return _get_random_float()
+                return get_value_pairs(_get_random_float())
             # built-in sequence types
             elif abstract_value == "list":
-                return _get_random_list()
+                return get_value_pairs(_get_random_list())
             elif abstract_value == "tuple":
-                return _get_random_tuple()
+                return get_value_pairs(_get_random_tuple())
             # built-in set and dict types
             elif abstract_value == "set":
-                return _get_random_sets()
+                return get_value_pairs(_get_random_sets())
             elif abstract_value == "dict":
-                return get_value_pairs(random.choice([{}, {"a": DummyObject()}]))
+                return get_value_pairs(get_value_pairs(random.choice([{}, {"a": DummyObject()}])))
             # functions and methods
             elif abstract_value == "resource":
                 return get_value_pairs(DummyResource())
