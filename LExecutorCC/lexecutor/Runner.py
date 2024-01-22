@@ -19,7 +19,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument(
     "--commits", help="Path to commits.json", required=True)
 parser.add_argument(
-    "--action", help="Which action to perform either instrument or run", choices=['instrument', 'run'], required=True)
+    "--action", help="Which action to perform, either instrument or run", choices=['instrument', 'run'], required=True)
 
 METADATA = Metadata()
 
@@ -121,21 +121,34 @@ def different(val1, val2):
 
 
 if __name__ == "__main__":
-    import pathlib
-    p = str(pathlib.Path(__file__).parent.resolve())
+    import sys
     from lexecutor.Runtime import switch_state
-
+    from lexecutor.Comparator import compare_exceptions, compare_self, compare_main_args, compare_args, compare_return_values
+    exception_old = None
     try:
         val1 = {old_fun_name}()
-        switch_state()
+    except Exception as e:
+        exception_old = e
+    switch_state()
+    exception_new = None
+    try:
         val2 = {new_fun_name}()
     except Exception as e:
-        print(p + ": Function(s) raised an exception: " + str(type(e)) + " -- " + str(e))
+        exception_new = e
+    if compare_exceptions(exception_new, exception_old):
+        sys.exit(0)
+    if compare_self():
+        sys.exit(0)
+    if compare_main_args():
+        sys.exit(0)
+    if compare_args():
+        sys.exit(0)
+    if compare_return_values(val1, val2):
+        sys.exit(0)
+    if different(val1, val2):
+        print("Functions returned different values: " + str(val1) + " vs. " + str(val2))
     else:
-        if different(val1, val2):
-            print(p + ": Functions returned different values: " + str(val1) + " vs. " + str(val2))
-        else:
-            print(p + ": Both functions returned the same value" + str(val1))
+        print("Both functions returned the same value" + str(val1))
 """
 
     compare_script = comment + fct_def_code + main_code_template
@@ -189,7 +202,7 @@ def run_lexecutor(code_change):
         try:
             start = time.time()
             completed_process = subprocess.run(f'python {script_path}',
-                                               capture_output=True, shell=True, timeout=30)
+                                               capture_output=True, shell=True, timeout=60)
             end = time.time()
             run_logger.info(f'iteration_{i} took {end-start} seconds')
             output = completed_process.stdout.decode('utf-8')
