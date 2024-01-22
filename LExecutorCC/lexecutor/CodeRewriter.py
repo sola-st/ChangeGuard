@@ -458,7 +458,7 @@ class CodeRewriter(cst.CSTTransformer):
         else:
             return updated_node
         static_name = self.__get_exception_name(original_node)
-        args += [cst.Arg(value=cst.SimpleString(value=static_name))]
+        args = [cst.Arg(value=cst.SimpleString(value=static_name))] + args
         custom_exception: cst.Call = cst.Call(args=args, func=cst.Name('IntentionalException'))
         return updated_node.with_changes(exc=custom_exception)
     def leave_Module(self, node, updated_node):

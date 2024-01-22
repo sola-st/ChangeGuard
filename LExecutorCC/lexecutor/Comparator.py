@@ -25,7 +25,7 @@ def compare_exceptions(exception_old, exception_new):
     if (isinstance(exception_old, (IntentionalException, AssertionError)) and
             isinstance(exception_new, (IntentionalException, AssertionError))):
         # compare IntentionalExceptions decide based on that
-        return exception_old.args[-1] == exception_new.args[-1] # for now ignore static_name but might be worth to use if type is DummyObject
+        return exception_old.args[1:] == exception_new.args[1:] # for now ignore static_name but might be worth to use if type is DummyObject
     return True  # one is intentional one is not
 
 
