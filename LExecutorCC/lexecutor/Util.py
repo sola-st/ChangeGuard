@@ -40,7 +40,7 @@ def extract_executed_lines(result_string, offsets):
     if prefix not in result_string:
         return [], []
     temp = result_string[result_string.find(prefix) + len(prefix):]
-    all_lines = set(map(int, temp[:temp.find(']')].split(', ')))
+    all_lines = list(map(int, temp[:temp.find(']')].split(', ')))
     return ([line-offsets['old'][0]+1 for line in all_lines if offsets['old'][0] <= line <= offsets['old'][1]],
             [line-offsets['new'][0]+1 for line in all_lines if offsets['new'][0] <= line <= offsets['new'][1]])
 
@@ -50,13 +50,13 @@ def calc_changed_lines_coverage(changed_lines, executed_lines):
         return 0.0
     if not changed_lines:
         return 1.0
-    covered_lines = []
+    covered_lines = set()
     total_changed_lines = []
     for changed_line in changed_lines:
         total_changed_lines.extend(range(changed_line[0], changed_line[1]+1))
         for executed_line in executed_lines:
             if changed_line[0] <= executed_line <= changed_line[1]:
-                covered_lines.append(executed_line)
+                covered_lines.add(executed_line)
     return len(covered_lines)/len(total_changed_lines)
 
 

@@ -134,7 +134,7 @@ class DummyObject:
 
     id_counter = 0
     seen_ids = []
-    __attributes = ['id', 'iterable', 'dict', 'int', 'float', 'str', 'bool', 'pass_instance_check']
+    __internal_attributes = ['id', 'iterable', 'dict', 'int', 'float', 'str', 'bool', 'pass_instance_check']
     __comparing = False
 
     def __init__(self, *a, **b):
@@ -241,9 +241,9 @@ class DummyObject:
     def __eq__(self, other):
         DummyObject.__comparing = True
         DummyObject.seen_ids = [self.id, other.id]
-        serialized_self = repr({k: v for k, v in self.__dict__.items() if k not in DummyObject.__attributes})
+        serialized_self = repr({k: v for k, v in self.__dict__.items() if k not in DummyObject.__internal_attributes})
         DummyObject.seen_ids = [self.id, other.id]
-        serialized_other = repr({k: v for k, v in other.__dict__.items() if k not in DummyObject.__attributes})
+        serialized_other = repr({k: v for k, v in other.__dict__.items() if k not in DummyObject.__internal_attributes})
         DummyObject.seen_ids = []  # reset list
         DummyObject.__comparing = False
         return serialized_self == serialized_other
@@ -406,7 +406,7 @@ class DummyObject:
             return f"Dummy#{self.id}"
         else:
             DummyObject.seen_ids.append(self.id)
-            return repr({k: v for k, v in self.__dict__.items() if k not in DummyObject.__attributes})
+            return repr({k: v for k, v in self.__dict__.items() if k not in DummyObject.__internal_attributes})
 
     def __reversed__(self):
         return reversed(self.iterable)
@@ -584,7 +584,7 @@ if params.value_abstraction.startswith("coarse-grained"):
             elif abstract_value == "set":
                 return get_value_pairs(_get_random_sets())
             elif abstract_value == "dict":
-                return get_value_pairs(get_value_pairs(random.choice([{}, {"a": DummyObject()}])))
+                return get_value_pairs(random.choice([{}, {"a": DummyObject()}]))
             # functions and methods
             elif abstract_value == "resource":
                 return get_value_pairs(DummyResource())
