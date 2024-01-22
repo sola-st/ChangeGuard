@@ -1,4 +1,5 @@
 import libcst as cst
+import libcst.matchers as m
 from libcst.metadata import ParentNodeProvider, PositionProvider
 
 
@@ -186,26 +187,32 @@ class CodeRewriter(cst.CSTTransformer):
         else:
             return False
 
+    @staticmethod
+    def __unfold_attribute_name(attribute_node: cst.Attribute):
+        names = []
+        # unfolding x.y.z.Exception
+        base = attribute_node.value
+        while not isinstance(base, cst.Name):
+            names.append(base.attr.value)
+            base = base.value
+        names.append(base.value)
+        names.reverse()
+        names.append(attribute_node.attr.value)
+        return '"' + '.'.join(names) + '"'
+
     def __get_exception_name(self, exception_node):
         exception = exception_node.exc
         if isinstance(exception, cst.Call):
             if isinstance(exception.func, cst.Name):
                 return '"' + exception.func.value + '"'
             elif isinstance(exception.func, cst.Attribute):
-                names = []
-                # unfolding x.y.z.Exception
-                base = exception.func.value
-                while not isinstance(base, cst.Name):
-                    names.append(base.attr.value)
-                    base = base.value
-                names.append(base.value)
-                names.reverse()
-                names.append(exception.func.attr.value)
-                return '"' + '.'.join(names) + '"'
+                return self.__unfold_attribute_name(exception.func)
             else:
                 return "unknown"
         elif isinstance(exception, cst.Name):
             return '"' + exception.value + '"'
+        elif isinstance(exception, cst.Attribute):
+            return self.__unfold_attribute_name(exception)
         elif exception is None:
             try:
                 parent = self.get_metadata(cst.metadata.ParentNodeProvider, exception_node)
@@ -400,20 +407,60 @@ class CodeRewriter(cst.CSTTransformer):
     def leave_Try(self, node, updated_node):
         return self.__update_indented_block(node, updated_node)
     
-    def leave_ExceptHandler(self, node, updated_node):
+    def leave_ExceptHandler(self, node: cst.ExceptHandler, updated_node: cst.ExceptHandler):
+        try_statement: cst.Try = self.get_metadata(ParentNodeProvider, node)
+        raise_statements = m.findall(try_statement.body, m.Raise())
+
+        def compare_exceptions(raised_exc, caught_exc):
+            if isinstance(raised_exc, cst.Name) and isinstance(caught_exc, cst.Name) and raised_exc.value == caught_exc.value:
+                return True
+            elif isinstance(raised_exc, cst.Attribute) and isinstance(caught_exc, cst.Attribute) and self.__unfold_attribute_name(raised_exc) == self.__unfold_attribute_name(caught_exc):
+                return True
+            elif isinstance(raised_exc, cst.Call):
+                if isinstance(raised_exc.func, cst.Name) and isinstance(caught_exc, cst.Name) and raised_exc.func.value == caught_exc.value:
+                    return True
+                elif isinstance(raised_exc.func, cst.Attribute) and isinstance(caught_exc, cst.Attribute) and self.__unfold_attribute_name(raised_exc.func) == self.__unfold_attribute_name(caught_exc):
+                    return True
+            return False
+
+        for raise_statement in raise_statements:
+            if not raise_statement.exc:
+                continue
+            if isinstance(node.type, cst.Tuple):
+                for idx, element in enumerate(node.type.elements):
+                    print(element)
+                    if compare_exceptions(raise_statement.exc, element.value):
+                        new_elements = (updated_node.type.elements[:idx] +
+                                        (cst.Element(value=cst.Name(value='IntentionalException')),) +
+                                        updated_node.type.elements[idx+1:])
+                        return self.__update_indented_block(node, updated_node.with_changes(type=cst.Tuple(elements=new_elements)))
+            else:
+                if compare_exceptions(raise_statement.exc, node.type):
+                    return self.__update_indented_block(node, updated_node.with_changes(type=cst.Name(value='IntentionalException')))
         return self.__update_indented_block(node, updated_node)
-    
+
     def leave_Finally(self, node, updated_node):
         return self.__update_indented_block(node, updated_node)
 
     def leave_Raise(self, original_node, updated_node):
-        old_exception = updated_node.exc
-        args = old_exception.args if isinstance(old_exception, cst.Call) else []
-        name = self.__get_exception_name(original_node)
-        custom_exception: cst.Call = cst.Call(
-            args=[cst.Arg(value=cst.SimpleString(value=name)), *args], func=cst.Name('IntentionalException'))
+        # updated_node.exc is always cst.Call since exception node is wrapped in either _n_, _c_, or _a_ first.
+        # or None for bare raise statements
+        old_exception: cst.Call = updated_node.exc
+        if old_exception and old_exception.func.value == '_n_':
+            args = [cst.Arg(value=old_exception)]
+        elif old_exception and old_exception.func.value == '_c_':
+            # index 0 is iid of _c_ call
+            name_call = [old_exception.args[1]]
+            remaining_args = old_exception.args[2:]
+            args = name_call + remaining_args
+        elif old_exception and old_exception.func.value == '_a_':
+            args = [cst.Arg(value=old_exception)]
+        else:
+            return updated_node
+        static_name = self.__get_exception_name(original_node)
+        args += [cst.Arg(value=cst.SimpleString(value=static_name))]
+        custom_exception: cst.Call = cst.Call(args=args, func=cst.Name('IntentionalException'))
         return updated_node.with_changes(exc=custom_exception)
-        
     def leave_Module(self, node, updated_node):
         if not self.instrument:
             return updated_node
