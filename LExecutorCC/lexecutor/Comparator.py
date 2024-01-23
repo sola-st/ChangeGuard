@@ -13,17 +13,16 @@ def different(old_value, new_value):
 def compare_exceptions(exception_old, exception_new):
     if exception_old is None and exception_new is None:
         return False
-    if exception_old is None and exception_new is not None:
+    elif exception_old is None and exception_new is not None:
         print(f'only new function raised exception: {repr(exception_new)}')
-    if exception_old is not None and exception_new is None:
+    elif exception_old is not None and exception_new is None:
         print(f'only old function raised exception: {repr(exception_old)}')
-    # both functions raised an exception
-    if isinstance(exception_old, AssertionError) and isinstance(exception_new, AssertionError):
+    elif isinstance(exception_old, AssertionError) and isinstance(exception_new, AssertionError):
         if exception_old.args == exception_new.args:
             print(f'both functions raised same AssertionError: {repr(exception_old)}')
         else:
             print(f'functions raised different AssertionError: {repr(exception_old)} -- {repr(exception_new)}')
-    if isinstance(exception_old, IntentionalException) and isinstance(exception_new, IntentionalException):
+    elif isinstance(exception_old, IntentionalException) and isinstance(exception_new, IntentionalException):
         if exception_old.args[1:] == exception_new.args[1:]:
             print(f'both functions raised same IntentionalException: {repr(exception_old)}')
         else:
