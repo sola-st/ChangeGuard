@@ -1,7 +1,7 @@
 class Hyperparams(object):
     iids_file = "iids.json"
     metadata_file = "metadata.json"
-    nb_of_iterations = 5
+    nb_of_iterations = 20
     verbose = False
     
     # data deduplication
