@@ -123,7 +123,7 @@ def different(val1, val2):
 if __name__ == "__main__":
     import sys
     from lexecutor.Runtime import switch_state
-    from lexecutor.Comparator import compare_exceptions, compare_self, compare_main_args, compare_args, compare_return_values
+    from lexecutor.Comparator import compare_exceptions, compare_main_args, compare_args, compare_return_values
     exception_old = None
     try:
         val1 = {old_fun_name}()
@@ -136,8 +136,6 @@ if __name__ == "__main__":
     except Exception as e:
         exception_new = e
     if compare_exceptions(exception_new, exception_old):
-        sys.exit(0)
-    if compare_self():
         sys.exit(0)
     if compare_main_args():
         sys.exit(0)
@@ -209,7 +207,8 @@ def run_lexecutor(code_change):
             error = completed_process.stderr.decode('utf-8')
             if 'Both functions returned the same value' in output or 'both functions raised same' in output:
                 result = 'preserving'
-            elif 'Functions returned different values' in output or 'functions raised different' in output:
+            elif ('Functions returned different values' in output or 'functions raised different' in output or
+                  'functions modified argument' in output):
                 result = 'changing'
             elif ('only new function raised exception' in output or 'only old function raised exception' in output or
                   'both functions raised unintentional Exception' in output):

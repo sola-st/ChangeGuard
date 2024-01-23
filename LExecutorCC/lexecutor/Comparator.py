@@ -1,9 +1,14 @@
-from lexecutor.Runtime import IntentionalException
+import os
+import sys
 
+from lexecutor.Runtime import IntentionalException, kind_and_name_to_value
+from lexecutor.ValueAbstraction import DummyObject
+from lexecutor.Metadata import Metadata
 import copy
 global_old_args = {}
 global_new_args = {}
 
+METADATA = Metadata()
 
 def different(old_value, new_value):
     # TODO improve comparison
@@ -32,18 +37,21 @@ def compare_exceptions(exception_old, exception_new):
     return True
 
 
-def compare_self():
-    if 'name#self' not in kind_and_name_to_value:
-        return False
-    values = kind_and_name_to_value['name#self']
-    if values.old != values.new:
-        print(f'Functions modified self differently: {values.old.__dict__} -- {values.new.__dict__}')
-        return True
-    return False
-
-
 def compare_main_args():
-    pass
+    script_path = os.path.abspath(sys.argv[0])
+    data = METADATA.get(script_path)
+    old_params = data['old_params']
+    new_params = data['new_params']
+    # only compare parameters that appear in both functions
+    params = set(old_params) & set(new_params)
+    for param in params:
+        key = f'name#{param}'
+        if key in kind_and_name_to_value:
+            values = kind_and_name_to_value[key]
+            if values.old != values.new:
+                print(f'functions modified argument {param} differently: {values.old if not isinstance(values.old, DummyObject) else values.old.__dict__} -- {values.new if not isinstance(values.new, DummyObject) else values.new.__dict__}')
+                return True
+    return False
 
 
 def compare_args():
