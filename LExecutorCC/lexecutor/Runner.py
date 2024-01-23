@@ -207,11 +207,12 @@ def run_lexecutor(code_change):
             run_logger.info(f'iteration_{i} took {end-start} seconds')
             output = completed_process.stdout.decode('utf-8')
             error = completed_process.stderr.decode('utf-8')
-            if 'Both functions returned the same value' in output:
+            if 'Both functions returned the same value' in output or 'both functions raised same' in output:
                 result = 'preserving'
-            elif 'Functions returned different values' in output:
+            elif 'Functions returned different values' in output or 'functions raised different' in output:
                 result = 'changing'
-            elif 'Function(s) raised an exception' in output:
+            elif ('only new function raised exception' in output or 'only old function raised exception' in output or
+                  'both functions raised unintentional Exception' in output):
                 result = 'error'
             else:
                 result = 'unknown'

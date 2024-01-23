@@ -14,19 +14,23 @@ def compare_exceptions(exception_old, exception_new):
     if exception_old is None and exception_new is None:
         return False
     if exception_old is None and exception_new is not None:
-        print(f'only new function raised exception: {type(exception_new)} -- {exception_new}')
-        return True
-    if exception_old is not None and exception_new is not None:
-        import traceback
-        print(traceback.print_tb(exception_old.__traceback__))
-        print(f'only old function raised exception: {type(exception_old)} -- {exception_old}')
-        return True
+        print(f'only new function raised exception: {repr(exception_new)}')
+    if exception_old is not None and exception_new is None:
+        print(f'only old function raised exception: {repr(exception_old)}')
     # both functions raised an exception
-    if (isinstance(exception_old, (IntentionalException, AssertionError)) and
-            isinstance(exception_new, (IntentionalException, AssertionError))):
-        # compare IntentionalExceptions decide based on that
-        return exception_old.args[1:] == exception_new.args[1:] # for now ignore static_name but might be worth to use if type is DummyObject
-    return True  # one is intentional one is not
+    if isinstance(exception_old, AssertionError) and isinstance(exception_new, AssertionError):
+        if exception_old.args == exception_new.args:
+            print(f'both functions raised same AssertionError: {repr(exception_old)}')
+        else:
+            print(f'functions raised different AssertionError: {repr(exception_old)} -- {repr(exception_new)}')
+    if isinstance(exception_old, IntentionalException) and isinstance(exception_new, IntentionalException):
+        if exception_old.args[1:] == exception_new.args[1:]:
+            print(f'both functions raised same IntentionalException: {repr(exception_old)}')
+        else:
+            print(f'functions raised different IntentionalException: {repr(exception_old)} -- {repr(exception_new)}')
+    else:
+        print(f'both functions raised unintentional Exception: {repr(exception_old)} -- {repr(exception_new)}')
+    return True
 
 
 def compare_self():

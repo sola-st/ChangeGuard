@@ -428,7 +428,6 @@ class CodeRewriter(cst.CSTTransformer):
                 continue
             if isinstance(node.type, cst.Tuple):
                 for idx, element in enumerate(node.type.elements):
-                    print(element)
                     if compare_exceptions(raise_statement.exc, element.value):
                         new_elements = (updated_node.type.elements[:idx] +
                                         (cst.Element(value=cst.Name(value='IntentionalException')),) +
