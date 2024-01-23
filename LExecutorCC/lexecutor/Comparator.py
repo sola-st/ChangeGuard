@@ -34,7 +34,13 @@ def compare_exceptions(exception_old, exception_new):
 
 
 def compare_self():
-    pass
+    if 'name#self' not in kind_and_name_to_value:
+        return False
+    values = kind_and_name_to_value['name#self']
+    if values.old != values.new:
+        print(f'Functions modified self differently: {values.old.__dict__} -- {values.new.__dict__}')
+        return True
+    return False
 
 
 def compare_main_args():
