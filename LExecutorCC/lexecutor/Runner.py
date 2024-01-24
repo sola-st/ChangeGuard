@@ -104,22 +104,6 @@ def generate_compare_script(code_change, directory):
     main_code_template = f"""
 
 
-def different(val1, val2):
-    if type(val1) != type(val2):
-        return True
-    if type(val1) == list and type(val2) == list and len(val1) != len(val2):
-        return True
-    if type(val1) == dict and type(val2) == dict and len(val1) != len(val2):
-        return True
-    if type(val1) == set and type(val2) == set and len(val1) != len(val2):
-        return True
-    if type(val1) == tuple and type(val2) == tuple and len(val1) != len(val2):
-        return True
-    if type(val1) in [int, float, str, bool, type(None)] and type(val2) in [int, float, str, bool, type(None)]:
-        return val1 != val2
-    return False
-
-
 if __name__ == "__main__":
     import sys
     from lexecutor.Runtime import switch_state
@@ -143,10 +127,6 @@ if __name__ == "__main__":
         sys.exit(0)
     if compare_return_values(val1, val2):
         sys.exit(0)
-    if different(val1, val2):
-        print("Functions returned different values: " + str(val1) + " vs. " + str(val2))
-    else:
-        print("Both functions returned the same value" + str(val1))
 """
 
     compare_script = comment + fct_def_code + main_code_template

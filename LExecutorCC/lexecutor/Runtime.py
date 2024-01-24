@@ -1,4 +1,5 @@
 import atexit
+import copy
 import sys
 import time
 from .Hyperparams import Hyperparams as params
@@ -77,8 +78,10 @@ def switch_state():
     global state
     state ^= 1
 
+
 # map kind+name to predicted value to ensure consistent predictions for the same name
 kind_and_name_to_value = {}
+callable_store = ([], [])
 
 
 class IntentionalException(Exception):
@@ -119,7 +122,7 @@ def _n_(iid, name, lambada):
     return mode_branch(iid, perform_fct, record_fct, predict_fct, kind="name")
 
 
-def _c_(iid, fct, *args, **kwargs):
+def _c_(iid, fct, static_fct_name, *args, **kwargs):
     if params.verbose:
         logger.info(f"\nAt iid={iid}, calling function {fct}")
 
@@ -137,12 +140,13 @@ def _c_(iid, fct, *args, **kwargs):
         fct_name = fct.__name__ if hasattr(fct, "__name__") else str(fct)
         if " " in fct_name:  # some fcts that don't have a proper name
             fct_name = fct_name.split(" ")[0]
-
         key = f"call#{fct_name}"
+        store_key = fct_name if fct_name != 'DummyObject' else static_fct_name
+        callable_store[state].append((store_key, copy.deepcopy(args), copy.deepcopy(kwargs)))
         if key in kind_and_name_to_value:
             return kind_and_name_to_value[key][state]
         else:
-            v = predictor.call(iid, fct, fct_name, args, kwargs)
+            v = predictor.call(iid, fct, fct_name, args, kwargs)  # TODO after retraining use static_fct_name for DummyObject
             kind_and_name_to_value[key] = v
             return v[state]
 
@@ -190,9 +194,10 @@ def _a_(iid, base, attr_name):
     def predict_fct():
         key = f"attribute#{attr_name}"
         if key in kind_and_name_to_value:
+            setattr(base, attr_name, kind_and_name_to_value[key][state])
             return kind_and_name_to_value[key][state]
         else:
-            v = predictor.attribute(iid, base, attr_name)
+            v = predictor.attribute(iid, base, attr_name)  # TODO after retraining use fully qualified attr_name
             kind_and_name_to_value[key] = v
             setattr(base, attr_name, v[state])  # TODO manual private name mangling
             return v[state]
