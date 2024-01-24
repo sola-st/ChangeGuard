@@ -121,8 +121,24 @@ def get_final_results():
 
 
 def get_errors():
+    with open(ANNOTATED_CHANGES, 'r') as f:
+        changes = json.load(f)
+    preserving_error, changing_error, unclear_error = [], [], []
+    sha_to_change = {change['sha']: change for change in changes}
     with open(JSON_PATH, 'r') as f:
         results = json.load(f)
+    for result in results:
+        if result['final_result'] == 'non_conclusive':
+            change = sha_to_change[result['sha']]
+            annotation = change['annotation']
+            if annotation == 'semantics_preserving':
+                preserving_error.append(change)
+            elif annotation == 'semantics_changing':
+                changing_error.append(change)
+            else:
+                unclear_error.append(change)
+    print('preserving error', len(preserving_error), 'changing error', len(changing_error), 'unclear error', len(unclear_error))
+
     results = [result['iterations'] for result in results]
     errors = {}
     for result in results:
@@ -158,8 +174,9 @@ def get_changing_commits():
     with open(r'changes.json', 'w') as f:
         json.dump(commits, f, indent=4)
 
+
 def foo():
-    with open(r'C:\Users\Lars\Uni\Master\Masterarbeit\master-thesis-lars-groeninger\annotated_changes\annotated_changes.json', 'r', encoding='utf-8') as f:
+    with open(ANNOTATED_CHANGES, 'r', encoding='utf-8') as f:
         changes = json.load(f)
     sha_to_change = {change['sha']: change for change in changes}
     with open(r'C:\Users\Lars\Uni\Master\Masterarbeit\history\call_args\LExecutorCC\std_out.json') as f:
@@ -173,17 +190,68 @@ def foo():
     print(f'Errors that would be changing: {counter}')
     with open('important.json', 'w') as f:
         json.dump(important, f, indent=4)
+
+
+def get_undetected_changes():
+    with open(ANNOTATED_CHANGES, 'r', encoding='utf-8') as f:
+        changes = json.load(f)
+    sha_to_change = {change['sha']: change for change in changes}
+    with open(JSON_PATH, 'r', encoding='utf-8') as f:
+        out = json.load(f)
+    undetected_changes = []
+    for result in out:
+        change = sha_to_change[result['sha']]
+        # annotated changing, but false negative
+        if change['annotation'] == 'semantics_changing' and result['final_result'] == 'preserving':
+            # changed lines covered but change not detected
+            if result['coverage']['old']['ratio'] > 0 or result['coverage']['new']['ratio'] > 0:
+                undetected_changes.append(change)
+    with open('undetected_changes.json', 'w') as f:
+        json.dump(undetected_changes, f, indent=4)
+
+
+def get_confusion_matrix():
+    with open(ANNOTATED_CHANGES, 'r', encoding='utf-8') as f:
+        changes = json.load(f)
+    sha_to_change = {change['sha']: change for change in changes}
+    with open(JSON_PATH, 'r', encoding='utf-8') as f:
+        out = json.load(f)
+    tp, fp, fn, tn = [], [], [], []
+    for result in out:
+        change = sha_to_change[result['sha']]
+        if change['annotation'] == 'unclear':
+            continue
+        if result['final_result'] == 'changing':
+            if change['annotation'] == 'semantics_changing':
+                tp.append(change)
+            else:
+                fp.append(change)
+        elif result['final_result'] == 'preserving':
+            if change['annotation'] == 'semantics_changing':
+                fn.append(change)
+            else:
+                tn.append(change)
+    total_semantics_preserving = len([1 for change in changes if change['annotation'] == 'semantics_preserving'])
+    total_semantics_changing = len([1 for change in changes if change['annotation'] == 'semantics_changing'])
+    total_unclear = len([1 for change in changes if change['annotation'] == 'unclear'])
+    print(total_semantics_preserving, total_semantics_changing, total_unclear)
+    print('tp:', len(tp), 'fp:', len(fp), 'fn:', len(fn), 'tn:', len(tn))
+
+
 if __name__ == '__main__':
     prefix = r'C:\Users\Lars\Uni\Master\Masterarbeit\history\call_args'
-    JSON_PATH = rf'C:\Users\Lars\Uni\Master\Masterarbeit\master-thesis-lars-groeninger\LExecutorCC\coverage.json'
+    ANNOTATED_CHANGES = r'C:\Users\Lars\Uni\Master\Masterarbeit\master-thesis-lars-groeninger\annotated_changes\annotated_changes.json'
+    JSON_PATH = rf'C:\Users\Lars\Uni\Master\Masterarbeit\history\args_compare\LExecutorCC\std_out.json'
     LOG_PATH = rf'{prefix}\LExecutorCC\logs\Runner.log'
     # evaluate_annotated_changes()
     # evaluate_stdout()
     # evaluate_coverage()
     # evaluate_run_log()
-    evaluate_iter()
-    # get_final_results()
+    # evaluate_iter()
+    get_final_results()
     get_errors()
     # get_timing_profile()
     # get_changing_commits()
-    foo()
+    # foo()
+    get_undetected_changes()
+    get_confusion_matrix()
