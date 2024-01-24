@@ -57,7 +57,7 @@ def compare_args():
 
 def compare_return_values(val1, val2):
     if val1 != val2:
-        print(f'functions returned different values: {str(val1)} -- {str(val2)}')
+        print(f'both functions returned different values: {str(val1)} -- {str(val2)}')
         return True
-    print(f'functions returned same values: {str(val1)}')
+    print(f'both functions returned same value: {str(val1)}')
     return False
