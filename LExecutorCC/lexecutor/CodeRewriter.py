@@ -74,12 +74,12 @@ class CodeRewriter(cst.CSTTransformer):
         callee_name = cst.Name(value="_c_")
         node_of_callee_name = self.__get_callee_name_node(node)
         iid = self.__create_iid(node_of_callee_name)
-        fct_name = '"' + node_of_callee_name.value + '"' if not isinstance(node.func, cst.Attribute) else (
-            self.__unfold_attribute_name(node.func))
+        # fct_name = '"' + node_of_callee_name.value + '"' if not isinstance(node.func, cst.Attribute) else (
+        #     self.__unfold_attribute_name(node.func))
         iid_arg = cst.Arg(value=cst.Integer(value=str(iid)))
         fct_arg = cst.Arg(value=updated_node.func)
-        fct_name_arg = cst.Arg(value=cst.SimpleString(value=fct_name))
-        all_args = [iid_arg, fct_arg, fct_name_arg] + \
+        # fct_name_arg = cst.Arg(value=cst.SimpleString(value=fct_name))
+        all_args = [iid_arg, fct_arg] + \
             self.__ensure_generator_expr_have_parens(updated_node.args)
         call = cst.Call(func=callee_name, args=all_args)
         return call

@@ -122,14 +122,13 @@ def _n_(iid, name, lambada):
     return mode_branch(iid, perform_fct, record_fct, predict_fct, kind="name")
 
 
-def _c_(iid, fct, static_fct_name, *args, **kwargs):
+def _c_(iid, fct, *args, **kwargs):
     if params.verbose:
         logger.info(f"\nAt iid={iid}, calling function {fct}")
 
     if runtime_stats is not None:
         runtime_stats.total_uses += 1
         runtime_stats.cover_iid(iid)
-
     def perform_fct():
         return fct(*args, **kwargs)
 
@@ -141,8 +140,8 @@ def _c_(iid, fct, static_fct_name, *args, **kwargs):
         if " " in fct_name:  # some fcts that don't have a proper name
             fct_name = fct_name.split(" ")[0]
         key = f"call#{fct_name}"
-        store_key = fct_name if fct_name != 'DummyObject' else static_fct_name
-        callable_store[state].append((store_key, copy.deepcopy(args), copy.deepcopy(kwargs)))
+        # store_key = fct_name if fct_name != 'DummyObject' else static_fct_name
+        callable_store[state].append((fct_name, copy.deepcopy(args), copy.deepcopy(kwargs)))
         if key in kind_and_name_to_value:
             return kind_and_name_to_value[key][state]
         else:
