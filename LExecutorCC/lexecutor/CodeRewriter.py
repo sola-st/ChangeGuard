@@ -74,7 +74,7 @@ class CodeRewriter(cst.CSTTransformer):
         callee_name = cst.Name(value="_c_")
         node_of_callee_name = self.__get_callee_name_node(node)
         iid = self.__create_iid(node_of_callee_name)
-        fct_name = node_of_callee_name.value if not isinstance(node.func, cst.Attribute) else (
+        fct_name = '"' + node_of_callee_name.value + '"' if not isinstance(node.func, cst.Attribute) else (
             self.__unfold_attribute_name(node.func))
         iid_arg = cst.Arg(value=cst.Integer(value=str(iid)))
         fct_arg = cst.Arg(value=updated_node.func)
