@@ -149,7 +149,12 @@ class DummyObject:
         DummyObject.id_counter += 1
 
     def repr_without_internals(self):
-        return repr({k: v for k, v in self.__dict__.items() if k not in DummyObject.__internal_attributes})
+        DummyObject.__comparing = True
+        DummyObject.seen_ids = [self.id]
+        self_repr = repr({k: v for k, v in self.__dict__.items() if k not in DummyObject.__internal_attributes})
+        DummyObject.seen_ids = []
+        DummyObject.__comparing = False
+        return self_repr
 
     def __operation(self, other, operator, right=False):
         if isinstance(other, int):
@@ -242,9 +247,9 @@ class DummyObject:
             return self.__operation(other, "==")
         DummyObject.__comparing = True
         DummyObject.seen_ids = [self.id, other.id]
-        serialized_self = self.repr_without_internals()
+        serialized_self = repr({k: v for k, v in self.__dict__.items() if k not in DummyObject.__internal_attributes})
         DummyObject.seen_ids = [self.id, other.id]
-        serialized_other = other.repr_without_internals()
+        serialized_other = repr({k: v for k, v in other.__dict__.items() if k not in DummyObject.__internal_attributes})
         DummyObject.seen_ids = []  # reset list
         DummyObject.__comparing = False
         return serialized_self == serialized_other
@@ -407,7 +412,7 @@ class DummyObject:
             return f"Dummy#{self.id}"
         else:
             DummyObject.seen_ids.append(self.id)
-            return self.repr_without_internals()
+            return repr({k: v for k, v in self.__dict__.items() if k not in DummyObject.__internal_attributes})
 
     def __reversed__(self):
         return reversed(self.iterable)
