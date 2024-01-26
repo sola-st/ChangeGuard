@@ -8,6 +8,10 @@ from lexecutor.Metadata import Metadata
 METADATA = Metadata()
 
 
+def _get_value_repr(val):
+    return val.repr_without_internals() if isinstance(val, DummyObject) else repr(val)
+
+
 def compare_exceptions(exception_old, exception_new):
     if exception_old is None and exception_new is None:
         return False
@@ -42,7 +46,7 @@ def compare_main_args():
         if key in kind_and_name_to_value:
             values = kind_and_name_to_value[key]
             if values.old != values.new:
-                print(f'functions modified argument {param} differently: {values.old if not isinstance(values.old, DummyObject) else values.old.__dict__} -- {values.new if not isinstance(values.new, DummyObject) else values.new.__dict__}')
+                print(f'functions modified argument {param} differently: {_get_value_repr(values.old)} -- {_get_value_repr(values.new)}')
                 return True
     return False
 
@@ -50,14 +54,14 @@ def compare_main_args():
 def compare_args():
     for old, new in zip(callable_store[0], callable_store[1]):
         if old != new:
-            print(f'potential side effect occurred during 3rd party function call: {old} -- {new}')
+            print(f'potential side effect occurred during 3rd party function call: {_get_value_repr(old)} -- {_get_value_repr(new)}')
             return True
     return False
 
 
 def compare_return_values(val1, val2):
     if val1 != val2:
-        print(f'both functions returned different values: {str(val1)} -- {str(val2)}')
+        print(f'both functions returned different values: {_get_value_repr(val1)} -- {_get_value_repr(val2)}')
         return True
-    print(f'both functions returned same value: {str(val1)}')
+    print(f'both functions returned same value: {_get_value_repr(val1)}')
     return False

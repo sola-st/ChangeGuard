@@ -148,7 +148,10 @@ class DummyObject:
         self.id = DummyObject.id_counter
         DummyObject.id_counter += 1
 
-    def __operation(self, other, operator, right=False, comparison=False):
+    def repr_without_internals(self):
+        return repr({k: v for k, v in self.__dict__.items() if k not in DummyObject.__internal_attributes})
+
+    def __operation(self, other, operator, right=False):
         if isinstance(other, int):
             if right:
                 return eval(f"{other} {operator} {self.int}")
@@ -169,11 +172,7 @@ class DummyObject:
             if right:
                 return eval(f"'{other}' {operator} '{self.str}'")
             return eval(f"'{self.str}' {operator} '{other}'")
-        if comparison:
-            if right:
-                return eval(f"{other.int} {operator} {self.int}")
-            return eval(f"{self.int} {operator} {other.int}")
-        return DummyObject()
+        return False
 
     def __abs__(self):
         return abs(self.int)
@@ -239,11 +238,13 @@ class DummyObject:
     #     pass  # TODO / REMOVE
 
     def __eq__(self, other):
+        if not isinstance(other, DummyObject):
+            return self.__operation(other, "==")
         DummyObject.__comparing = True
         DummyObject.seen_ids = [self.id, other.id]
-        serialized_self = repr({k: v for k, v in self.__dict__.items() if k not in DummyObject.__internal_attributes})
+        serialized_self = self.repr_without_internals()
         DummyObject.seen_ids = [self.id, other.id]
-        serialized_other = repr({k: v for k, v in other.__dict__.items() if k not in DummyObject.__internal_attributes})
+        serialized_other = other.repr_without_internals()
         DummyObject.seen_ids = []  # reset list
         DummyObject.__comparing = False
         return serialized_self == serialized_other
@@ -261,7 +262,7 @@ class DummyObject:
     #     pass  # REMOVE
 
     def __ge__(self, other):
-        return self.__operation(other, ">=", comparison=True)
+        return self.__operation(other, ">=")
 
     # def __get__(self, instance, owner):
     #     pass  # TODO
@@ -279,7 +280,7 @@ class DummyObject:
             return self.dict[item]
 
     def __gt__(self, other):
-        return self.__operation(other, ">", comparison=True)
+        return self.__operation(other, ">")
 
     def __hash__(self):
         return hash(f"DummyObject{self.id}")
@@ -345,7 +346,7 @@ class DummyObject:
         return self.__operation(other, "^")
 
     def __le__(self, other):
-        return self.__operation(other, "<=", comparison=True)
+        return self.__operation(other, "<=")
 
     def __len__(self):
         return len(self.iterable)
@@ -354,7 +355,7 @@ class DummyObject:
         return self.__operation(other, "<<")
 
     def __lt__(self, other):
-        return self.__operation(other, "<", comparison=True)
+        return self.__operation(other, "<")
 
     def __matmul__(self, other):
         return self.__operation(other, "@")
@@ -368,8 +369,8 @@ class DummyObject:
     def __mul__(self, other):
         return self.__operation(other, "*")
 
-    def __ne__(self, other):
-        return self.__operation(other, "!=", comparison=True)
+    # def __ne__(self, other): implicitly defined by __eq__
+    #     pass
 
     def __neg__(self):
         return -self.int
@@ -406,7 +407,7 @@ class DummyObject:
             return f"Dummy#{self.id}"
         else:
             DummyObject.seen_ids.append(self.id)
-            return repr({k: v for k, v in self.__dict__.items() if k not in DummyObject.__internal_attributes})
+            return self.repr_without_internals()
 
     def __reversed__(self):
         return reversed(self.iterable)
