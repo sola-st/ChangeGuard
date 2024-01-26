@@ -160,6 +160,7 @@ def instrument_compare_script(directory):
 
 
 def run_instrumentation(code_change):
+    instrumentation_logger.info(f'Instrumentation started: {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}')
     directory_name = f'{code_change.repo}_{code_change.new_sha}'
     target_directory = f'{ROOT}/{directory_name}'
     if not os.path.exists(target_directory):
@@ -168,6 +169,7 @@ def run_instrumentation(code_change):
     instrument_compare_script(target_directory)
     METADATA.update(meta)
     METADATA.store()
+    instrumentation_logger.info(f'Instrumentation finished: {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}')
 
 
 def run_lexecutor(code_change):
