@@ -113,6 +113,7 @@ def _n_(iid, name, lambada):
         else:
             if name == 'self':
                 v = get_value_pairs(DummyObject())
+                logger.info(f'Assigning {v} to {name}')
                 kind_and_name_to_value[key] = v
                 return v[state]
             v = predictor.name(iid, name)
@@ -211,6 +212,25 @@ def _l_(iid, expression=None):
     return expression
 
 
+def _s_(iid, name, lambada):
+
+    perform_fct = lambada
+
+    def record_fct(v):
+        pass
+
+    def predict_fct():
+        key = f"subscript#{name}"
+        if key in kind_and_name_to_value:
+            return kind_and_name_to_value[key][state]
+        else:
+            v = get_value_pairs(DummyObject())
+            logger.info(f'Predicting for {key}, returning {v}')
+            kind_and_name_to_value[key] = v
+            return v[state]
+
+    mode_branch(iid, perform_fct, record_fct, predict_fct, kind="subscript")
+
 def mode_branch(iid, perform_fct, record_fct, predict_fct, kind):
     if mode == "RECORD":
         v = perform_fct()
@@ -230,7 +250,8 @@ def mode_branch(iid, perform_fct, record_fct, predict_fct, kind):
                 return v
             except Exception as e:
                 if (type(e) == NameError and kind == "name") \
-                        or (type(e) == AttributeError and kind == "attribute"):
+                        or (type(e) == AttributeError and kind == "attribute") \
+                        or ((type(e) == IndexError or type(e) == KeyError) and kind == "subscript"):
                     if params.verbose:
                         logger.info(
                             f"Catching '{type(e)}' during {kind} and calling predictor instead")

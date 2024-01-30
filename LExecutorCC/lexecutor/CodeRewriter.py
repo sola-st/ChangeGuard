@@ -110,7 +110,16 @@ class CodeRewriter(cst.CSTTransformer):
                                 ),
                             )
         return stmt
-    
+
+    def __create_subscript_call(self, original_node: cst.Subscript, updated_node: cst.Subscript):
+        callee_name = cst.Name(value='_s_')
+        iid = self.__create_iid(original_node)
+        iid_arg = cst.Arg(value=cst.Integer(value=str(iid)))
+        name_arg = cst.Arg(value=updated_node.value)
+        lambada = cst.Lambda(params=cst.Parameters(
+            params=[]), body=updated_node)
+        return cst.Call(func=callee_name, args=[iid_arg, name_arg, cst.Arg(value=lambada)])
+
     def __create_aux_stmt(self, updated_node, value):
         aux_stmt = cst.SimpleStatementLine(
                 body=[
@@ -305,6 +314,14 @@ class CodeRewriter(cst.CSTTransformer):
         else:
             return updated_node
 
+    def leave_Subscript(self, original_node: cst.Subscript, updated_node: cst.Subscript):
+        if not self.instrument:
+            return updated_node
+
+        if not self.__is_l_value(original_node) and not self.line_coverage_instrumentation:
+            return self.__create_subscript_call(original_node, updated_node)
+        return updated_node
+
     def leave_SimpleStatementLine(self, node, updated_node):
         if isinstance(node.body[0], cst.Expr):
             if isinstance(node.body[0].value, cst.SimpleString):
@@ -484,11 +501,12 @@ class CodeRewriter(cst.CSTTransformer):
         import_a = self.__create_import("_a_")
         import_c = self.__create_import("_c_")
         import_l = self.__create_import("_l_")
+        import_s = self.__create_import("_s_")
         import_e = self.__create_import("IntentionalException")
         import_i = self.__create_import("_isinstance")
 
         new_body = (list(new_body[:target_idx])
-                    + [import_n, import_a, import_c, import_l, import_e, import_i]
+                    + [import_n, import_a, import_c, import_l, import_s, import_e, import_i]
                     + list(new_body[target_idx:]))
 
         return updated_node.with_changes(body=new_body)
