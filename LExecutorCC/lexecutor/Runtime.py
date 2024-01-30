@@ -193,13 +193,13 @@ def _a_(iid, base, attr_name):
     def predict_fct():
         key = f"attribute#{attr_name}"
         if key in kind_and_name_to_value:
-            setattr(base, attr_name, kind_and_name_to_value[key][state])
-            return kind_and_name_to_value[key][state]
+            value = kind_and_name_to_value[key][state]
+            return value
         else:
             v = predictor.attribute(iid, base, attr_name)  # TODO after retraining use fully qualified attr_name
             kind_and_name_to_value[key] = v
-            setattr(base, attr_name, v[state])  # TODO manual private name mangling
-            return v[state]
+            value = v[state]
+            return value
 
     return mode_branch(iid, perform_fct, record_fct, predict_fct, kind="attribute")
 
