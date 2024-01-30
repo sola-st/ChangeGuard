@@ -52,6 +52,9 @@ def compare_main_args():
 
 
 def compare_args():
+    if len(callable_store[0]) != len(callable_store[1]):
+        print('number of 3rd party function calls changed')
+        return True
     for old, new in zip(callable_store[0], callable_store[1]):
         if old != new:
             print(f'potential side effect occurred during 3rd party function call: {_get_value_repr(old)} -- {_get_value_repr(new)}')

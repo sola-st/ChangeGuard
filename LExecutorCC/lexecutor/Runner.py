@@ -191,7 +191,8 @@ def run_lexecutor(code_change):
                 result = 'preserving'
             elif ('both functions returned different values' in output or 'functions raised different' in output or
                   'functions modified argument' in output or
-                  'potential side effect occurred during 3rd party function call' in output):
+                  'potential side effect occurred during 3rd party function call' in output or
+                  'number of 3rd party function calls changed' in output):
                 result = 'changing'
             elif ('only new function raised exception' in output or 'only old function raised exception' in output or
                   'both functions raised unintentional Exception' in output):
