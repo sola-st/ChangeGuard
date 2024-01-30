@@ -78,7 +78,7 @@ class ModelServer:
                 generated_ids = self.model.generate(
                     t.tensor(np.array([input_ids]), device=device), max_length=params.max_output_length, do_sample=True, top_k=5, top_p=0.95, num_return_sequences=5, output_scores=True, return_dict_in_generate=True)
             predicted_value = self.tokenizer.decode(
-                generated_ids[0], skip_special_tokens=True)
+                generated_ids.sequences[0], skip_special_tokens=True)
 
             logger.info(f'predicted values: {self.tokenizer.batch_decode(generated_ids.sequences, skip_special_tokens=True)}')
             if params.verbose:
