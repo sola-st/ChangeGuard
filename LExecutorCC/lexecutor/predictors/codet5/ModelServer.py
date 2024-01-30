@@ -76,11 +76,11 @@ class ModelServer:
             with t.no_grad():
                 self.model.eval()
                 generated_ids = self.model.generate(
-                    t.tensor(np.array([input_ids]), device=device), max_length=params.max_output_length)
-
+                    t.tensor(np.array([input_ids]), device=device), max_length=params.max_output_length, do_sample=True, top_k=5, top_p=0.95, num_return_sequences=5, output_scores=True, return_dict_in_generate=True)
             predicted_value = self.tokenizer.decode(
                 generated_ids[0], skip_special_tokens=True)
 
+            logger.info(f'predicted values: {self.tokenizer.batch_decode(generated_ids.sequences, skip_special_tokens=True)}')
             if params.verbose:
                 if self.tokenizer.bos_token_id not in generated_ids or self.tokenizer.eos_token_id not in generated_ids[0]:
                     print(
