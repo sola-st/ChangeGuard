@@ -229,7 +229,7 @@ def _s_(iid, name, lambada):
             kind_and_name_to_value[key] = v
             return v[state]
 
-    mode_branch(iid, perform_fct, record_fct, predict_fct, kind="subscript")
+    return mode_branch(iid, perform_fct, record_fct, predict_fct, kind="subscript")
 
 def mode_branch(iid, perform_fct, record_fct, predict_fct, kind):
     if mode == "RECORD":
