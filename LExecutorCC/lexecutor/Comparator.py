@@ -1,5 +1,7 @@
 import os
 import sys
+import inspect
+import asyncio
 
 from lexecutor.Runtime import IntentionalException, kind_and_name_to_value, callable_store
 from lexecutor.ValueAbstraction import DummyObject
@@ -10,6 +12,20 @@ METADATA = Metadata()
 
 def _get_value_repr(val):
     return val.repr_without_internals() if isinstance(val, DummyObject) else repr(val)
+
+
+async def __handle_async_gen(async_gen):
+    return [x async for x in async_gen]
+
+
+def unwrap_return_value(value):
+    if inspect.isgenerator(value):
+        return list(value)
+    if inspect.iscoroutine(value):
+        return asyncio.run(value)
+    if inspect.isasyncgen(value):
+        return asyncio.run(__handle_async_gen(value))
+    return value
 
 
 def compare_exceptions(exception_old, exception_new):

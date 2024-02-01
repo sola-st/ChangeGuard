@@ -107,16 +107,18 @@ def generate_compare_script(code_change, directory):
 if __name__ == "__main__":
     import sys
     from lexecutor.Runtime import switch_state
-    from lexecutor.Comparator import compare_exceptions, compare_main_args, compare_args, compare_return_values
+    from lexecutor.Comparator import compare_exceptions, compare_main_args, compare_args, compare_return_values, unwrap_return_value
     exception_old = None
     try:
         val1 = {old_fun_name}()
+        val1 = unwrap_return_value(val1)
     except Exception as e:
         exception_old = e
     switch_state()
     exception_new = None
     try:
         val2 = {new_fun_name}()
+        val2 = unwrap_return_value(val2)
     except Exception as e:
         exception_new = e
     if compare_exceptions(exception_new, exception_old):
