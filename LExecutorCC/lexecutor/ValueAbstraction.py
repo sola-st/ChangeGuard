@@ -129,6 +129,12 @@ class DummyResource(object):
     def __exit__(self, exc_type, exc_value, trace):
         return True
 
+    def __repr__(self):
+        return "DummyResource"
+    
+    def __call__(self, *args, **kwargs):
+        return DummyObject()
+
 
 class DummyObject:
 
