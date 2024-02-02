@@ -228,7 +228,7 @@ def run_lexecutor(code_change):
         final_result = 'changing'
 
     old_tot_executed_lines = list(set().union(*(set(it['coverage']['old']['executed_lines']) for it in iterations.values())))
-    new_tot_executed_lines = list(set().union(*(set(it['coverage']['old']['executed_lines']) for it in iterations.values())))
+    new_tot_executed_lines = list(set().union(*(set(it['coverage']['new']['executed_lines']) for it in iterations.values())))
 
     run_logger.info(f'Total time: {time.time()-total_start} seconds')
     return {

@@ -1,6 +1,7 @@
 from ..ValuePredictor import ValuePredictor
 from ...Logging import get_logger
 import time
+import random
 import requests
 from requests.exceptions import ConnectionError
 from ...ValueAbstraction import restore_value
@@ -42,7 +43,7 @@ class CodeT5ValuePredictor(ValuePredictor):
         if response is None:
             raise RuntimeError("Could not connect to model server")
 
-        val_as_string = response["v"]
+        val_as_string = random.choices(response["v"], cum_weights=[50, 70, 85, 95, 100])[0]
         val = restore_value(val_as_string)
 
         return val_as_string, val

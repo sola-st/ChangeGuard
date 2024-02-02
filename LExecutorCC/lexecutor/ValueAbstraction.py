@@ -131,7 +131,7 @@ class DummyResource(object):
 
     def __repr__(self):
         return "DummyResource"
-    
+
     def __call__(self, *args, **kwargs):
         return DummyObject()
 
@@ -669,6 +669,3 @@ elif params.value_abstraction == "fine-grained":
 else:
     raise ValueError(
         f"Unknown setting for value_abstraction: {params.value_abstraction}")
-
-
-d = DummyObject()

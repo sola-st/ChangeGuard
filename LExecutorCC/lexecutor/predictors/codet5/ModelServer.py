@@ -81,13 +81,15 @@ class ModelServer:
                 generated_ids.sequences[0], skip_special_tokens=True)
 
             logger.info(f'predicted values: {self.tokenizer.batch_decode(generated_ids.sequences, skip_special_tokens=True)}')
+            predicted_values = self.tokenizer.batch_decode(generated_ids.sequences, skip_special_tokens=True)
+            logger.info(f'predicted values: {predicted_values}')
             if params.verbose:
                 if self.tokenizer.bos_token_id not in generated_ids or self.tokenizer.eos_token_id not in generated_ids[0]:
                     print(
                         f"Warning: CodeT5 likely produced a garbage value: {predicted_value}")
 
             # respond with a JSON object
-            result = json.dumps({"v": predicted_value})
+            result = json.dumps({"v": predicted_values})
             ModelServer.cache[entry_tuple] = result
             return result
 
