@@ -79,7 +79,9 @@ class CodeRewriter(cst.CSTTransformer):
         #     self.__unfold_attribute_name(node.func))
         iid_arg = cst.Arg(value=cst.Integer(value=str(iid)))
         fct_arg = cst.Arg(value=updated_node.func)
-        full_name_arg = cst.Arg(value=cst.SimpleString(value="'" + cst.helpers.get_full_name_for_node(node) + "'"))
+        full_name = cst.helpers.get_full_name_for_node(node)
+        full_name = full_name if full_name else '_anon_'
+        full_name_arg = cst.Arg(value=cst.SimpleString(value="'" + full_name + "'"))
         all_args = [iid_arg, fct_arg, full_name_arg] + \
             self.__ensure_generator_expr_have_parens(updated_node.args)
         call = cst.Call(func=callee_name, args=all_args)
@@ -93,7 +95,10 @@ class CodeRewriter(cst.CSTTransformer):
         value_arg = cst.Arg(updated_node.value)
         attr_arg = cst.Arg(cst.SimpleString(
             value=f"{self.quotation_char}{node.attr.value}{self.quotation_char}"))
-        full_name_arg = cst.Arg(value=cst.SimpleString(value="'" + cst.helpers.get_full_name_for_node(node) + "'"))
+        full_name = cst.helpers.get_full_name_for_node(node)
+        full_name = full_name if full_name else '_anon_'
+        assert full_name != '_anon_'
+        full_name_arg = cst.Arg(value=cst.SimpleString(value="'" + full_name + "'"))
         call = cst.Call(func=callee_name, args=[iid_arg, value_arg, attr_arg, full_name_arg])
         return call
     
@@ -117,7 +122,9 @@ class CodeRewriter(cst.CSTTransformer):
         callee_name = cst.Name(value='_s_')
         iid = self.__create_iid(original_node)
         iid_arg = cst.Arg(value=cst.Integer(value=str(iid)))
-        name_arg = cst.Arg(value=cst.SimpleString(value="'" + cst.helpers.get_full_name_for_node(original_node) + "'"))
+        full_name = cst.helpers.get_full_name_for_node(original_node)
+        full_name = full_name if full_name else '_anon_'
+        name_arg = cst.Arg(value=cst.SimpleString(value="'" + full_name + "'"))
         # TODO include index/slice arg (not trivial because of extended slices e.g np indexes)
         lambada = cst.Lambda(params=cst.Parameters(
             params=[]), body=updated_node)
