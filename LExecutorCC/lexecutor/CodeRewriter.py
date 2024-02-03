@@ -11,6 +11,7 @@ class CodeRewriter(cst.CSTTransformer):
     ignored_calls = ["super"]  # special function names to not instrument
 
     def __init__(self, file_path, iids, line_coverage_instrumentation, used_names):
+        super().__init__()
         self.file_path = file_path
         self.used_names = used_names
         self.iids = iids
@@ -78,8 +79,8 @@ class CodeRewriter(cst.CSTTransformer):
         #     self.__unfold_attribute_name(node.func))
         iid_arg = cst.Arg(value=cst.Integer(value=str(iid)))
         fct_arg = cst.Arg(value=updated_node.func)
-        # fct_name_arg = cst.Arg(value=cst.SimpleString(value=fct_name))
-        all_args = [iid_arg, fct_arg] + \
+        full_name_arg = cst.Arg(value=cst.SimpleString(value="'" + cst.helpers.get_full_name_for_node(node) + "'"))
+        all_args = [iid_arg, fct_arg, full_name_arg] + \
             self.__ensure_generator_expr_have_parens(updated_node.args)
         call = cst.Call(func=callee_name, args=all_args)
         return call
@@ -92,7 +93,8 @@ class CodeRewriter(cst.CSTTransformer):
         value_arg = cst.Arg(updated_node.value)
         attr_arg = cst.Arg(cst.SimpleString(
             value=f"{self.quotation_char}{node.attr.value}{self.quotation_char}"))
-        call = cst.Call(func=callee_name, args=[iid_arg, value_arg, attr_arg])
+        full_name_arg = cst.Arg(value=cst.SimpleString(value="'" + cst.helpers.get_full_name_for_node(node) + "'"))
+        call = cst.Call(func=callee_name, args=[iid_arg, value_arg, attr_arg, full_name_arg])
         return call
     
     def __create_line_call(self, node, updated_node):
@@ -115,7 +117,8 @@ class CodeRewriter(cst.CSTTransformer):
         callee_name = cst.Name(value='_s_')
         iid = self.__create_iid(original_node)
         iid_arg = cst.Arg(value=cst.Integer(value=str(iid)))
-        name_arg = cst.Arg(value=updated_node.value)
+        name_arg = cst.Arg(value=cst.SimpleString(value="'" + cst.helpers.get_full_name_for_node(original_node) + "'"))
+        # TODO include index/slice arg (not trivial because of extended slices e.g np indexes)
         lambada = cst.Lambda(params=cst.Parameters(
             params=[]), body=updated_node)
         return cst.Call(func=callee_name, args=[iid_arg, name_arg, cst.Arg(value=lambada)])
