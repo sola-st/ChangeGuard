@@ -195,11 +195,15 @@ def _a_(iid, base, attr_name, full_name):
         key = f"attribute#{full_name}"
         if key in kind_and_name_to_value:
             value = kind_and_name_to_value[key][state]
+            if value is not DummyObject:
+                setattr(base, attr_name, value)
             return value
         else:
             v = predictor.attribute(iid, base, attr_name)
             kind_and_name_to_value[key] = v
             value = v[state]
+            if value is not DummyObject:
+                setattr(base, attr_name, value) # TODO private name mangling
             return value
 
     return mode_branch(iid, perform_fct, record_fct, predict_fct, kind="attribute")
