@@ -406,7 +406,14 @@ class CodeRewriter(cst.CSTTransformer):
 
     def leave_For(self, node: cst.For, updated_node: cst.For):
         line_call = self.__create_line_call(node, updated_node)
-        line_call = line_call.with_changes(args=[*line_call.args, cst.Arg(value=updated_node.iter)])
+
+        # handle iteration over tuple without parens
+        if isinstance(updated_node.iter, cst.Tuple) and not updated_node.iter.lpar and not updated_node.iter.rpar:
+            print('test')
+            for_iter = updated_node.iter.with_changes(lpar=[cst.LeftParen()], rpar=[cst.RightParen()])
+        else:
+            for_iter = updated_node.iter
+        line_call = line_call.with_changes(args=[*line_call.args, cst.Arg(value=for_iter)])
         ws = node.whitespace_after_for if node.whitespace_after_for.value else cst.SimpleWhitespace(value=' ')
         return updated_node.with_changes(iter=line_call, whitespace_after_for=ws)
     

@@ -215,8 +215,8 @@ class DummyObject:
     def __bytes__(self):
         return bytes(self.str, "utf-8")
 
-    # def __call__(self, *args, **kwargs):
-    #     pass  # TODO / REMOVE
+    def __call__(self, *args, **kwargs):
+        return DummyObject()
 
     # def __ceil__(self):
     #     pass
@@ -502,7 +502,7 @@ class DummyObject:
         pass  # TODO
 
     def __fspath__(self):
-        pass  # TODO
+        return self.str
 
 
 fine_to_coarse_grained = {
