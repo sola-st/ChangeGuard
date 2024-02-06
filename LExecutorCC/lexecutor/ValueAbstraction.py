@@ -122,21 +122,25 @@ def abstract_value(value):
     return abstract_value, str(t)[:20]
 
 
-class DummyResource(object):
-    def __enter__(self):
-        return self
+# class DummyResource(object):
+#     def __enter__(self):
+#         return self
+#
+#     def __exit__(self, exc_type, exc_value, trace):
+#         return True
+#
+#     def __repr__(self):
+#         return "DummyResource"
+#
+#     def __eq__(self, other):
+#         return isinstance(other, DummyResource)
+#
+#
+#     def __call__(self, *args, **kwargs):
+#         return DummyObject()
 
-    def __exit__(self, exc_type, exc_value, trace):
-        return True
 
-    def __repr__(self):
-        return "DummyResource"
-
-    def __call__(self, *args, **kwargs):
-        return DummyObject()
-
-
-class DummyObject:
+class DummyObject(Exception):
 
     id_counter = 0
     seen_ids = []
@@ -225,7 +229,11 @@ class DummyObject:
         return complex(self.int)
 
     def __contains__(self, item):
-        return item in self.iterable
+        if isinstance(item, int):
+            return item in self.iterable
+        else:
+            return item in self.dict
+
 
     # def __del__(self):
     #     pass  # TODO / REMOVE
@@ -245,8 +253,8 @@ class DummyObject:
     def __divmod__(self, other):
         return self.__operation(other, "//"), self.__operation(other, "%")
 
-    # def __enter__(self):
-    #     pass  # TODO / REMOVE
+    def __enter__(self):
+        return self
 
     def __eq__(self, other):
         if not isinstance(other, DummyObject):
@@ -259,6 +267,9 @@ class DummyObject:
         DummyObject.seen_ids = []  # reset list
         DummyObject.__comparing = False
         return serialized_self == serialized_other
+
+    def __exit__(self, exc_type, exc_value, trace):
+        return True
 
     def __float__(self):
         return self.float
@@ -563,7 +574,7 @@ if params.value_abstraction.startswith("coarse-grained"):
                 return {"a": DummyObject()}
             # functions and methods
             elif abstract_value == "resource":
-                return DummyResource()
+                return DummyObject()
             elif abstract_value == "callable":
                 return DummyObject
             elif abstract_value == "object":
@@ -599,7 +610,7 @@ if params.value_abstraction.startswith("coarse-grained"):
                 return get_value_pairs(random.choice([{}, {"a": DummyObject()}]))
             # functions and methods
             elif abstract_value == "resource":
-                return get_value_pairs(DummyResource())
+                return get_value_pairs(DummyObject())
             elif abstract_value == "callable":
                 return get_value_pairs(DummyObject)
             elif abstract_value == "object":
@@ -656,7 +667,7 @@ elif params.value_abstraction == "fine-grained":
             return {"a": DummyObject()}
         # functions and methods
         elif abstract_value == "resource":
-            return DummyResource()
+            return DummyObject()
         elif abstract_value == "callable":
             return DummyObject
         elif abstract_value == "object":

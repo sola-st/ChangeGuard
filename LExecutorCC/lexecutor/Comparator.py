@@ -25,6 +25,8 @@ def unwrap_return_value(value):
         return asyncio.run(value)
     if inspect.isasyncgen(value):
         return asyncio.run(__handle_async_gen(value))
+    if callable(value) and not isinstance(value, DummyObject):
+        return value()
     return value
 
 
