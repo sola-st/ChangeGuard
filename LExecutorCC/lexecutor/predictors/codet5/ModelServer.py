@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 import torch as t
 import numpy as np
 import subprocess
@@ -22,6 +23,7 @@ class ModelServer:
     cache = {}
 
     def __init__(self):
+        self.iids = None
         self._initialize_model()
         self._initialize_http_server()
 
@@ -48,8 +50,8 @@ class ModelServer:
         self._fetch_model(model_path)
         self.model.load_state_dict(t.load(model_path, map_location=device))
 
-        iids = IIDs(params.iids_file)
-        self.input_factory = InputFactory(iids, self.tokenizer)
+        self.iids = IIDs(params.iids_file)
+        self.input_factory = InputFactory(self.iids, self.tokenizer)
         logger.info("CodeT5 model loaded")
 
     def _initialize_http_server(self):
@@ -79,10 +81,9 @@ class ModelServer:
                     t.tensor(np.array([input_ids]), device=device), max_length=params.max_output_length, do_sample=True, top_k=5, top_p=0.95, num_return_sequences=5, output_scores=True, return_dict_in_generate=True)
             predicted_value = self.tokenizer.decode(
                 generated_ids.sequences[0], skip_special_tokens=True)
-
-            logger.info(f'predicted values: {self.tokenizer.batch_decode(generated_ids.sequences, skip_special_tokens=True)}')
+            logger.info(f'predicting values for file {str(Path(self.iids.location(entry["iid"])[0])).split(os.sep)[-2]}')
             predicted_values = self.tokenizer.batch_decode(generated_ids.sequences, skip_special_tokens=True)
-            logger.info(f'predicted values: {predicted_values}')
+            logger.info(f'predicted values for {entry["kind"]}#{entry["name"]}: {predicted_values}')
             if params.verbose:
                 if self.tokenizer.bos_token_id not in generated_ids or self.tokenizer.eos_token_id not in generated_ids[0]:
                     print(
