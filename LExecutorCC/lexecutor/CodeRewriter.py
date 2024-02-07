@@ -293,6 +293,9 @@ class CodeRewriter(cst.CSTTransformer):
         return updated_node
 
     def leave_Call(self, node, updated_node: cst.Call):
+        # remove super call since we treat all functions / methods as regular functions
+        if isinstance(node.func, cst.Name) and node.func.value == 'super':
+            return cst.Comment(value='# removed super() call')
         # replace isinstance checks with modified check
         if isinstance(updated_node.func, cst.Name) and updated_node.func.value == 'isinstance':
             return updated_node.with_changes(func=cst.Name('_isinstance'))
@@ -403,13 +406,11 @@ class CodeRewriter(cst.CSTTransformer):
                     return wrapped_import
         return cst.FlattenSentinel([updated_node, stmt])
 
-
     def leave_For(self, node: cst.For, updated_node: cst.For):
         line_call = self.__create_line_call(node, updated_node)
 
         # handle iteration over tuple without parens
         if isinstance(updated_node.iter, cst.Tuple) and not updated_node.iter.lpar and not updated_node.iter.rpar:
-            print('test')
             for_iter = updated_node.iter.with_changes(lpar=[cst.LeftParen()], rpar=[cst.RightParen()])
         else:
             for_iter = updated_node.iter
@@ -497,6 +498,7 @@ class CodeRewriter(cst.CSTTransformer):
         args = [cst.Arg(value=cst.SimpleString(value=static_name))] + args
         custom_exception: cst.Call = cst.Call(args=args, func=cst.Name('IntentionalException'))
         return updated_node.with_changes(exc=custom_exception)
+
     def leave_Module(self, node, updated_node):
         if not self.instrument:
             return updated_node
