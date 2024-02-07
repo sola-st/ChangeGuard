@@ -54,7 +54,7 @@ def instrument_file(file_path, iids, line_coverage_instrumentation, validate):
             print(f"{file_path} is on blacklist -- skipping it")
             return
 
-    with open(file_path, "r") as file:
+    with open(file_path, "r", encoding='utf-8') as file:
         src = file.read()
 
     if "LExecutor: DO NOT INSTRUMENT" in src:
@@ -81,7 +81,7 @@ def instrument_file(file_path, iids, line_coverage_instrumentation, validate):
     copied_file_path = re.sub(r"\.py$", ".py.orig", file_path)
     copyfile(file_path, copied_file_path)
 
-    with open(file_path, "w") as file:
+    with open(file_path, "w", encoding='utf-8') as file:
         file.write(rewritten_code)
 
 
