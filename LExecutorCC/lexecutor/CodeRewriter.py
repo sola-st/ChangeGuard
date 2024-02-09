@@ -7,7 +7,7 @@ class CodeRewriter(cst.CSTTransformer):
 
     METADATA_DEPENDENCIES = (ParentNodeProvider, PositionProvider,)
 
-    ignored_names = ["True", "False", "None", "isinstance", "super"]
+    ignored_names = ["True", "False", "None", "isinstance"]
     ignored_calls = ["super"]  # special function names to not instrument
 
     def __init__(self, file_path, iids, line_coverage_instrumentation, used_names):
@@ -95,7 +95,6 @@ class CodeRewriter(cst.CSTTransformer):
             value=f"{self.quotation_char}{node.attr.value}{self.quotation_char}"))
         full_name = cst.helpers.get_full_name_for_node(node)
         full_name = full_name if full_name else '_anon_'
-        assert full_name != '_anon_'
         full_name_arg = cst.Arg(value=cst.SimpleString(value=self.quotation_char + full_name + self.quotation_char))
         call = cst.Call(func=callee_name, args=[iid_arg, value_arg, attr_arg, full_name_arg])
         return call
@@ -290,9 +289,12 @@ class CodeRewriter(cst.CSTTransformer):
         return updated_node
 
     def leave_Call(self, node, updated_node: cst.Call):
-        # remove super call since we treat all functions / methods as regular functions
+        # replace super() / super().init__() calls since we treat all functions / methods as regular functions
+        if m.matches(node, m.Call(func=m.Attribute(value=m.Call(func=m.Name(value='super')), attr=m.Name(value='__init__')))):
+            return cst.Call(func=cst.Name(value='_dummy_super_init__'), args=updated_node.args)
         if isinstance(node.func, cst.Name) and node.func.value == 'super':
             return updated_node.with_changes(func=cst.Name('_dummy_super'))
+
         # replace isinstance checks with modified check
         if isinstance(updated_node.func, cst.Name) and updated_node.func.value == 'isinstance':
             return updated_node.with_changes(func=cst.Name('_isinstance'))
@@ -521,9 +523,10 @@ class CodeRewriter(cst.CSTTransformer):
         import_e = self.__create_import("IntentionalException")
         import_i = self.__create_import("_isinstance")
         import_su = self.__create_import("_dummy_super")
+        import_sui = self.__create_import("_dummy_super_init__")
 
         new_body = (list(new_body[:target_idx])
-                    + [import_n, import_a, import_c, import_l, import_s, import_e, import_i, import_su]
+                    + [import_n, import_a, import_c, import_l, import_s, import_e, import_i, import_su, import_sui]
                     + list(new_body[target_idx:]))
 
         return updated_node.with_changes(body=new_body)
