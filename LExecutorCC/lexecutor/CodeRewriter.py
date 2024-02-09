@@ -75,13 +75,11 @@ class CodeRewriter(cst.CSTTransformer):
         callee_name = cst.Name(value="_c_")
         node_of_callee_name = self.__get_callee_name_node(node)
         iid = self.__create_iid(node_of_callee_name)
-        # fct_name = '"' + node_of_callee_name.value + '"' if not isinstance(node.func, cst.Attribute) else (
-        #     self.__unfold_attribute_name(node.func))
         iid_arg = cst.Arg(value=cst.Integer(value=str(iid)))
         fct_arg = cst.Arg(value=updated_node.func)
         full_name = cst.helpers.get_full_name_for_node(node)
         full_name = full_name if full_name else '_anon_'
-        full_name_arg = cst.Arg(value=cst.SimpleString(value="'" + full_name + "'"))
+        full_name_arg = cst.Arg(value=cst.SimpleString(value=self.quotation_char + full_name + self.quotation_char))
         all_args = [iid_arg, fct_arg, full_name_arg] + \
             self.__ensure_generator_expr_have_parens(updated_node.args)
         call = cst.Call(func=callee_name, args=all_args)
@@ -98,7 +96,7 @@ class CodeRewriter(cst.CSTTransformer):
         full_name = cst.helpers.get_full_name_for_node(node)
         full_name = full_name if full_name else '_anon_'
         assert full_name != '_anon_'
-        full_name_arg = cst.Arg(value=cst.SimpleString(value="'" + full_name + "'"))
+        full_name_arg = cst.Arg(value=cst.SimpleString(value=self.quotation_char + full_name + self.quotation_char))
         call = cst.Call(func=callee_name, args=[iid_arg, value_arg, attr_arg, full_name_arg])
         return call
     
@@ -124,7 +122,7 @@ class CodeRewriter(cst.CSTTransformer):
         iid_arg = cst.Arg(value=cst.Integer(value=str(iid)))
         full_name = cst.helpers.get_full_name_for_node(original_node)
         full_name = full_name if full_name else '_anon_'
-        name_arg = cst.Arg(value=cst.SimpleString(value="'" + full_name + "'"))
+        name_arg = cst.Arg(value=cst.SimpleString(value=self.quotation_char + full_name + self.quotation_char))
         # TODO include index/slice arg (not trivial because of extended slices e.g np indexes)
         lambada = cst.Lambda(params=cst.Parameters(
             params=[]), body=updated_node)
@@ -209,8 +207,7 @@ class CodeRewriter(cst.CSTTransformer):
         else:
             return False
 
-    @staticmethod
-    def __unfold_attribute_name(attribute_node: cst.Attribute):
+    def __unfold_attribute_name(self, attribute_node: cst.Attribute):
         names = []
         # unfolding x.y.z.Exception
         base = attribute_node.value
@@ -220,19 +217,19 @@ class CodeRewriter(cst.CSTTransformer):
         names.append(base.value)
         names.reverse()
         names.append(attribute_node.attr.value)
-        return '"' + '.'.join(names) + '"'
+        return self.quotation_char + '.'.join(names) + self.quotation_char
 
     def __get_exception_name(self, exception_node):
         exception = exception_node.exc
         if isinstance(exception, cst.Call):
             if isinstance(exception.func, cst.Name):
-                return '"' + exception.func.value + '"'
+                return self.quotation_char + exception.func.value + self.quotation_char
             elif isinstance(exception.func, cst.Attribute):
                 return self.__unfold_attribute_name(exception.func)
             else:
-                return "unknown"
+                return self.quotation_char + 'unknown' + self.quotation_char
         elif isinstance(exception, cst.Name):
-            return '"' + exception.value + '"'
+            return self.quotation_char + exception.value + self.quotation_char
         elif isinstance(exception, cst.Attribute):
             return self.__unfold_attribute_name(exception)
         elif exception is None:
@@ -241,14 +238,14 @@ class CodeRewriter(cst.CSTTransformer):
                 while not isinstance(parent, cst.ExceptHandler):
                     parent = self.get_metadata(cst.metadata.ParentNodeProvider, parent)
             except KeyError:
-                return '"unknown"'
+                return self.quotation_char + 'unknown' + self.quotation_char
             else:
                 if isinstance(parent.type, cst.Name):
-                    return '"' + parent.type.value + '"'
+                    return self.quotation_char + parent.type.value + self.quotation_char
                 elif isinstance(parent.type, cst.Tuple):
-                    return '"' + "+".join(map(lambda x: x.value.value, parent.type.elements)) + '"'
+                    return self.quotation_char + "+".join(map(lambda x: x.value.value, parent.type.elements)) + self.quotation_char
                 else:
-                    return '"unknown"'
+                    return self.quotation_char + 'unknown' + self.quotation_char
 
     def visit_SimpleStatementLine(self, node):
         # don't visit lines marked with special comment
