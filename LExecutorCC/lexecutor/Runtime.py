@@ -102,6 +102,13 @@ def _dummy_super(*args, **kwargs):
     callable_store[state].append(('super', copy.deepcopy(args), copy.deepcopy(kwargs)))
     return Super()
 
+
+def _dummy_super_init__(*args, **kwargs):
+    callable_store[state].append(('super.__init__', copy.deepcopy(args), copy.deepcopy(kwargs)))
+
+
+
+
 def _n_(iid, name, lambada):
     if params.verbose:
         logger.info(f"\nAt iid={iid}, looking up name '{name}'")
