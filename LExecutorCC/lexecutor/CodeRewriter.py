@@ -7,7 +7,7 @@ class CodeRewriter(cst.CSTTransformer):
 
     METADATA_DEPENDENCIES = (ParentNodeProvider, PositionProvider,)
 
-    ignored_names = ["True", "False", "None", "isinstance"]
+    ignored_names = ["True", "False", "None", "isinstance", "super"]
     ignored_calls = ["super"]  # special function names to not instrument
 
     def __init__(self, file_path, iids, line_coverage_instrumentation, used_names):
@@ -295,7 +295,7 @@ class CodeRewriter(cst.CSTTransformer):
     def leave_Call(self, node, updated_node: cst.Call):
         # remove super call since we treat all functions / methods as regular functions
         if isinstance(node.func, cst.Name) and node.func.value == 'super':
-            return cst.Comment(value='# removed super() call')
+            return updated_node.with_changes(func=cst.Name('_dummy_super'))
         # replace isinstance checks with modified check
         if isinstance(updated_node.func, cst.Name) and updated_node.func.value == 'isinstance':
             return updated_node.with_changes(func=cst.Name('_isinstance'))
@@ -523,9 +523,10 @@ class CodeRewriter(cst.CSTTransformer):
         import_s = self.__create_import("_s_")
         import_e = self.__create_import("IntentionalException")
         import_i = self.__create_import("_isinstance")
+        import_su = self.__create_import("_dummy_super")
 
         new_body = (list(new_body[:target_idx])
-                    + [import_n, import_a, import_c, import_l, import_s, import_e, import_i]
+                    + [import_n, import_a, import_c, import_l, import_s, import_e, import_i, import_su]
                     + list(new_body[target_idx:]))
 
         return updated_node.with_changes(body=new_body)
