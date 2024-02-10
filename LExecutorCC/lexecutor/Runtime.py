@@ -2,15 +2,20 @@ import atexit
 import copy
 import sys
 import time
+import random
 from .Hyperparams import Hyperparams as params
 from .TraceWriter import TraceWriter
 from .ValueAbstraction import restore_value, DummyObject, get_value_pairs
 from .RuntimeStats import RuntimeStats
 from .Logging import get_logger
+from .Metadata import Metadata
 
 logger = get_logger(__name__)
 
 logger.info("Runtime starting")
+
+METADATA = Metadata()
+script_meta = METADATA.get_data_for_current_script()
 
 # ------- begin: select mode -----
 # mode = "RECORD"    # record values and write into a trace file
@@ -82,6 +87,7 @@ def switch_state():
 # map kind+name to predicted value to ensure consistent predictions for the same name
 kind_and_name_to_value = {}
 callable_store = ([], [])
+raised_exc = {}
 
 
 class IntentionalException(Exception):
@@ -139,6 +145,25 @@ def _n_(iid, name, lambada):
     return mode_branch(iid, perform_fct, record_fct, predict_fct, kind="name")
 
 
+def _handle_exception(fct_name, fct_to_excs):
+
+    def raise_exc(exc_as_string):
+        try:
+            raise eval(exc_as_string)
+        except (NameError, AttributeError):
+            raise DummyObject
+
+    if fct_name in raised_exc:  # function did already raise an exception -> raise the same one
+        raise_exc(raised_exc[fct_name])
+    else:
+        # dynamically compute probability such that it is always the same
+        # for each try block no matter the number of functions called
+        probability_for_exc = 1 - 0.85 ** (1 / len(fct_to_excs))
+        if random.random() < probability_for_exc:  # raise exception
+            exc_to_raise = random.choice(fct_to_excs[fct_name])
+            raised_exc[fct_name] = exc_to_raise
+            raise_exc(exc_to_raise)
+
 def _c_(iid, fct, full_name, *args, **kwargs):
     if params.verbose:
         logger.info(f"\nAt iid={iid}, calling function {fct}")
@@ -159,9 +184,12 @@ def _c_(iid, fct, full_name, *args, **kwargs):
             fct_name = fct_name.split(" ")[0]
         key = f"call#{full_name}"
         callable_store[state].append((full_name, copy.deepcopy(args), copy.deepcopy(kwargs)))
+        fct_to_excs = script_meta['func_to_excs']
         if key in kind_and_name_to_value:
             return kind_and_name_to_value[key][state]
         else:
+            if full_name in fct_to_excs:  # function can raise exception (in try block)
+                _handle_exception(full_name, fct_to_excs)
             v = predictor.call(iid, fct, fct_name, args, kwargs)  # TODO after retraining use static_fct_name for DummyObject
             kind_and_name_to_value[key] = v
             return v[state]

@@ -2,6 +2,36 @@ import libcst as cst
 import libcst.matchers as m
 
 
+def __unfold_attribute_name(attribute_node: cst.Attribute):
+    names = []
+    # unfolding x.y.z.Exception
+    base = attribute_node.value
+    while not isinstance(base, cst.Name):
+        names.append(base.attr.value)
+        base = base.value
+    names.append(base.value)
+    names.reverse()
+    names.append(attribute_node.attr.value)
+    return '.'.join(names)
+
+
+def compare_exceptions(raised_exc, caught_exc):
+    if isinstance(raised_exc, cst.Name) and isinstance(caught_exc, cst.Name) and raised_exc.value == caught_exc.value:
+        return True
+    elif isinstance(raised_exc, cst.Attribute) and isinstance(caught_exc,
+                                                              cst.Attribute) and __unfold_attribute_name(
+            raised_exc) == __unfold_attribute_name(caught_exc):
+        return True
+    elif isinstance(raised_exc, cst.Call):
+        if isinstance(raised_exc.func, cst.Name) and isinstance(caught_exc,
+                                                                cst.Name) and raised_exc.func.value == caught_exc.value:
+            return True
+        elif isinstance(raised_exc.func, cst.Attribute) and isinstance(caught_exc,
+                                                                       cst.Attribute) and __unfold_attribute_name(
+                raised_exc.func) == __unfold_attribute_name(caught_exc):
+            return True
+    return False
+
 class FunctionPreparator(cst.CSTTransformer):
 
     METADATA_DEPENDENCIES = (cst.metadata.ParentNodeProvider, cst.metadata.WhitespaceInclusivePositionProvider)
@@ -15,6 +45,7 @@ class FunctionPreparator(cst.CSTTransformer):
         self.integers = set()
         self.floats = set()
         self.fun_name = ''
+        self.func_to_exc = {}
 
     def leave_Integer(self, original_node: cst.Integer, updated_node: cst.Integer):
         self.integers.add(updated_node.evaluated_value)
@@ -29,6 +60,28 @@ class FunctionPreparator(cst.CSTTransformer):
                 updated_node.prefix not in ["b", "br", "rb"]):  # skip bytes for now
             self.strings.add(updated_node.evaluated_value)
         return updated_node
+
+    def visit_Try(self, node: cst.Try):
+        call_statements = m.findall(node.body, m.Call())
+        raise_statements = m.findall(node.body, m.Raise())
+        caught_types = set()
+        for handler in node.handlers:
+            if isinstance(handler.type, cst.Tuple):
+                for element in handler.type.elements:
+                    if not any(compare_exceptions(raise_statement.exc, element.value) for raise_statement in raise_statements):
+                        caught_types.add(cst.helpers.get_full_name_for_node(element.value))
+            else:
+                if not any(compare_exceptions(raise_statement.exc, handler.type) for raise_statement in raise_statements):
+                    caught_types.add(cst.helpers.get_full_name_for_node(handler.type))
+        for call_statement in call_statements:
+            if isinstance(self.get_metadata(cst.metadata.ParentNodeProvider, call_statement), cst.Raise):
+                continue
+            name = cst.helpers.get_full_name_for_node(call_statement)
+            if not name:
+                continue
+            already_found_types = self.func_to_exc.get(name, set())
+            already_found_types.update(caught_types)
+            self.func_to_exc[name] = already_found_types
 
     def visit_Parameters(self, node: cst.Parameters):
         if self._nb_param_lines >= 0:  # ensure this is only set for outermost function

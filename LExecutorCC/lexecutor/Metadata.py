@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 
 from .Hyperparams import Hyperparams
 
@@ -34,3 +35,7 @@ class Metadata(object):
     def store(self):
         with open(Hyperparams.metadata_file, 'w', encoding='utf-8') as f:
             json.dump(self.metadata, f, indent=4)
+
+    def get_data_for_current_script(self):
+        script_path = os.path.abspath(sys.argv[0])
+        return self.metadata.get(script_path)

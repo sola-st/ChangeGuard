@@ -17,8 +17,7 @@ STR_OPTIONS = ["", "a"]
 Values = namedtuple('Values', 'old new')
 
 metadata = Metadata()
-script_path = os.path.abspath(sys.argv[0])
-script_meta = metadata.get(script_path)
+script_meta = metadata.get_data_for_current_script()
 if script_meta is not None:
     INTEGER_OPTIONS.extend(script_meta['integer_literals'])
     FLOAT_OPTIONS.extend(script_meta['float_literals'])

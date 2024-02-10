@@ -29,7 +29,7 @@ def prepare_function(fun, suffix):
     p = FunctionPreparator(suffix)
     tree = cst.metadata.MetadataWrapper(cst.parse_module(fun))
     tree = tree.visit(p)
-    return cst.Module([tree]).code, p.fun_name, p.params, p.strings, p.integers, p.floats,
+    return cst.Module([tree]).code, p.fun_name, p.func_to_exc, p.params, p.strings, p.integers, p.floats,
 
 
 def get_offsets(script, *fct_names):
@@ -40,10 +40,10 @@ def get_offsets(script, *fct_names):
 
 
 def generate_compare_script(code_change, directory):
-    old_fun, old_fun_name, old_params, *old_literals = prepare_function(code_change.old_code, '_old')
-    new_fun, new_fun_name, new_params, *new_literals = prepare_function(code_change.new_code, '_new')
+    old_fun, old_fun_name, old_excs, old_params, *old_literals = prepare_function(code_change.old_code, '_old')
+    new_fun, new_fun_name, new_excs, new_params, *new_literals = prepare_function(code_change.new_code, '_new')
 
-    # assemble compare.py (old way)
+    # assemble compare.py
     comment = f"# {code_change.old_sha} -- {code_change.new_sha}\n\n"
     fct_def_code = old_fun + "\n\n" + new_fun
     main_code_template = f"""
@@ -82,10 +82,15 @@ if __name__ == "__main__":
     with open(script_path, 'w', encoding='utf-8') as f:
         f.write(compare_script)
 
+    func_to_excs = {}
+    for key in old_excs.keys() | new_excs.keys():
+        func_to_excs[key] = list(old_excs.get(key, set()) | new_excs.get(key, set()))
+
     meta = {
         os.path.abspath(script_path): {
             'old_params': old_params,
             'new_params': new_params,
+            'func_to_excs': func_to_excs,
             'string_literals': list(old_literals[0] | new_literals[0]),  # currently buggy with bytes
             'integer_literals':  list(old_literals[1] | new_literals[1]),
             'float_literals':   list(old_literals[2] | new_literals[2]),
