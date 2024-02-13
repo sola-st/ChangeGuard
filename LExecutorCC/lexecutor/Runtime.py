@@ -265,7 +265,7 @@ def _s_(iid, name, lambada):
     perform_fct = lambada
 
     def record_fct(v):
-        pass
+        trace.append_subscript(iid, name, v)
 
     def predict_fct():
         key = f"subscript#{name}"

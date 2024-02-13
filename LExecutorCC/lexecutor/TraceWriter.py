@@ -3,7 +3,7 @@ from .ValueAbstraction import abstract_value
 from .Logging import get_logger
 from .Util import timestamp
 
-logger = get_logger(__name__)
+# logger = get_logger('Tracer')
 
 column_names = ["iid", "name", "value", "kind", "info"]
 
@@ -32,9 +32,12 @@ class TraceWriter:
     def append_attribute(self, iid, raw_base, attr_name, raw_value):
         self._append(iid, attr_name, raw_value, "attribute")
 
+    def append_subscript(self, iid, name, value):
+        self._append(iid, name, value, "subscript")
+
     def write_to_file(self):
         file_name = f"trace_{timestamp()}.h5"
-        logger.info(f"Writing to {file_name}, and flushing buffer")
+        # logger.info(f"Writing to {file_name}, and flushing buffer")
 
         df = pd.DataFrame(data=self.buffer, columns=column_names)
         df["iid"] = df["iid"].astype("int")
@@ -43,10 +46,10 @@ class TraceWriter:
         df["kind"] = df["kind"].astype("str")
         df["info"] = df["info"].astype("str")
 
-        logger.info(f"Deduplicating {len(df)} trace entries")
+        # logger.info(f"Deduplicating {len(df)} trace entries")
         df.drop_duplicates(
             subset=["iid", "name", "value", "kind"], inplace=True)
-        logger.info(f"After deduplicating: {len(df)} trace entries")
+        # logger.info(f"After deduplicating: {len(df)} trace entries")
 
         df.to_hdf(file_name, key="entries", complevel=9, complib="bzip2")
 
