@@ -38,7 +38,7 @@ class TraceWriter:
     def write_to_file(self):
         file_name = f"trace_{timestamp()}.h5"
         # logger.info(f"Writing to {file_name}, and flushing buffer")
-
+        print(f"Writing to {file_name}, and flushing buffer")
         df = pd.DataFrame(data=self.buffer, columns=column_names)
         df["iid"] = df["iid"].astype("int")
         df["name"] = df["name"].astype("str")
@@ -47,10 +47,11 @@ class TraceWriter:
         df["info"] = df["info"].astype("str")
 
         # logger.info(f"Deduplicating {len(df)} trace entries")
+        print(f"Deduplicating {len(df)} trace entries")
         df.drop_duplicates(
             subset=["iid", "name", "value", "kind"], inplace=True)
         # logger.info(f"After deduplicating: {len(df)} trace entries")
-
+        print(f"After deduplicating: {len(df)} trace entries")
         df.to_hdf(file_name, key="entries", complevel=9, complib="bzip2")
 
         self.buffer = []
