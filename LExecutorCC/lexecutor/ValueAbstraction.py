@@ -1,6 +1,4 @@
 import random
-import sys
-import os
 import copy
 from collections import namedtuple
 
@@ -41,19 +39,21 @@ def _get_random_bool():
 
 
 def _get_random_tuple():
-    return random.choice([(), (DummyObject(),), (DummyObject(), DummyObject()),
-                          (DummyObject(), DummyObject(), DummyObject()),
-                          (DummyObject(), DummyObject(), DummyObject(), DummyObject())])
+    size = random.randint(0, 4)
+    _type = random.choices([DummyObject, _get_random_integer,  _get_random_str, _get_random_float, _get_random_bool, lambda: None], cum_weights=[50, 65, 80, 92, 97, 100])[0]
+    return tuple(_type() for _ in range(size))
 
 
 def _get_random_list():
-    return random.choice([[], [DummyObject()], [DummyObject(), DummyObject()],
-                          [DummyObject(), DummyObject(), DummyObject()],
-                          [DummyObject(), DummyObject(), DummyObject(), DummyObject()]])
+    size = random.randint(0, 4)
+    _type = random.choices([DummyObject, _get_random_integer,  _get_random_str, _get_random_float, _get_random_bool, lambda: None], cum_weights=[50, 65, 80, 92, 97, 100])[0]
+    return [_type() for _ in range(size)]
 
 
 def _get_random_sets():
-    return random.choice([set(), {DummyObject()}])
+    size = random.randint(0, 1)
+    _type = random.choices([DummyObject, _get_random_integer,  _get_random_str, _get_random_float, _get_random_bool, lambda: None], cum_weights=[50, 65, 80, 92, 97, 100])[0]
+    return {_type() for _ in range(size)}
 
 
 def abstract_value(value):
@@ -218,8 +218,8 @@ class DummyObject(Exception):
     def __bytes__(self):
         return bytes(self.str, "utf-8")
 
-    def __call__(self, *args, **kwargs):
-        return DummyObject()
+    # def __call__(self, *args, **kwargs):
+    #     return DummyObject()
 
     # def __ceil__(self):
     #     pass
@@ -588,7 +588,7 @@ if params.value_abstraction.startswith("coarse-grained"):
             if abstract_value == "None":
                 return get_value_pairs(None)
             elif abstract_value == "bool":
-                return get_value_pairs(random.choice([True, False]))
+                return get_value_pairs(_get_random_bool())
             # strings
             elif abstract_value == "str":
                 return get_value_pairs(_get_random_str())
