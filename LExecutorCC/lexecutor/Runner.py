@@ -66,7 +66,7 @@ if __name__ == "__main__":
         val2 = unwrap_return_value(val2)
     except Exception as e:
         exception_new = e
-    if compare_exceptions(exception_new, exception_old):
+    if compare_exceptions(exception_old, exception_new):
         sys.exit(0)
     if compare_main_args():
         sys.exit(0)
