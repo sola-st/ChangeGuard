@@ -86,6 +86,21 @@ def compare_args():
     return False
 
 
+def compare_stdout(old, new):
+    if old != new:
+        print(f'stdout is different between functions: {old} -- {new}')
+        return True
+    return False
+
+
+def compare_stderr(old, new):
+    print(f'{old} <> {new}')
+    if old != new:
+        print(f'stderr is different between functions: {old} -- {new}')
+        return True
+    return False
+
+
 def compare_return_values(val1, val2):
     if val1 != val2:
         print(f'both functions returned different values: {_get_value_repr(val1)} -- {_get_value_repr(val2)}')
