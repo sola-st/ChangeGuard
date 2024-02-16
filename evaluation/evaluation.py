@@ -144,11 +144,12 @@ def get_errors():
     for result in results:
         for value in result.values():
             out = value['out']
-            match = re.search('Function\\(s\\) raised an exception: <(.*?)>', out)
+            match = re.search('raised .* exception: (.*?) --', out)
             if match:
                 error = match.group(1)
                 errors[error] = errors.get(error, 0) + 1
-    print(json.dumps(errors, indent=2))
+    print('\n'.join(map(str, sorted(errors.items(), key=lambda x: x[1], reverse=True))))
+    #print(json.dumps(errors, indent=2))
 
 
 def get_timing_profile():
@@ -204,7 +205,7 @@ def get_undetected_changes():
         # annotated changing, but false negative
         if change['annotation'] == 'semantics_changing' and result['final_result'] == 'preserving':
             # changed lines covered but change not detected
-            if result['coverage']['old']['ratio'] > 0 or result['coverage']['new']['ratio'] > 0:
+            if result['coverage']['old']['ratio'] == 0 and result['coverage']['new']['ratio'] == 0:
                 undetected_changes.append(change)
     with open('undetected_changes.json', 'w') as f:
         json.dump(undetected_changes, f, indent=4)
@@ -234,24 +235,45 @@ def get_confusion_matrix():
     total_semantics_preserving = len([1 for change in changes if change['annotation'] == 'semantics_preserving'])
     total_semantics_changing = len([1 for change in changes if change['annotation'] == 'semantics_changing'])
     total_unclear = len([1 for change in changes if change['annotation'] == 'unclear'])
+    with open('fp.json', 'w') as f:
+        json.dump(fp, f, indent=4)
+    with open('fn.json', 'w') as f:
+        json.dump(fn, f, indent=4)
     print(total_semantics_preserving, total_semantics_changing, total_unclear)
     print('tp:', len(tp), 'fp:', len(fp), 'fn:', len(fn), 'tn:', len(tn))
 
 
+def get_only_one_exception():
+    with open(JSON_PATH, 'r') as f:
+        j = json.load(f)
+    only_results = []
+    for result in j:
+        for idx in range(1, 301):
+            iteration = result['iterations'].get(f'iteration_{idx}')
+            if iteration is None:
+                break
+            if iteration['out'].startswith('only'):
+                only_results.append(result)
+                break
+    print(len(only_results))
+    with open('only.json', 'w') as f:
+        json.dump(only_results, f, indent=4)
+
 if __name__ == '__main__':
     prefix = r'C:\Users\Lars\Uni\Master\Masterarbeit\history\call_args'
     ANNOTATED_CHANGES = r'C:\Users\Lars\Uni\Master\Masterarbeit\master-thesis-lars-groeninger\annotated_changes\annotated_changes.json'
-    JSON_PATH = rf'C:\Users\Lars\Uni\Master\Masterarbeit\history\args_compare\LExecutorCC\std_out.json'
+    JSON_PATH = rf'C:\Users\Lars\Uni\Master\Masterarbeit\history\print_typed_sequences\std_out.json'
     LOG_PATH = rf'{prefix}\LExecutorCC\logs\Runner.log'
     # evaluate_annotated_changes()
     # evaluate_stdout()
     # evaluate_coverage()
     # evaluate_run_log()
     # evaluate_iter()
-    get_final_results()
+    # get_final_results()
     get_errors()
     # get_timing_profile()
     # get_changing_commits()
     # foo()
-    get_undetected_changes()
+    # get_undetected_changes()
     get_confusion_matrix()
+    get_only_one_exception()
