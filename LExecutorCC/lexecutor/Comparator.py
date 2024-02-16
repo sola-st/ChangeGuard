@@ -40,7 +40,7 @@ def compare_exceptions(exception_old, exception_new):
             print(f'only new function raised unintentional exception: {repr(exception_new)}')
     elif exception_old is not None and exception_new is None:
         if isinstance(exception_old, IntentionalException):
-            print(f'only old function raised intentional exception: {repr(exception_new)}')
+            print(f'only old function raised intentional exception: {repr(exception_old)}')
         else:
             print(f'only old function raised unintentional exception: {repr(exception_old)}')
     elif isinstance(exception_old, AssertionError) and isinstance(exception_new, AssertionError):
@@ -94,7 +94,6 @@ def compare_stdout(old, new):
 
 
 def compare_stderr(old, new):
-    print(f'{old} <> {new}')
     if old != new:
         print(f'stderr is different between functions: {old} -- {new}')
         return True
