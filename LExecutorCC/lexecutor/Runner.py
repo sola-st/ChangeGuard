@@ -161,7 +161,8 @@ def run_lexecutor(code_change):
             elif ('both functions returned different values' in output or 'functions raised different' in output or
                   'function raised intentional exception' in output or 'functions modified argument' in output or
                   'potential side effect occurred during 3rd party function call' in output or
-                  'number of 3rd party function calls changed' in output):
+                  'number of 3rd party function calls changed' in output or 'stdout is different' in output or
+                  'stderr is different' in output):
                 result = 'changing'
             elif 'raised unintentional exception' in output:
                 result = 'error'
