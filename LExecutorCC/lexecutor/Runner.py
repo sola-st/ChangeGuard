@@ -48,19 +48,28 @@ def generate_compare_script(code_change, directory):
     fct_def_code = old_fun + "\n\n" + new_fun
     main_code_template = f"""
 
-
-if __name__ == "__main__":
-    import sys
+def _context_stdout():
     import contextlib
     import io
+    return contextlib.redirect_stdout(io.StringIO())
     
+def _context_stderr():
+    import contextlib
+    import io
+    return contextlib.redirect_stderr(io.StringIO())
+    
+def _exit_lexecutor():
+    import sys
+    sys.exit(0)
+
+if __name__ == "__main__":
     from lexecutor.Runtime import switch_state
     from lexecutor.Comparator import compare_exceptions, compare_main_args, compare_args, compare_return_values, compare_stdout, compare_stderr, unwrap_return_value
     exception_old = None
     old_stdout = ''
     old_stderr = ''
     try:
-        with contextlib.redirect_stdout(io.StringIO()) as f_out, contextlib.redirect_stderr(io.StringIO()) as f_err:
+        with _context_stdout() as f_out, _context_stderr() as f_err:
             val1 = {old_fun_name}()
             val1 = unwrap_return_value(val1)
         old_stdout = f_out.getvalue()
@@ -72,7 +81,7 @@ if __name__ == "__main__":
     new_stdout = ''
     new_stderr = ''
     try:
-        with contextlib.redirect_stdout(io.StringIO()) as f_out, contextlib.redirect_stderr(io.StringIO()) as f_err:
+        with _context_stdout() as f_out, _context_stderr() as f_err:
             val2 = {new_fun_name}()
             val2 = unwrap_return_value(val2)
         new_stdout = f_out.getvalue()
@@ -80,17 +89,17 @@ if __name__ == "__main__":
     except Exception as e:
         exception_new = e
     if compare_exceptions(exception_old, exception_new):
-        sys.exit(0)
+        _exit_lexecutor()
     if compare_main_args():
-        sys.exit(0)
+        _exit_lexecutor()
     if compare_args():
-        sys.exit(0)
+        _exit_lexecutor()
     if compare_stdout(old_stdout, new_stdout):
-        sys.exit(0)
+        _exit_lexecutor()
     if compare_stderr(old_stderr, new_stderr):
-        sys.exit(0)
+        _exit_lexecutor()
     if compare_return_values(val1, val2):
-        sys.exit(0)
+        _exit_lexecutor()
 """
 
     compare_script = comment + fct_def_code + main_code_template
