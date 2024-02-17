@@ -262,7 +262,7 @@ class DummyObject(Exception):
         DummyObject.seen_ids = [self.id, other.id]
         serialized_self = repr(sorted([(k, v) for k, v in self.__dict__.items() if k not in DummyObject.__internal_attributes], key=lambda x: x[0]))
         DummyObject.seen_ids = [self.id, other.id]
-        serialized_other = repr(sorted([(k, v) for k, v in self.__dict__.items() if k not in DummyObject.__internal_attributes], key=lambda x: x[0]))
+        serialized_other = repr(sorted([(k, v) for k, v in other.__dict__.items() if k not in DummyObject.__internal_attributes], key=lambda x: x[0]))
         DummyObject.seen_ids = []  # reset list
         DummyObject.__comparing = False
         return serialized_self == serialized_other
