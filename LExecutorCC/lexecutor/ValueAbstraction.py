@@ -61,6 +61,16 @@ def _get_random_sets():
     return {_type() for _ in range(size)}
 
 
+def _get_random_dict(include_dummy=True):
+    size = random.randint(0, 2)
+    if include_dummy:
+        _type = random.choices([DummyObject, _get_random_integer,  _get_random_str, _get_random_float, _get_random_bool, lambda: None], cum_weights=[50, 65, 80, 92, 97, 100])[0]
+    else:
+        _type = random.choices([_get_random_integer,  _get_random_str, _get_random_float, _get_random_bool, lambda: None], cum_weights=[30, 60, 85, 95, 100])[0]
+    return {_get_random_str(): _type() for _ in range(size)}
+
+
+
 def abstract_value(value):
     t = type(value)
     # common primitive values
@@ -153,12 +163,12 @@ class DummyObject(Exception):
 
     def __init__(self, *a, **b):
         self.iterable = _get_random_list(include_dummy=False)
-        self.dict = {}
+        self.dict = _get_random_dict(include_dummy=False)
         self.int = _get_random_integer()
         self.float = _get_random_float()
         self.str = _get_random_str()
         self.bool = _get_random_bool()
-        self.pass_instance_check = random.choice([True, False])
+        self.pass_instance_check = _get_random_bool()
         self.id = DummyObject.id_counter
         DummyObject.id_counter += 1
 
@@ -615,7 +625,7 @@ if params.value_abstraction.startswith("coarse-grained"):
             elif abstract_value == "set":
                 return get_value_pairs(_get_random_sets())
             elif abstract_value == "dict":
-                return get_value_pairs(random.choice([{}, {"a": DummyObject()}]))
+                return get_value_pairs(_get_random_dict())
             # functions and methods
             elif abstract_value == "resource":
                 return get_value_pairs(DummyObject())
