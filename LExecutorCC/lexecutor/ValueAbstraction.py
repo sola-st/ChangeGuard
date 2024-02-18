@@ -46,9 +46,12 @@ def _get_random_tuple():
     return tuple(_type() for _ in range(size))
 
 
-def _get_random_list():
+def _get_random_list(include_dummy=True):
     size = random.randint(0, 4)
-    _type = random.choices([DummyObject, _get_random_integer,  _get_random_str, _get_random_float, _get_random_bool, lambda: None], cum_weights=[50, 65, 80, 92, 97, 100])[0]
+    if include_dummy:
+        _type = random.choices([DummyObject, _get_random_integer,  _get_random_str, _get_random_float, _get_random_bool, lambda: None], cum_weights=[50, 65, 80, 92, 97, 100])[0]
+    else:
+        _type = random.choices([_get_random_integer,  _get_random_str, _get_random_float, _get_random_bool, lambda: None], cum_weights=[30, 60, 85, 95, 100])[0]
     return [_type() for _ in range(size)]
 
 
@@ -149,7 +152,7 @@ class DummyObject(Exception):
     __comparing = False
 
     def __init__(self, *a, **b):
-        self.iterable = []
+        self.iterable = _get_random_list(include_dummy=False)
         self.dict = {}
         self.int = _get_random_integer()
         self.float = _get_random_float()
