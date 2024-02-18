@@ -3,6 +3,7 @@ import copy
 import sys
 import time
 import random
+import types
 from .Hyperparams import Hyperparams as params
 from .TraceWriter import TraceWriter
 from .ValueAbstraction import restore_value, DummyObject, get_value_pairs
@@ -113,8 +114,6 @@ def _dummy_super_init__(*args, **kwargs):
     callable_store[state].append(('super.__init__', copy.deepcopy(args), copy.deepcopy(kwargs)))
 
 
-
-
 def _n_(iid, name, lambada):
     if params.verbose:
         logger.info(f"\nAt iid={iid}, looking up name '{name}'")
@@ -183,7 +182,9 @@ def _c_(iid, fct, full_name, *args, **kwargs):
         if " " in fct_name:  # some fcts that don't have a proper name
             fct_name = fct_name.split(" ")[0]
         key = f"call#{full_name}"
-        callable_store[state].append((full_name, copy.deepcopy(args), copy.deepcopy(kwargs)))
+        callable_store[state].append((full_name,
+                                      copy.deepcopy(tuple(arg if not isinstance(arg, types.FunctionType) else arg.__code__.co_name for arg in args)),
+                                      copy.deepcopy({k: v if not isinstance(v, types.FunctionType) else v.__code__.co_name for k, v in kwargs.items()})))
         fct_to_excs = script_meta['func_to_excs']
         if key in kind_and_name_to_value:
             return kind_and_name_to_value[key][state]
@@ -247,7 +248,7 @@ def _a_(iid, base, attr_name, full_name):
             kind_and_name_to_value[key] = v
             value = v[state]
             if value is not DummyObject:
-                setattr(base, attr_name, value) # TODO private name mangling
+                setattr(base, attr_name, value)  # TODO private name mangling
             return value
 
     return mode_branch(iid, perform_fct, record_fct, predict_fct, kind="attribute")

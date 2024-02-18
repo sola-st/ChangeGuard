@@ -1,6 +1,8 @@
 import random
 import copy
+import types
 from collections import namedtuple
+
 
 from .Logging import get_logger
 from .Metadata import Metadata
@@ -258,11 +260,15 @@ class DummyObject(Exception):
     def __eq__(self, other):
         if not isinstance(other, DummyObject):
             return self.__operation(other, "==")
+
+        def serialize(obj):
+            return repr(sorted(map(lambda x: (x[0], x[1]) if not isinstance(x[1], types.FunctionType) else (x[0], x[1].__code__.co_name), [(k, v) for k, v in obj.__dict__.items() if k not in DummyObject.__internal_attributes]), key=lambda x: x[0]))
+
         DummyObject.__comparing = True
         DummyObject.seen_ids = [self.id, other.id]
-        serialized_self = repr(sorted([(k, v) for k, v in self.__dict__.items() if k not in DummyObject.__internal_attributes], key=lambda x: x[0]))
+        serialized_self = serialize(self)
         DummyObject.seen_ids = [self.id, other.id]
-        serialized_other = repr(sorted([(k, v) for k, v in other.__dict__.items() if k not in DummyObject.__internal_attributes], key=lambda x: x[0]))
+        serialized_other = serialize(other)
         DummyObject.seen_ids = []  # reset list
         DummyObject.__comparing = False
         return serialized_self == serialized_other
