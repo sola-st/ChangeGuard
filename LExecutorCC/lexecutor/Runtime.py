@@ -117,6 +117,18 @@ class ExceptionFactory:
         ExceptionFactory.store[name] = exc
         return exc
 
+    @staticmethod
+    def exception_type(name):
+        try:
+            return eval(name)
+        except (NameError, AttributeError):
+            name = "Dynamic_" + name.replace(".", "_")
+            if name in ExceptionFactory.store:
+                return ExceptionFactory.store[name]
+            exc = type(name, (Exception,), {})
+            ExceptionFactory.store[name] = exc
+            return exc
+
 
 def _isinstance(value, clazz):
     if isinstance(value, DummyObject):
@@ -168,23 +180,16 @@ def _n_(iid, name, lambada):
 
 
 def _handle_exception(fct_name, fct_to_excs):
-
-    def raise_exc(exc_as_string):
-        try:
-            raise eval(exc_as_string)
-        except (NameError, AttributeError):
-            raise DummyObject
-
     if fct_name in raised_exc:  # function did already raise an exception -> raise the same one
-        raise_exc(raised_exc[fct_name])
+        raise raised_exc[fct_name]
     else:
         # dynamically compute probability such that it is always the same
         # for each try block no matter the number of functions called
-        probability_for_exc = 1 - 0.85 ** (1 / len(fct_to_excs))
+        probability_for_exc = 1 - 0.1 ** (1 / len(fct_to_excs))
         if random.random() < probability_for_exc:  # raise exception
             exc_to_raise = random.choice(fct_to_excs[fct_name])
-            raised_exc[fct_name] = exc_to_raise
-            raise_exc(exc_to_raise)
+            raised_exc[fct_name] = ExceptionFactory.exception_type(exc_to_raise)
+            raise raised_exc[fct_name]
 
 def _c_(iid, fct, full_name, *args, **kwargs):
     if params.verbose:

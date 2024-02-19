@@ -421,26 +421,39 @@ class CodeRewriter(cst.CSTTransformer):
                     return True
             return False
 
-        for raise_statement in raise_statements:
-            if not raise_statement.exc:
-                continue
-            if isinstance(node.type, cst.Tuple):
-                for idx, element in enumerate(node.type.elements):
+        if isinstance(node.type, cst.Tuple):
+            new_elements = []
+            for element in node.type.elements:
+                for raise_statement in raise_statements:
+                    if not raise_statement.exc:
+                        continue
                     if compare_exceptions(raise_statement.exc, element.value):
-                        name = self.__unfold_node(element.value)
-                        new_elements = (updated_node.type.elements[:idx] +
-                                        (cst.Element(value=cst.Call(func=cst.Attribute(value=cst.Name(value='ExceptionFactory'),
-                                                                                       attr=cst.Name(value='intentional_exception_type')),
-                                                                    args=[cst.Arg(value=cst.SimpleString(name))])),) +
-                                        updated_node.type.elements[idx+1:])
-                        return self.__update_indented_block(node, updated_node.with_changes(type=cst.Tuple(elements=new_elements)))
-            else:
+                        new_elements.append(cst.Element(value=cst.Call(
+                                        func=cst.Attribute(value=cst.Name(value='ExceptionFactory'),
+                                                           attr=cst.Name(value='intentional_exception_type')),
+                                        args=[cst.Arg(value=cst.SimpleString(self.__unfold_node(element.value)))])))
+                        break
+                else:
+                    new_elements.append(cst.Element(value=cst.Call(
+                        func=cst.Attribute(value=cst.Name(value='ExceptionFactory'),
+                                           attr=cst.Name(value='exception_type')),
+                        args=[cst.Arg(value=cst.SimpleString(self.__unfold_node(element.value)))])))
+
+            return self.__update_indented_block(node, updated_node.with_changes(type=cst.Tuple(elements=new_elements)))
+        else:
+            name = self.__unfold_node(node.type)
+            for raise_statement in raise_statements:
+                if not raise_statement.exc:
+                    continue
                 if compare_exceptions(raise_statement.exc, node.type):
-                    name = self.__unfold_node(node.type)
                     return self.__update_indented_block(node, updated_node.with_changes(type=cst.Call(func=cst.Attribute(value=cst.Name(value='ExceptionFactory'),
                                                                                         attr=cst.Name(value='intentional_exception_type')),
                                                                                                       args=[cst.Arg(value=cst.SimpleString(name))])))
-        return self.__update_indented_block(node, updated_node)
+            return self.__update_indented_block(node, updated_node.with_changes(
+                type=cst.Call(func=cst.Attribute(value=cst.Name(value='ExceptionFactory'),
+                                                 attr=cst.Name(value='exception_type')),
+                              args=[cst.Arg(value=cst.SimpleString(name))])))
+
 
     def leave_Finally(self, node, updated_node):
         return self.__update_indented_block(node, updated_node)
