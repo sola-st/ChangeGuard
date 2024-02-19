@@ -77,9 +77,8 @@ class CodeRewriter(cst.CSTTransformer):
         iid = self.__create_iid(node_of_callee_name)
         iid_arg = cst.Arg(value=cst.Integer(value=str(iid)))
         fct_arg = cst.Arg(value=updated_node.func)
-        full_name = cst.helpers.get_full_name_for_node(node)
-        full_name = full_name if full_name else '_anon_'
-        full_name_arg = cst.Arg(value=cst.SimpleString(value=self.quotation_char + full_name + self.quotation_char))
+        full_name = self.__unfold_node(node)
+        full_name_arg = cst.Arg(value=cst.SimpleString(value=full_name))
         all_args = [iid_arg, fct_arg, full_name_arg] + \
             self.__ensure_generator_expr_have_parens(updated_node.args)
         call = cst.Call(func=callee_name, args=all_args)
@@ -93,9 +92,8 @@ class CodeRewriter(cst.CSTTransformer):
         value_arg = cst.Arg(updated_node.value)
         attr_arg = cst.Arg(cst.SimpleString(
             value=f"{self.quotation_char}{node.attr.value}{self.quotation_char}"))
-        full_name = cst.helpers.get_full_name_for_node(node)
-        full_name = full_name if full_name else '_anon_'
-        full_name_arg = cst.Arg(value=cst.SimpleString(value=self.quotation_char + full_name + self.quotation_char))
+        full_name = self.__unfold_node(node)
+        full_name_arg = cst.Arg(value=cst.SimpleString(value=full_name))
         call = cst.Call(func=callee_name, args=[iid_arg, value_arg, attr_arg, full_name_arg])
         return call
     
@@ -119,9 +117,8 @@ class CodeRewriter(cst.CSTTransformer):
         callee_name = cst.Name(value='_s_')
         iid = self.__create_iid(original_node)
         iid_arg = cst.Arg(value=cst.Integer(value=str(iid)))
-        full_name = cst.helpers.get_full_name_for_node(original_node)
-        full_name = full_name if full_name else '_anon_'
-        name_arg = cst.Arg(value=cst.SimpleString(value=self.quotation_char + full_name + self.quotation_char))
+        full_name = self.__unfold_node(original_node)
+        name_arg = cst.Arg(value=cst.SimpleString(value=full_name))
         # TODO include index/slice arg (not trivial because of extended slices e.g np indexes)
         lambada = cst.Lambda(params=cst.Parameters(
             params=[]), body=updated_node)
@@ -206,45 +203,9 @@ class CodeRewriter(cst.CSTTransformer):
         else:
             return False
 
-    def __unfold_attribute_name(self, attribute_node: cst.Attribute):
-        names = []
-        # unfolding x.y.z.Exception
-        base = attribute_node.value
-        while not isinstance(base, cst.Name):
-            names.append(base.attr.value)
-            base = base.value
-        names.append(base.value)
-        names.reverse()
-        names.append(attribute_node.attr.value)
-        return self.quotation_char + '.'.join(names) + self.quotation_char
-
-    def __get_exception_name(self, exception_node):
-        exception = exception_node.exc
-        if isinstance(exception, cst.Call):
-            if isinstance(exception.func, cst.Name):
-                return self.quotation_char + exception.func.value + self.quotation_char
-            elif isinstance(exception.func, cst.Attribute):
-                return self.__unfold_attribute_name(exception.func)
-            else:
-                return self.quotation_char + 'unknown' + self.quotation_char
-        elif isinstance(exception, cst.Name):
-            return self.quotation_char + exception.value + self.quotation_char
-        elif isinstance(exception, cst.Attribute):
-            return self.__unfold_attribute_name(exception)
-        elif exception is None:
-            try:
-                parent = self.get_metadata(cst.metadata.ParentNodeProvider, exception_node)
-                while not isinstance(parent, cst.ExceptHandler):
-                    parent = self.get_metadata(cst.metadata.ParentNodeProvider, parent)
-            except KeyError:
-                return self.quotation_char + 'unknown' + self.quotation_char
-            else:
-                if isinstance(parent.type, cst.Name):
-                    return self.quotation_char + parent.type.value + self.quotation_char
-                elif isinstance(parent.type, cst.Tuple):
-                    return self.quotation_char + "+".join(map(lambda x: x.value.value, parent.type.elements)) + self.quotation_char
-                else:
-                    return self.quotation_char + 'unknown' + self.quotation_char
+    def __unfold_node(self, node):
+        name = cst.helpers.get_full_name_for_node(node)
+        return self.quotation_char + (name if name is not None else '_anon_') + self.quotation_char
 
     def visit_SimpleStatementLine(self, node):
         # don't visit lines marked with special comment
@@ -451,12 +412,12 @@ class CodeRewriter(cst.CSTTransformer):
         def compare_exceptions(raised_exc, caught_exc):
             if isinstance(raised_exc, cst.Name) and isinstance(caught_exc, cst.Name) and raised_exc.value == caught_exc.value:
                 return True
-            elif isinstance(raised_exc, cst.Attribute) and isinstance(caught_exc, cst.Attribute) and self.__unfold_attribute_name(raised_exc) == self.__unfold_attribute_name(caught_exc):
+            elif isinstance(raised_exc, cst.Attribute) and isinstance(caught_exc, cst.Attribute) and self.__unfold_node(raised_exc) == self.__unfold_node(caught_exc):
                 return True
             elif isinstance(raised_exc, cst.Call):
                 if isinstance(raised_exc.func, cst.Name) and isinstance(caught_exc, cst.Name) and raised_exc.func.value == caught_exc.value:
                     return True
-                elif isinstance(raised_exc.func, cst.Attribute) and isinstance(caught_exc, cst.Attribute) and self.__unfold_attribute_name(raised_exc.func) == self.__unfold_attribute_name(caught_exc):
+                elif isinstance(raised_exc.func, cst.Attribute) and isinstance(caught_exc, cst.Attribute) and self.__unfold_node(raised_exc.func) == self.__unfold_node(caught_exc):
                     return True
             return False
 
@@ -493,7 +454,7 @@ class CodeRewriter(cst.CSTTransformer):
             args = [cst.Arg(value=old_exception)]
         else:
             return updated_node
-        static_name = self.__get_exception_name(original_node)
+        static_name = self.__unfold_node(original_node.exc)
         args = [cst.Arg(value=cst.SimpleString(value=static_name))] + args
         custom_exception: cst.Call = cst.Call(args=args, func=cst.Name('IntentionalException'))
         return updated_node.with_changes(exc=custom_exception)
