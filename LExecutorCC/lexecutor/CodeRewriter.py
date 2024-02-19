@@ -427,13 +427,19 @@ class CodeRewriter(cst.CSTTransformer):
             if isinstance(node.type, cst.Tuple):
                 for idx, element in enumerate(node.type.elements):
                     if compare_exceptions(raise_statement.exc, element.value):
+                        name = self.__unfold_node(element.value)
                         new_elements = (updated_node.type.elements[:idx] +
-                                        (cst.Element(value=cst.Name(value='IntentionalException')),) +
+                                        (cst.Element(value=cst.Call(func=cst.Attribute(value=cst.Name(value='ExceptionFactory'),
+                                                                                       attr=cst.Name(value='intentional_exception_type')),
+                                                                    args=[cst.Arg(value=cst.SimpleString(name))])),) +
                                         updated_node.type.elements[idx+1:])
                         return self.__update_indented_block(node, updated_node.with_changes(type=cst.Tuple(elements=new_elements)))
             else:
                 if compare_exceptions(raise_statement.exc, node.type):
-                    return self.__update_indented_block(node, updated_node.with_changes(type=cst.Name(value='IntentionalException')))
+                    name = self.__unfold_node(node.type)
+                    return self.__update_indented_block(node, updated_node.with_changes(type=cst.Call(func=cst.Attribute(value=cst.Name(value='ExceptionFactory'),
+                                                                                        attr=cst.Name(value='intentional_exception_type')),
+                                                                                                      args=[cst.Arg(value=cst.SimpleString(name))])))
         return self.__update_indented_block(node, updated_node)
 
     def leave_Finally(self, node, updated_node):
@@ -456,7 +462,9 @@ class CodeRewriter(cst.CSTTransformer):
             return updated_node
         static_name = self.__unfold_node(original_node.exc)
         args = [cst.Arg(value=cst.SimpleString(value=static_name))] + args
-        custom_exception: cst.Call = cst.Call(args=args, func=cst.Name('IntentionalException'))
+        custom_exception: cst.Call = cst.Call(args=args,
+                                              func=cst.Attribute(value=cst.Name(value='ExceptionFactory'),
+                                                                 attr=cst.Name(value='intentional_exception')))
         return updated_node.with_changes(exc=custom_exception)
 
     def leave_Module(self, node, updated_node):
@@ -481,7 +489,7 @@ class CodeRewriter(cst.CSTTransformer):
         import_c = self.__create_import("_c_")
         import_l = self.__create_import("_l_")
         import_s = self.__create_import("_s_")
-        import_e = self.__create_import("IntentionalException")
+        import_e = self.__create_import("ExceptionFactory")
         import_i = self.__create_import("_isinstance")
         import_su = self.__create_import("_dummy_super")
         import_sui = self.__create_import("_dummy_super_init__")

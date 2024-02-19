@@ -95,6 +95,29 @@ class IntentionalException(Exception):
     pass
 
 
+class ExceptionFactory:
+
+    store = {}
+
+    @staticmethod
+    def intentional_exception(name, *args):
+        name = "IntentionalException_" + name.replace(".", "_")
+        if name in ExceptionFactory.store:
+            return ExceptionFactory.store[name](*args)
+        exc = type(name, (IntentionalException,), {})
+        ExceptionFactory.store[name] = exc
+        return exc(*args)
+
+    @staticmethod
+    def intentional_exception_type(name):
+        name = "IntentionalException_" + name.replace(".", "_")
+        if name in ExceptionFactory.store:
+            return ExceptionFactory.store[name]
+        exc = type(name, (IntentionalException,), {})
+        ExceptionFactory.store[name] = exc
+        return exc
+
+
 def _isinstance(value, clazz):
     if isinstance(value, DummyObject):
         return value.pass_instance_check
