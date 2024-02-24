@@ -154,7 +154,7 @@ def abstract_value(value):
 #         return DummyObject()
 
 
-class DummyObject(Exception):
+class DummyObject:
 
     id_counter = 0
     seen_ids = []
