@@ -8,8 +8,8 @@ import time
 from logger import get_logger
 
 
-# TYPE = 'refactor'
-TYPE = 'change'
+TYPE = 'refactor'
+# TYPE = 'change'
 
 if len(sys.argv) > 1:
     repo = sys.argv[1]
