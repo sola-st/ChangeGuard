@@ -158,7 +158,7 @@ class DummyObject:
 
     id_counter = 0
     seen_ids = []
-    __internal_attributes = ['id', 'iterable', 'dict', 'int', 'float', 'str', 'bool', 'pass_instance_check']
+    __internal_attributes = ['id', 'iterable', 'dict', 'int', 'float', 'str', 'bool', 'pass_instance_check', 'index']
     __comparing = False
 
     def __init__(self, *a, **b):
@@ -170,6 +170,7 @@ class DummyObject:
         self.bool = _get_random_bool()
         self.pass_instance_check = _get_random_bool()
         self.id = DummyObject.id_counter
+        self.index = 0
         DummyObject.id_counter += 1
 
     def repr_without_internals(self):
@@ -418,8 +419,11 @@ class DummyObject:
     # def __new__(cls, *args, **kwargs):
     #     pass
 
-    # def __next__(self):
-    #     pass  # TODO
+    def __next__(self):
+        if self.index >= len(self.iterable):
+            raise StopIteration
+        self.index += 1
+        return self.iterable[self.index-1]
 
     def __or__(self, other):
         return self.__operation(other, "or")
