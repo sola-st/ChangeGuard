@@ -434,10 +434,10 @@ class CodeRewriter(cst.CSTTransformer):
                                         args=[cst.Arg(value=cst.SimpleString(self.__unfold_node(element.value)))])))
                         break
                 else:
-                    new_elements.append(cst.Element(value=cst.Call(
+                    new_elements.append(cst.Element(value=cst.StarredElement(value=cst.Call(
                         func=cst.Attribute(value=cst.Name(value='ExceptionFactory'),
                                            attr=cst.Name(value='exception_type')),
-                        args=[cst.Arg(value=cst.SimpleString(self.__unfold_node(element.value)))])))
+                        args=[cst.Arg(value=cst.SimpleString(self.__unfold_node(element.value)))]))))
 
             return self.__update_indented_block(node, updated_node.with_changes(type=cst.Tuple(elements=new_elements)))
         else:

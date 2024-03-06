@@ -119,15 +119,21 @@ class ExceptionFactory:
 
     @staticmethod
     def exception_type(name):
+        dy_name = "Dynamic_" + name.replace(".", "_")
         try:
-            return eval(name)
+            exc = eval(name)
+            if dy_name in ExceptionFactory.store:
+                dy_exc = ExceptionFactory.store[dy_name]
+            else:
+                dy_exc = type(dy_name, (IntentionalException,), {})
+                ExceptionFactory.store[dy_name] = dy_exc
+            return dy_exc, exc
         except (NameError, AttributeError):
-            name = "Dynamic_" + name.replace(".", "_")
-            if name in ExceptionFactory.store:
-                return ExceptionFactory.store[name]
-            exc = type(name, (Exception,), {})
-            ExceptionFactory.store[name] = exc
-            return exc
+            if dy_name in ExceptionFactory.store:
+                return ExceptionFactory.store[dy_name]
+            exc = type(dy_name, (IntentionalException,), {})
+            ExceptionFactory.store[dy_name] = exc
+            return (exc,)
 
 
 def _isinstance(value, clazz):
@@ -188,7 +194,7 @@ def _handle_exception(fct_name, fct_to_excs):
         probability_for_exc = 1 - 0.1 ** (1 / len(fct_to_excs))
         if random.random() < probability_for_exc:  # raise exception
             exc_to_raise = random.choice(fct_to_excs[fct_name])
-            raised_exc[fct_name] = ExceptionFactory.exception_type(exc_to_raise)
+            raised_exc[fct_name] = ExceptionFactory.exception_type(exc_to_raise)[0]
             raise raised_exc[fct_name]
 
 def _c_(iid, fct, full_name, *args, **kwargs):
