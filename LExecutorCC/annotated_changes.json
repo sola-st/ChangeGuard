@@ -3643,7 +3643,7 @@
         10
       ]
     ],
-    "annotation": "semantics_preserving"
+    "annotation": "semantics_changing"
   },
   {
     "repo": "poetry",
@@ -4006,7 +4006,7 @@
         7
       ]
     ],
-    "annotation": "semantics_changing"
+    "annotation": "semantics_preserving"
   },
   {
     "repo": "python",
@@ -4045,7 +4045,7 @@
         7
       ]
     ],
-    "annotation": "semantics_changing"
+    "annotation": "semantics_preserving"
   },
   {
     "repo": "python",
@@ -4185,7 +4185,7 @@
         45
       ]
     ],
-    "annotation": "semantics_changing"
+    "annotation": "unclear"
   },
   {
     "repo": "scikit-learn",
@@ -6682,7 +6682,7 @@
         39
       ]
     ],
-    "annotation": "semantics_preserving"
+    "annotation": "semantics_changing"
   },
   {
     "repo": "cli",
@@ -9195,7 +9195,7 @@
         7
       ]
     ],
-    "annotation": "semantics_preserving"
+    "annotation": "unclear"
   },
   {
     "repo": "python",
@@ -10181,7 +10181,7 @@
         4
       ]
     ],
-    "annotation": "semantics_preserving"
+    "annotation": "unclear"
   },
   {
     "repo": "scikit-learn",
@@ -11585,7 +11585,7 @@
         3
       ]
     ],
-    "annotation": "semantics_preserving"
+    "annotation": "unclear"
   },
   {
     "repo": "scrapy",
