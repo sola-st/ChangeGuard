@@ -9726,7 +9726,7 @@
         76
       ]
     ],
-    "annotation": "semantics_preserving"
+    "annotation": "semantics_changing"
   },
   {
     "repo": "scikit-learn",

@@ -155,6 +155,12 @@ def _dummy_super_init__(*args, **kwargs):
     callable_store[state].append(('super.__init__', copy.deepcopy(args), copy.deepcopy(kwargs)))
 
 
+def _handle_rename(original_name):
+    name_parts = original_name.split('.')
+    name_parts[0] = script_meta['renames'][str(state)].get(name_parts[0], name_parts[0])
+    return '.'.join(name_parts)
+
+
 def _n_(iid, name, lambada):
     if params.verbose:
         logger.info(f"\nAt iid={iid}, looking up name '{name}'")
@@ -169,7 +175,11 @@ def _n_(iid, name, lambada):
         trace.append_name(iid, name, v)
 
     def predict_fct():
-        key = f"name#{name}"
+        if script_meta['renames']:
+            key = f'name#{_handle_rename(name)}'
+        else:
+            key = f'name#{name}'
+
         if key in kind_and_name_to_value:
             return kind_and_name_to_value[key][state]
         else:
@@ -197,6 +207,7 @@ def _handle_exception(fct_name, fct_to_excs):
             raised_exc[fct_name] = ExceptionFactory.exception_type(exc_to_raise)[0]
             raise raised_exc[fct_name]
 
+
 def _c_(iid, fct, full_name, *args, **kwargs):
     if params.verbose:
         logger.info(f"\nAt iid={iid}, calling function {fct}")
@@ -215,7 +226,11 @@ def _c_(iid, fct, full_name, *args, **kwargs):
         fct_name = fct.__name__ if hasattr(fct, "__name__") else str(fct)
         if " " in fct_name:  # some fcts that don't have a proper name
             fct_name = fct_name.split(" ")[0]
-        key = f"call#{full_name}"
+
+        if script_meta['renames']:
+            key = f'call#{_handle_rename(full_name)}'
+        else:
+            key = f'call#{full_name}'
         callable_store[state].append((full_name,
                                       copy.deepcopy(tuple(arg if not isinstance(arg, types.FunctionType) else arg.__code__.co_name for arg in args)),
                                       copy.deepcopy({k: v if not isinstance(v, types.FunctionType) else v.__code__.co_name for k, v in kwargs.items()})))
@@ -271,7 +286,11 @@ def _a_(iid, base, attr_name, full_name):
         trace.append_attribute(iid, base, attr_name, v)
 
     def predict_fct():
-        key = f"attribute#{full_name}"
+        if script_meta['renames']:
+            key = f'attribute#{_handle_rename(full_name)}'
+        else:
+            key = f"attribute#{full_name}"
+
         if key in kind_and_name_to_value:
             value = kind_and_name_to_value[key][state]
             if value is not DummyObject:
@@ -303,7 +322,10 @@ def _s_(iid, name, lambada):
         trace.append_subscript(iid, name, v)
 
     def predict_fct():
-        key = f"subscript#{name}"
+        if script_meta['renames']:
+            key = f'subscript#{_handle_rename(name)}'
+        else:
+            key = f"subscript#{name}"
         if key in kind_and_name_to_value:
             return kind_and_name_to_value[key][state]
         else:
@@ -313,6 +335,7 @@ def _s_(iid, name, lambada):
             return v[state]
 
     return mode_branch(iid, perform_fct, record_fct, predict_fct, kind="subscript")
+
 
 def mode_branch(iid, perform_fct, record_fct, predict_fct, kind):
     if mode == "RECORD":

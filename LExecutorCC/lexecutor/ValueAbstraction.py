@@ -146,9 +146,6 @@ def abstract_value(value):
 #     def __repr__(self):
 #         return "DummyResource"
 #
-#     def __eq__(self, other):
-#         return isinstance(other, DummyResource)
-#
 #
 #     def __call__(self, *args, **kwargs):
 #         return DummyObject()
@@ -514,7 +511,7 @@ class DummyObject:
     #     pass  # REMOVE
 
     def __str__(self):
-        return f"Dummy#{self.id}"
+        return self.str
 
     def __sub__(self, other):
         return self.__operation(other, "-")

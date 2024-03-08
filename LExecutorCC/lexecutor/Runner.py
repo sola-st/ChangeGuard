@@ -23,7 +23,8 @@ parser.add_argument(
     "--action", help="Which action to perform, either instrument or run", choices=['instrument', 'run'], required=True)
 
 METADATA = Metadata()
-
+with open('renames.json', 'r') as f:
+    RENAMES = json.load(f)
 
 def prepare_function(fun, suffix):
     p = FunctionPreparator(suffix)
@@ -112,11 +113,15 @@ if __name__ == "__main__":
     for key in old_excs.keys() | new_excs.keys():
         func_to_excs[key] = list(old_excs.get(key, set()) | new_excs.get(key, set()))
 
+    project_name = directory.split('/')[-1]
+    renames = RENAMES[project_name] if project_name in RENAMES else None
+
     meta = {
         os.path.abspath(script_path): {
             'old_params': old_params,
             'new_params': new_params,
             'func_to_excs': func_to_excs,
+            'renames': renames,
             'string_literals': list(old_literals[0] | new_literals[0]),  # currently buggy with bytes
             'integer_literals':  list(old_literals[1] | new_literals[1]),
             'float_literals':   list(old_literals[2] | new_literals[2]),
