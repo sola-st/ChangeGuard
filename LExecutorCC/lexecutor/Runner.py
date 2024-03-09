@@ -170,24 +170,15 @@ def run_lexecutor(code_change):
             run_logger.info(f'iteration_{i} took {end-start} seconds')
             output = completed_process.stdout.decode('utf-8')
             error = completed_process.stderr.decode('utf-8')
-            old_executed_lines, new_executed_lines = extract_executed_lines(error, data['line_offsets'])
-            old_ratio = calc_changed_lines_coverage(data['old_changed_lines'], old_executed_lines)
-            new_ratio = calc_changed_lines_coverage(data['new_changed_lines'], new_executed_lines)
 
             if 'both functions returned same value' in output or 'both functions raised same' in output:
-                if old_ratio > 0 or new_ratio > 0:
-                    result = 'preserving'
-                else:
-                    result = 'not_reached'
+                result = 'preserving'
             elif ('both functions returned different values' in output or 'functions raised different' in output or
                   'function raised intentional exception' in output or 'functions modified argument' in output or
                   'potential side effect occurred during 3rd party function call' in output or
                   'number of 3rd party function calls changed' in output or 'stdout is different' in output or
                   'stderr is different' in output):
-                if old_ratio > 0 or new_ratio > 0:
-                    result = 'changing'
-                else:
-                    result = 'not_reached'
+                result = 'changing'
             elif 'raised unintentional exception' in output:
                 result = 'error'
             else:
@@ -196,6 +187,15 @@ def run_lexecutor(code_change):
             output = ''
             error = ''
             result = 'timeout'
+
+        old_executed_lines, new_executed_lines = extract_executed_lines(error, data['line_offsets'])
+        old_ratio = calc_changed_lines_coverage(data['old_changed_lines'], old_executed_lines)
+        new_ratio = calc_changed_lines_coverage(data['new_changed_lines'], new_executed_lines)
+
+        if old_ratio == 0 and new_ratio == 0:  # change result to not_reached if changed lines not reached
+            if result == 'changing' or result == 'preserving':
+                result = 'not_reached'
+
         iterations[f'iteration_{i}'] = {'out': output, 'err': error, 'result': result,
                                         'coverage': {
                                             'old': {
@@ -207,6 +207,7 @@ def run_lexecutor(code_change):
                                                 'ratio': new_ratio
                                             }
                                         }}
+
         if result == 'changing' or result == 'timeout':
             break
     final_result = 'non_conclusive'
