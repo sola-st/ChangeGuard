@@ -130,7 +130,7 @@ class ExceptionFactory:
             return dy_exc, exc
         except (NameError, AttributeError):
             if dy_name in ExceptionFactory.store:
-                return ExceptionFactory.store[dy_name]
+                return (ExceptionFactory.store[dy_name],)
             exc = type(dy_name, (IntentionalException,), {})
             ExceptionFactory.store[dy_name] = exc
             return (exc,)
