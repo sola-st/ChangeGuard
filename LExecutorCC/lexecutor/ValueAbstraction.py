@@ -176,7 +176,7 @@ class DummyObject:
     def repr_without_internals(self):
         DummyObject.__comparing = True
         DummyObject.seen_ids = [self.id]
-        self_repr = repr({k: v for k, v in self.__dict__.items() if k not in DummyObject.__internal_attributes})
+        self_repr = self.serialize(self)
         DummyObject.seen_ids = []
         DummyObject.__comparing = False
         return self_repr
