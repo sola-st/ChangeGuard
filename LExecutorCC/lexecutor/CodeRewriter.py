@@ -100,14 +100,14 @@ class CodeRewriter(cst.CSTTransformer):
         full_name_arg = cst.Arg(value=cst.SimpleString(value=full_name))
         call = cst.Call(func=callee_name, args=[iid_arg, value_arg, attr_arg, full_name_arg])
         return call
-    
+
     def __create_line_call(self, node, updated_node, end_node):
         callee_name = cst.Name(value="_l_")
         iid = self.__create_iid(node, end_node)
         iid_arg = cst.Arg(value=cst.Integer(value=str(iid)))
         call = cst.Call(func=callee_name, args=[iid_arg])
         return call
-    
+
     def __create_line_call_stmt(self, node, updated_node, end_node):
         statement_call = self.__create_line_call(node, updated_node, end_node)
         stmt = cst.SimpleStatementLine(body=[cst.Expr(value=statement_call)],
@@ -151,7 +151,7 @@ class CodeRewriter(cst.CSTTransformer):
         body_content.extend(updated_node.body.body)
         new_body = cst.IndentedBlock(body=body_content)
         return updated_node.with_changes(body=new_body)
-        
+
     def __create_import(self, name):
         module_name = cst.Attribute(value=cst.Name(
             value="lexecutor"), attr=cst.Name(value="Runtime"))
@@ -260,9 +260,23 @@ class CodeRewriter(cst.CSTTransformer):
             return updated_node.with_changes(func=cst.Name('_dummy_super'))
 
         # replace isinstance checks with modified check
-        if isinstance(updated_node.func, cst.Name) and updated_node.func.value == 'isinstance':
-            return updated_node.with_changes(func=cst.Name('_isinstance'))
-        # rewrite Call nodes to intercept function calls
+        if m.matches(node.func, m.Name(value='isinstance')):
+            found_classes = set()
+            try:
+                classes_to_look_at = [node.args[1].value]
+                while len(classes_to_look_at) > 0:
+                    cur_class = classes_to_look_at.pop()
+                    if isinstance(cur_class, cst.Tuple):
+                        classes_to_look_at.extend(map(lambda x: x.value, cur_class.elements))
+                    if isinstance(cur_class, cst.Name):
+                        found_classes.add(cur_class.value)
+                    if isinstance(cur_class, cst.Attribute):
+                        found_classes.add(cst.helpers.get_full_name_for_node(cur_class))
+            except (IndexError, AttributeError):
+                pass
+            elements = [cst.Element(value=cst.SimpleString(value=f'{self.quotation_char}{clazz}{self.quotation_char}')) for clazz in found_classes]
+            return updated_node.with_changes(func=cst.Name('_isinstance'), args=updated_node.args + (cst.Arg(value=cst.Set(elements=elements)),))
+        # rewrite Call nodes to intercept function call
         if not self.__is_ignored_call(node) and not self.line_coverage_instrumentation:
             wrapped_call = self.__create_call_call(node, updated_node)
             return wrapped_call
@@ -303,7 +317,7 @@ class CodeRewriter(cst.CSTTransformer):
             if isinstance(node.body[0].value, cst.SimpleString):
                 if node.body[0].value.value.startswith('"""'):
                     return updated_node
-            
+
         statement_call = self.__create_line_call(node, updated_node, node)
         stmt = cst.SimpleStatementLine(body=[cst.Expr(value=statement_call)],
                                 trailing_whitespace=updated_node.trailing_whitespace)
@@ -384,7 +398,7 @@ class CodeRewriter(cst.CSTTransformer):
         line_call = line_call.with_changes(args=[*line_call.args, cst.Arg(value=for_iter)])
         ws = node.whitespace_after_for if node.whitespace_after_for.value else cst.SimpleWhitespace(value=' ')
         return updated_node.with_changes(iter=line_call, whitespace_after_for=ws)
-    
+
     def leave_While(self, node: cst.While, updated_node: cst.While):
         line_call = self.__create_line_call(node, updated_node, node.test)
         line_call = line_call.with_changes(args=[*line_call.args, cst.Arg(value=updated_node.test)])
@@ -396,10 +410,10 @@ class CodeRewriter(cst.CSTTransformer):
 
     def leave_ClassDef(self, node: cst.ClassDef, updated_node):
         return self.__update_indented_block(node, updated_node, node.bases[-1] if node.bases else None)
-    
+
     def leave_With(self, node: cst.With, updated_node):
         return self.__update_indented_block(node, updated_node, node.items[-1])
-    
+
     def leave_If(self, node: cst.If, updated_node: cst.If):
         line_call = self.__create_line_call(node, updated_node, node.test)
         line_call = line_call.with_changes(args=[*line_call.args, cst.Arg(value=updated_node.test)])
@@ -411,7 +425,7 @@ class CodeRewriter(cst.CSTTransformer):
 
     def leave_Try(self, node, updated_node):
         return self.__update_indented_block(node, updated_node, None)
-    
+
     def leave_ExceptHandler(self, node: cst.ExceptHandler, updated_node: cst.ExceptHandler):
 
         if node.type is None:
@@ -494,7 +508,7 @@ class CodeRewriter(cst.CSTTransformer):
     def leave_Module(self, node, updated_node):
         if not self.instrument:
             return updated_node
-        
+
         # check for "__future__" imports; they must remain at beginning of file
         target_idx = 0  # index to add our imports at
         new_body = []
@@ -506,7 +520,7 @@ class CodeRewriter(cst.CSTTransformer):
                and isinstance(stmt.body[0], cst.ImportFrom)
                and stmt.body[0].module.value == "__future__"):
                 target_idx = i + 1
-            
+
         # add our imports
         import_n = self.__create_import("_n_")
         import_a = self.__create_import("_a_")

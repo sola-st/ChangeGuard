@@ -46,6 +46,7 @@ class FunctionPreparator(cst.CSTTransformer):
         self.floats = set()
         self.fun_name = ''
         self.func_to_exc = {}
+        self.found_classes = {'None'}
 
     def leave_Integer(self, original_node: cst.Integer, updated_node: cst.Integer):
         self.integers.add(updated_node.evaluated_value)
@@ -132,6 +133,22 @@ class FunctionPreparator(cst.CSTTransformer):
                                                                kwonly_params=[], star_kwarg=None, posonly_params=[],
                                                                posonly_ind=cst.MaybeSentinel.DEFAULT))
 
+    def leave_Call(self, node: cst.Call, updated_node: cst.Call):
+        if not m.matches(node.func, m.Name(value='isinstance')):
+            return updated_node
+        try:
+            classes_to_look_at = [node.args[1].value]
+            while len(classes_to_look_at) > 0:
+                cur_class = classes_to_look_at.pop()
+                if isinstance(cur_class, cst.Tuple):
+                    classes_to_look_at.extend(map(lambda x: x.value, cur_class.elements))
+                if isinstance(cur_class, cst.Name):
+                    self.found_classes.add(cur_class.value)
+                if isinstance(cur_class, cst.Attribute):
+                    self.found_classes.add(cst.helpers.get_full_name_for_node(cur_class))
+        except (IndexError, AttributeError):
+            pass
+        return updated_node
 
 
 class OffsetProvider(cst.CSTVisitor):

@@ -154,7 +154,7 @@ class DummyObject:
 
     id_counter = 0
     seen_ids = []
-    __internal_attributes = ['id', 'iterable', 'dict', 'int', 'float', 'str', 'bool', 'pass_instance_check', 'index']
+    __internal_attributes = ['id', 'iterable', 'dict', 'int', 'float', 'str', 'bool', 'isinstance_class', 'index']
     __comparing = False
 
     @staticmethod
@@ -168,7 +168,7 @@ class DummyObject:
         self.float = _get_random_float()
         self.str = _get_random_str()
         self.bool = _get_random_bool()
-        self.pass_instance_check = _get_random_bool()
+        self.isinstance_class = random.choice(script_meta['classes'])
         self.id = DummyObject.id_counter
         self.index = 0
         DummyObject.id_counter += 1

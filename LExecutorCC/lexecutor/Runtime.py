@@ -136,9 +136,9 @@ class ExceptionFactory:
             return (exc,)
 
 
-def _isinstance(value, clazz):
+def _isinstance(value, clazz, clazz_names):
     if isinstance(value, DummyObject):
-        return value.pass_instance_check
+        return value.isinstance_class in clazz_names
     return isinstance(value, clazz)
 
 
