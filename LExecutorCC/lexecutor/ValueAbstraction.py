@@ -70,7 +70,6 @@ def _get_random_dict(include_dummy=True):
     return {_get_random_str(): _type() for _ in range(size)}
 
 
-
 def abstract_value(value):
     t = type(value)
     # common primitive values
@@ -158,6 +157,10 @@ class DummyObject:
     __internal_attributes = ['id', 'iterable', 'dict', 'int', 'float', 'str', 'bool', 'pass_instance_check', 'index']
     __comparing = False
 
+    @staticmethod
+    def serialize(obj):
+        return 'obj#' + repr(sorted(map(lambda x: (x[0], x[1]) if not isinstance(x[1], types.FunctionType) else (x[0], x[1].__code__.co_name), [(k, v) for k, v in obj.__dict__.items() if k not in DummyObject.__internal_attributes]), key=lambda x: x[0]))
+
     def __init__(self, *a, **b):
         self.iterable = _get_random_list(include_dummy=False)
         self.dict = _get_random_dict(include_dummy=False)
@@ -232,7 +235,7 @@ class DummyObject:
         return bytes(self.str, "utf-8")
 
     def __call__(self, *args, **kwargs):
-        return DummyObject()
+        return self
 
     # def __ceil__(self):
     #     pass
@@ -272,14 +275,11 @@ class DummyObject:
         if not isinstance(other, DummyObject):
             return self.__operation(other, "==")
 
-        def serialize(obj):
-            return repr(sorted(map(lambda x: (x[0], x[1]) if not isinstance(x[1], types.FunctionType) else (x[0], x[1].__code__.co_name), [(k, v) for k, v in obj.__dict__.items() if k not in DummyObject.__internal_attributes]), key=lambda x: x[0]))
-
         DummyObject.__comparing = True
         DummyObject.seen_ids = [self.id, other.id]
-        serialized_self = serialize(self)
+        serialized_self = self.serialize(self)
         DummyObject.seen_ids = [self.id, other.id]
-        serialized_other = serialize(other)
+        serialized_other = self.serialize(other)
         DummyObject.seen_ids = []  # reset list
         DummyObject.__comparing = False
         return serialized_self == serialized_other
@@ -312,7 +312,7 @@ class DummyObject:
     #     pass  # TODO
 
     def __getitem__(self, item):
-        if isinstance(item, int):
+        if isinstance(item, (int, slice)):
             return self.iterable[item]
         else:
             return self.dict[item]
@@ -448,7 +448,7 @@ class DummyObject:
             return f"Dummy#{self.id}"
         else:
             DummyObject.seen_ids.append(self.id)
-            return repr({k: v for k, v in self.__dict__.items() if k not in DummyObject.__internal_attributes})
+            return self.serialize(self)
 
     def __reversed__(self):
         return reversed(self.iterable)
@@ -504,6 +504,8 @@ class DummyObject:
     def __setitem__(self, key, value):
         if isinstance(key, int):
             self.iterable.insert(key, value)
+        if isinstance(key, slice):
+            self.iterable[key] = value
         else:
             self.dict[key] = value
 
