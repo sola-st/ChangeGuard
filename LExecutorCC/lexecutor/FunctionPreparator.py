@@ -32,6 +32,7 @@ def compare_exceptions(raised_exc, caught_exc):
             return True
     return False
 
+
 class FunctionPreparator(cst.CSTTransformer):
 
     METADATA_DEPENDENCIES = (cst.metadata.ParentNodeProvider, cst.metadata.WhitespaceInclusivePositionProvider)
@@ -57,8 +58,7 @@ class FunctionPreparator(cst.CSTTransformer):
         return updated_node
 
     def leave_SimpleString(self, original_node: cst.SimpleString, updated_node: cst.SimpleString):
-        if (not isinstance(self.get_metadata(cst.metadata.ParentNodeProvider, original_node), cst.Arg) and
-                updated_node.prefix not in ["b", "br", "rb"]):  # skip bytes for now
+        if (updated_node.prefix not in ["b", "br", "rb"]):  # skip bytes for now
             self.strings.add(updated_node.evaluated_value)
         return updated_node
 
