@@ -152,60 +152,61 @@ def abstract_value(value):
 
 class DummyObject:
 
-    id_counter = 0
-    seen_ids = []
-    __internal_attributes = ['id', 'iterable', 'dict', 'int', 'float', 'str', 'bool', 'isinstance_class', 'index']
+    _id_counter = 0
+    _seen_ids = []
+    _internal_attributes = ['_id', '_iterable', '_dict', '_int', '_float', '_str', '_bool', '_isinstance_class',
+                            '_index', '_parent', '_name_in_parent']
     __comparing = False
 
     @staticmethod
     def serialize(obj):
-        return 'obj#' + repr(sorted(map(lambda x: (x[0], x[1]) if not isinstance(x[1], types.FunctionType) else (x[0], x[1].__code__.co_name), [(k, v) for k, v in obj.__dict__.items() if k not in DummyObject.__internal_attributes]), key=lambda x: x[0]))
+        return 'obj#' + repr(sorted(map(lambda x: (x[0], x[1]) if not isinstance(x[1], types.FunctionType) else (x[0], x[1].__code__.co_name), [(k, v) for k, v in obj.__dict__.items() if k not in DummyObject._internal_attributes]), key=lambda x: x[0]))
 
     def __init__(self, *a, **b):
-        self.iterable = _get_random_list(include_dummy=False)
-        self.dict = _get_random_dict(include_dummy=False)
-        self.int = _get_random_integer()
-        self.float = _get_random_float()
-        self.str = _get_random_str()
-        self.bool = _get_random_bool()
-        self.isinstance_class = random.choice(script_meta['classes'])
-        self.id = DummyObject.id_counter
-        self.index = 0
-        DummyObject.id_counter += 1
+        self._iterable = _get_random_list(include_dummy=False)
+        self._dict = _get_random_dict(include_dummy=False)
+        self._int = _get_random_integer()
+        self._float = _get_random_float()
+        self._str = _get_random_str()
+        self._bool = _get_random_bool()
+        self._isinstance_class = random.choice(script_meta['classes'])
+        self._id = DummyObject._id_counter
+        self._index = 0
+        DummyObject._id_counter += 1
 
     def repr_without_internals(self):
         DummyObject.__comparing = True
-        DummyObject.seen_ids = [self.id]
+        DummyObject._seen_ids = [self._id]
         self_repr = self.serialize(self)
-        DummyObject.seen_ids = []
+        DummyObject._seen_ids = []
         DummyObject.__comparing = False
         return self_repr
 
     def __operation(self, other, operator, right=False):
         if isinstance(other, int):
             if right:
-                return eval(f"{other} {operator} {self.int}")
-            return eval(f"{self.int} {operator} {other}")
+                return eval(f"{other} {operator} {self._int}")
+            return eval(f"{self._int} {operator} {other}")
         if isinstance(other, float):
             if right:
-                return eval(f"{other} {operator} {self.float}")
-            return eval(f"{self.float} {operator} {other}")
+                return eval(f"{other} {operator} {self._float}")
+            return eval(f"{self._float} {operator} {other}")
         if isinstance(other, complex):
             if right:
-                return eval(f"{other} {operator} {complex(self.int)}")
-            return eval(f"{complex(self.int)} {operator} {other}")
+                return eval(f"{other} {operator} {complex(self._int)}")
+            return eval(f"{complex(self._int)} {operator} {other}")
         if isinstance(other, bool):
             if right:
-                return eval(f"{other} {operator} {self.bool}")
-            return eval(f"{self.bool} {operator} {other}")
+                return eval(f"{other} {operator} {self._bool}")
+            return eval(f"{self._bool} {operator} {other}")
         if isinstance(other, str):
             if right:
-                return eval(f"'{other}' {operator} '{self.str}'")
-            return eval(f"'{self.str}' {operator} '{other}'")
+                return eval(f"'{other}' {operator} '{self._str}'")
+            return eval(f"'{self._str}' {operator} '{other}'")
         return False
 
     def __abs__(self):
-        return abs(self.int)
+        return abs(self._int)
 
     def __add__(self, other):
         return self.__operation(other, "+")
@@ -229,10 +230,10 @@ class DummyObject:
     #     pass  # TODO / REMOVE
 
     def __bool__(self):
-        return self.bool
+        return self._bool
 
     def __bytes__(self):
-        return bytes(self.str, "utf-8")
+        return bytes(self._str, "utf-8")
 
     def __call__(self, *args, **kwargs):
         return self
@@ -241,13 +242,13 @@ class DummyObject:
     #     pass
 
     def __complex__(self):
-        return complex(self.int)
+        return complex(self._int)
 
     def __contains__(self, item):
         if isinstance(item, int):
-            return item in self.iterable
+            return item in self._iterable
         else:
-            return item in self.dict
+            return item in self._dict
 
 
     # def __del__(self):
@@ -276,11 +277,11 @@ class DummyObject:
             return self.__operation(other, "==")
 
         DummyObject.__comparing = True
-        DummyObject.seen_ids = [self.id, other.id]
+        DummyObject._seen_ids = [self._id, other._id]
         serialized_self = self.serialize(self)
-        DummyObject.seen_ids = [self.id, other.id]
+        DummyObject._seen_ids = [self._id, other._id]
         serialized_other = self.serialize(other)
-        DummyObject.seen_ids = []  # reset list
+        DummyObject._seen_ids = []  # reset list
         DummyObject.__comparing = False
         return serialized_self == serialized_other
 
@@ -288,7 +289,7 @@ class DummyObject:
         return True
 
     def __float__(self):
-        return self.float
+        return self._float
 
     # def __floor__(self):
     #     pass  # REMOVE
@@ -313,15 +314,15 @@ class DummyObject:
 
     def __getitem__(self, item):
         if isinstance(item, (int, slice)):
-            return self.iterable[item]
+            return self._iterable[item]
         else:
-            return self.dict[item]
+            return self._dict[item]
 
     def __gt__(self, other):
         return self.__operation(other, ">")
 
     def __hash__(self):
-        return hash(f"DummyObject{self.id}")
+        return hash(f"DummyObject{self._id}")
 
     def __iadd__(self, other):
         return self.__operation(other, "+")
@@ -348,7 +349,7 @@ class DummyObject:
         return self.__operation(other, "*")
 
     def __index__(self):
-        return self.int
+        return self._int
 
     # def __init_subclass__(cls, **kwargs):
     #     pass  # REMOVE
@@ -357,10 +358,10 @@ class DummyObject:
     #     pass  # TODO!
 
     def __int__(self):
-        return self.int
+        return self._int
 
     def __invert__(self):
-        return ~self.int
+        return ~self._int
 
     def __ior__(self, other):
         return self.__operation(other, "or")
@@ -375,7 +376,7 @@ class DummyObject:
         return self.__operation(other, "-")
 
     def __iter__(self):
-        return iter(self.iterable)
+        return iter(self._iterable)
 
     def __itruediv__(self, other):
         return self.__operation(other, "/")
@@ -387,7 +388,7 @@ class DummyObject:
         return self.__operation(other, "<=")
 
     def __len__(self):
-        return len(self.iterable)
+        return len(self._iterable)
 
     def __lshift__(self, other):
         return self.__operation(other, "<<")
@@ -411,22 +412,22 @@ class DummyObject:
     #     pass
 
     def __neg__(self):
-        return -self.int
+        return -self._int
 
     # def __new__(cls, *args, **kwargs):
     #     pass
 
     def __next__(self):
-        if self.index >= len(self.iterable):
+        if self._index >= len(self._iterable):
             raise StopIteration
-        self.index += 1
-        return self.iterable[self.index-1]
+        self._index += 1
+        return self._iterable[self._index - 1]
 
     def __or__(self, other):
         return self.__operation(other, "or")
 
     def __pos__(self):
-        return +self.int
+        return +self._int
 
     def __pow__(self, power, modulo=None):
         pass  # TODO
@@ -444,14 +445,14 @@ class DummyObject:
         return self.__operation(other, "//"), self.__operation(other, "%")
 
     def __repr__(self):
-        if not DummyObject.__comparing or self.id in DummyObject.seen_ids:
-            return f"Dummy#{self.id}"
+        if not DummyObject.__comparing or self._id in DummyObject._seen_ids:
+            return f"Dummy#{self._id}"
         else:
-            DummyObject.seen_ids.append(self.id)
+            DummyObject._seen_ids.append(self._id)
             return self.serialize(self)
 
     def __reversed__(self):
-        return reversed(self.iterable)
+        return reversed(self._iterable)
 
     def __rfloordiv__(self, other):
         return self.__operation(other, "//", right=True)
@@ -503,17 +504,17 @@ class DummyObject:
 
     def __setitem__(self, key, value):
         if isinstance(key, int):
-            self.iterable.insert(key, value)
+            self._iterable.insert(key, value)
         if isinstance(key, slice):
-            self.iterable[key] = value
+            self._iterable[key] = value
         else:
-            self.dict[key] = value
+            self._dict[key] = value
 
     # def __sizeof__(self):
     #     pass  # REMOVE
 
     def __str__(self):
-        return self.str
+        return self._str
 
     def __sub__(self, other):
         return self.__operation(other, "-")
@@ -534,7 +535,7 @@ class DummyObject:
         pass  # TODO
 
     def __fspath__(self):
-        return self.str
+        return self._str
 
 
 fine_to_coarse_grained = {

@@ -138,7 +138,7 @@ class ExceptionFactory:
 
 def _isinstance(value, clazz, clazz_names):
     if isinstance(value, DummyObject):
-        return value.isinstance_class in clazz_names
+        return value._isinstance_class in clazz_names
     return isinstance(value, clazz)
 
 
