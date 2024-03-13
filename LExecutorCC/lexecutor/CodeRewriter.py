@@ -1,11 +1,11 @@
 import libcst as cst
 import libcst.matchers as m
-from libcst.metadata import ParentNodeProvider, PositionProvider, WhitespaceInclusivePositionProvider
+from libcst.metadata import ParentNodeProvider, PositionProvider
 
 
 class CodeRewriter(cst.CSTTransformer):
 
-    METADATA_DEPENDENCIES = (ParentNodeProvider, PositionProvider, WhitespaceInclusivePositionProvider)
+    METADATA_DEPENDENCIES = (ParentNodeProvider, PositionProvider)
 
     ignored_names = ["True", "False", "None", "isinstance"]
     ignored_calls = ["super"]  # special function names to not instrument
@@ -31,7 +31,7 @@ class CodeRewriter(cst.CSTTransformer):
         # executed and block nodes such as FunctionDef would otherwise falsely claim we executed the whole function
         # instead of only the definition
         if end_node is not None:
-            line_end = self.get_metadata(WhitespaceInclusivePositionProvider, end_node).end.line
+            line_end = self.get_metadata(PositionProvider, end_node).end.line
         else:
             line_end = location.start.line
 
