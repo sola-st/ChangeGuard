@@ -4,14 +4,14 @@ import inspect
 import asyncio
 
 from lexecutor.Runtime import IntentionalException, kind_and_name_to_value, callable_store
-from lexecutor.ValueAbstraction import DummyObject
+from lexecutor.ValueAbstraction import LexecutorObject
 from lexecutor.Metadata import Metadata
 
 METADATA = Metadata()
 
 
 def _get_value_repr(val):
-    return val.repr_without_internals() if isinstance(val, DummyObject) else repr(val)
+    return val.repr_without_internals() if isinstance(val, LexecutorObject) else repr(val)
 
 
 async def __handle_async_gen(async_gen):
@@ -25,7 +25,7 @@ def unwrap_return_value(value):
         return asyncio.run(value)
     if inspect.isasyncgen(value):
         return asyncio.run(__handle_async_gen(value))
-    if callable(value) and not isinstance(value, DummyObject):
+    if callable(value) and not isinstance(value, LexecutorObject):
         return value()
     return value
 

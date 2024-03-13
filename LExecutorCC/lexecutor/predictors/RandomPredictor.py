@@ -1,5 +1,5 @@
 from .ValuePredictor import ValuePredictor
-from ..ValueAbstraction import DummyObject, DummyResource
+from ..ValueAbstraction import LexecutorObject, DummyResource
 from ..Logging import get_logger
 import random
 
@@ -21,16 +21,16 @@ class RandomPredictor(ValuePredictor):
             0.0,
             1.0,
             [],
-            [DummyObject()],
+            [LexecutorObject()],
             (),
-            (DummyObject(),),
+            (LexecutorObject(),),
             set(),
-            {DummyObject()},
+            {LexecutorObject()},
             {},
-            {"a": DummyObject()},
+            {"a": LexecutorObject()},
             DummyResource(),
-            DummyObject,
-            DummyObject()
+            LexecutorObject,
+            LexecutorObject()
         ]
         
     def get_random_value(self):

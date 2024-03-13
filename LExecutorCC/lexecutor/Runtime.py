@@ -6,7 +6,7 @@ import random
 import types
 from .Hyperparams import Hyperparams as params
 from .TraceWriter import TraceWriter
-from .ValueAbstraction import restore_value, DummyObject, get_value_pairs
+from .ValueAbstraction import restore_value, LexecutorObject, get_value_pairs
 from .RuntimeStats import RuntimeStats
 from .Logging import get_logger
 from .Metadata import Metadata
@@ -137,7 +137,7 @@ class ExceptionFactory:
 
 
 def _isinstance(value, clazz, clazz_names):
-    if isinstance(value, DummyObject):
+    if isinstance(value, LexecutorObject):
         return value._isinstance_class in clazz_names
     return isinstance(value, clazz)
 
@@ -184,7 +184,7 @@ def _n_(iid, name, lambada):
             return kind_and_name_to_value[key][state]
         else:
             if name == 'self':
-                v = get_value_pairs(DummyObject())
+                v = get_value_pairs(LexecutorObject())
                 logger.info(f'Assigning {v} to {name}')
                 kind_and_name_to_value[key] = v
                 return v[state]
@@ -244,7 +244,7 @@ def _c_(iid, fct, full_name, *args, **kwargs):
             kind_and_name_to_value[key] = v
             return v[state]
 
-    kind = "call_dummy" if fct is DummyObject else "call"
+    kind = "call_dummy" if fct is LexecutorObject else "call"
     return mode_branch(iid, perform_fct, record_fct, predict_fct, kind=kind)
 
 
@@ -293,15 +293,11 @@ def _a_(iid, base, attr_name, full_name):
 
         if key in kind_and_name_to_value:
             value = kind_and_name_to_value[key][state]
-            if value is not DummyObject:
-                setattr(base, attr_name, value)
             return value
         else:
             v = predictor.attribute(iid, base, attr_name)
             kind_and_name_to_value[key] = v
             value = v[state]
-            if value is not DummyObject:
-                setattr(base, attr_name, value)  # TODO private name mangling
             return value
 
     return mode_branch(iid, perform_fct, record_fct, predict_fct, kind="attribute")
@@ -329,7 +325,7 @@ def _s_(iid, name, lambada):
         if key in kind_and_name_to_value:
             return kind_and_name_to_value[key][state]
         else:
-            v = get_value_pairs(DummyObject())
+            v = get_value_pairs(LexecutorObject())
             logger.info(f'Predicting for {key}, returning {v}')
             kind_and_name_to_value[key] = v
             return v[state]
