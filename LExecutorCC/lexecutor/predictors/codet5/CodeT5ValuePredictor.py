@@ -4,7 +4,7 @@ import time
 import random
 import requests
 from requests.exceptions import ConnectionError
-from ...ValueAbstraction import restore_value, LexecutorObject, Dummy
+from ...ValueAbstraction import restore_value
 
 logger = get_logger(__name__)
 
@@ -70,7 +70,4 @@ class CodeT5ValuePredictor(ValuePredictor):
         logger.info(f"{iid}: Predicting for attribute {attr_name}: {v}")
         self.stats.inject_value(
             iid, f"Inject {abstract_v} for attribute {attr_name}")
-        if isinstance(base, LexecutorObject) and issubclass(type(v), Dummy):
-            v._parent_ = base
-            v._name_in_parent_ = attr_name
         return v

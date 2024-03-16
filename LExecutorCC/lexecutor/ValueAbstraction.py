@@ -141,7 +141,7 @@ class Dummy(ABC):
     __internal_attributes = ['_parent', '_name_in_parent']
 
     def __init__(self):
-        self._parent = None  # parent is set in Predictor
+        self._parent = None  # parent and corresponding name is set in Runtime
         self._name_in_parent = None
 
     def set_to_parent(self, key=None):

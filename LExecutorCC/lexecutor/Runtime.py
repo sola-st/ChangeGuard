@@ -6,7 +6,7 @@ import random
 import types
 from .Hyperparams import Hyperparams as params
 from .TraceWriter import TraceWriter
-from .ValueAbstraction import restore_value, LexecutorObject, get_value_pairs
+from .ValueAbstraction import restore_value, LexecutorObject, get_value_pairs, Dummy
 from .RuntimeStats import RuntimeStats
 from .Logging import get_logger
 from .Metadata import Metadata
@@ -293,11 +293,17 @@ def _a_(iid, base, attr_name, full_name):
 
         if key in kind_and_name_to_value:
             value = kind_and_name_to_value[key][state]
+            if isinstance(base, LexecutorObject) and issubclass(type(value), Dummy):
+                value._parent = base
+                value._name_in_parent = attr_name
             return value
         else:
             v = predictor.attribute(iid, base, attr_name)
             kind_and_name_to_value[key] = v
             value = v[state]
+            if isinstance(base, LexecutorObject) and issubclass(type(value), Dummy):
+                value._parent = base
+                value._name_in_parent = attr_name
             return value
 
     return mode_branch(iid, perform_fct, record_fct, predict_fct, kind="attribute")
