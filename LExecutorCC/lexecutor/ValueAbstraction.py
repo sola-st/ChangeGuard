@@ -178,7 +178,7 @@ class LexecutorObject(Dummy):
         self._float = _get_random_float()
         self._str = _get_random_str()
         self._bool = _get_random_bool()
-        self._isinstance_class = random.choice(script_meta['classes'])
+        self._isinstance_class = random.choice(script_meta['classes']) if script_meta is not None else "None"
         self._id = LexecutorObject._id_counter
         self._index = 0
         LexecutorObject._id_counter += 1
@@ -624,9 +624,9 @@ class LexecutorDict(dict, Dummy):
         super().clear()
         self.set_to_parent()
 
-    def pop(self, index=-1):
+    def pop(self, item, *default):
         self.set_to_parent()
-        return super().pop(index)
+        return super().pop(item, *default)
 
     def popitem(self):
         self.set_to_parent()
