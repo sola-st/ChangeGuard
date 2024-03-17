@@ -4874,7 +4874,7 @@
         23
       ]
     ],
-    "annotation": "semantics_changing"
+    "annotation": "semantics_preserving"
   },
   {
     "repo": "scrapy",
@@ -6713,7 +6713,7 @@
         8
       ]
     ],
-    "annotation": "semantics_changing"
+    "annotation": "semantics_preserving"
   },
   {
     "repo": "cli",
@@ -7204,7 +7204,7 @@
         3
       ]
     ],
-    "annotation": "semantics_changing"
+    "annotation": "semantics_preserving"
   },
   {
     "repo": "flask",
