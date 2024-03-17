@@ -138,7 +138,7 @@ def abstract_value(value):
 
 class Dummy(ABC):
 
-    __internal_attributes = ['_parent', '_name_in_parent']
+    _internal_attributes = ['_parent', '_name_in_parent']
 
     def __init__(self):
         self._parent = None  # parent and corresponding name is set in Runtime
@@ -147,8 +147,7 @@ class Dummy(ABC):
     def set_to_parent(self, key=None):
         if self._parent is None or self._name_in_parent is None:
             return
-
-        if key in self.__internal_attributes:
+        if key in self._internal_attributes:
             return
 
         # following check needed in case the attribute
