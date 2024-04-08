@@ -146,13 +146,27 @@ class Super:
     pass
 
 
+def _map(element):
+    """
+    maps elements to be stored in CallStore to a comparable representation.
+    """
+    if isinstance(element, types.FunctionType):
+        return element.__code__.co_name
+    elif issubclass(type(element), Exception):
+        return repr(element)
+    else:
+        return element
+
+
 def _dummy_super(*args, **kwargs):
-    callable_store[state].append(('super', copy.deepcopy(args), copy.deepcopy(kwargs)))
+    callable_store[state].append(('super', copy.deepcopy(tuple(_map(arg) for arg in args)),
+                                  copy.deepcopy({k: _map(v) for k, v in kwargs.items()})))
     return Super()
 
 
 def _dummy_super_init__(*args, **kwargs):
-    callable_store[state].append(('super.__init__', copy.deepcopy(args), copy.deepcopy(kwargs)))
+    callable_store[state].append(('super.__init__', copy.deepcopy(tuple(_map(arg) for arg in args)),
+                                  copy.deepcopy({k: _map(v) for k, v in kwargs.items()})))
 
 
 def _handle_rename(original_name):
