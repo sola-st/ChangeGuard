@@ -246,8 +246,8 @@ def _c_(iid, fct, full_name, *args, **kwargs):
         else:
             key = f'call#{full_name}'
         callable_store[state].append((full_name,
-                                      copy.deepcopy(tuple(arg if not isinstance(arg, types.FunctionType) else arg.__code__.co_name for arg in args)),
-                                      copy.deepcopy({k: v if not isinstance(v, types.FunctionType) else v.__code__.co_name for k, v in kwargs.items()})))
+                                      copy.deepcopy(tuple(_map(arg) for arg in args)),
+                                      copy.deepcopy({k: _map(v) for k, v in kwargs.items()})))
         fct_to_excs = script_meta['func_to_excs']
         if key in kind_and_name_to_value:
             return kind_and_name_to_value[key][state]
