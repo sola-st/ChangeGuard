@@ -330,18 +330,23 @@ def _l_(iid, expression=None):
     return expression
 
 
-def _s_(iid, name, lambada):
+def _s_(iid, base, slc, full_name):
 
-    perform_fct = lambada
+    def perform_fct():
+        if len(slc) == 1:
+            index = slc[0]
+        else:
+            index = slc
+        return base[index]
 
     def record_fct(v):
-        trace.append_subscript(iid, name, v)
+        trace.append_subscript(iid, full_name, v)
 
     def predict_fct():
         if script_meta['renames']:
-            key = f'subscript#{_handle_rename(name)}'
+            key = f'subscript#{_handle_rename(full_name)}'
         else:
-            key = f"subscript#{name}"
+            key = f"subscript#{full_name}"
         if key in kind_and_name_to_value:
             return kind_and_name_to_value[key][state]
         else:

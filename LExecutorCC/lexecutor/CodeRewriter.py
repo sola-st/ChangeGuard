@@ -122,11 +122,19 @@ class CodeRewriter(cst.CSTTransformer):
         iid = self.__create_iid(original_node)
         iid_arg = cst.Arg(value=cst.Integer(value=str(iid)))
         full_name = self.__unfold_node(original_node)
-        name_arg = cst.Arg(value=cst.SimpleString(value=full_name))
-        # TODO include index/slice arg (not trivial because of extended slices e.g np indexes)
-        lambada = cst.Lambda(params=cst.Parameters(
-            params=[]), body=updated_node)
-        return cst.Call(func=callee_name, args=[iid_arg, name_arg, cst.Arg(value=lambada)])
+        full_name_arg = cst.Arg(value=cst.SimpleString(value=full_name))
+        indices = []
+        for element in updated_node.slice:
+            if isinstance(element.slice, cst.Index):
+                indices.append(element.slice.value)
+            elif isinstance(element.slice, cst.Slice):
+                lower = element.slice.lower if element.slice.lower is not None else cst.Name(value='None')
+                upper = element.slice.upper if element.slice.upper is not None else cst.Name(value='None')
+                step = element.slice.step if element.slice.step is not None else cst.Name(value='None')
+                indices.append(cst.Call(func=cst.Name('slice'),
+                                        args=[cst.Arg(value=lower), cst.Arg(value=upper), cst.Arg(value=step)]))
+
+        return cst.Call(func=callee_name, args=[iid_arg, cst.Arg(value=updated_node.value), cst.Arg(cst.Tuple(elements=[cst.Element(value=index) for index in indices])), full_name_arg])
 
     def __create_aux_stmt(self, updated_node, value):
         aux_stmt = cst.SimpleStatementLine(
@@ -478,7 +486,6 @@ class CodeRewriter(cst.CSTTransformer):
                 type=cst.Call(func=cst.Attribute(value=cst.Name(value='ExceptionFactory'),
                                                  attr=cst.Name(value='exception_type')),
                               args=[cst.Arg(value=cst.SimpleString(name))])), node.type)
-
 
     def leave_Finally(self, node, updated_node):
         return self.__update_indented_block(node, updated_node, None)
