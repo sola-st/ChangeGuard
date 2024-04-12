@@ -458,7 +458,7 @@ class LexecutorObject(Dummy):
 
     def __repr__(self):
         if not LexecutorObject.__comparing or self._id in LexecutorObject._seen_ids:
-            return f"Dummy#{self._id}"
+            return f"obj#{self._id}"
         else:
             LexecutorObject._seen_ids.append(self._id)
             return self.serialize(self)
