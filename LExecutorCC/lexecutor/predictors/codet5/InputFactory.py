@@ -8,7 +8,8 @@ mask_token = "<mask>"
 kind_name_token = "<extra_id_2>"
 kind_call_token = "<extra_id_3>"
 kind_attribute_token = "<extra_id_4>"
-sep_token = "<extra_id_5>"
+kind_subscript_token = "<extra_id_5>"
+sep_token = "<extra_id_6>"
 
 
 class InputFactory(object):
@@ -25,6 +26,8 @@ class InputFactory(object):
             kind_call_token, add_special_tokens=False, return_attention_mask=False).input_ids[0]
         self.kind_attribute_token_id = self.tokenizer(
             kind_attribute_token, add_special_tokens=False, return_attention_mask=False).input_ids[0]
+        self.kind_subscript_token_id = self.tokenizer(
+            kind_subscript_token, add_special_tokens=False, return_attention_mask=False).input_ids[0]
         self.sep_token_id = self.tokenizer(
             sep_token, add_special_tokens=False, return_attention_mask=False).input_ids[0]
 
@@ -108,6 +111,8 @@ class InputFactory(object):
             kind_token = self.kind_call_token_id
         elif entry["kind"] == "attribute":
             kind_token = self.kind_attribute_token_id
+        elif entry["kind"] == "subscript":
+            kind_token = self.kind_subscript_token_id
 
         input_ids = [self.tokenizer.bos_token_id] + \
             name_ids + \
