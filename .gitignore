@@ -10,3 +10,6 @@ iids.json
 **/generated
 **/data
 **/lexecutor.egg-info
+**/.secret
+/evaluation/python_idiomatic_transformation/func_files
+/evaluation/python_idiomatic_transformation/RefactoringIdiomsOutputdir
