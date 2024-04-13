@@ -198,13 +198,14 @@ class CodeRewriter(cst.CSTTransformer):
         # multi-assignments
         if type(parent) == cst.Element:
             grand_parent = self.get_metadata(ParentNodeProvider, parent)
-            if type(grand_parent) == cst.Tuple:
+            if type(grand_parent) == cst.Tuple or type(grand_parent) == cst.List:
                 grand_grand_parent = self.get_metadata(
                     ParentNodeProvider, grand_parent)
                 if (type(grand_grand_parent) == cst.AssignTarget or
                     type(grand_grand_parent) == cst.AnnAssign or
                         type(grand_grand_parent) == cst.AugAssign):
                     return True
+
 
         return False
 
