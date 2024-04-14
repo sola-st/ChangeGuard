@@ -350,8 +350,7 @@ def _s_(iid, base, slc, full_name):
         if key in kind_and_name_to_value:
             return kind_and_name_to_value[key][state]
         else:
-            v = get_value_pairs(LexecutorObject())
-            logger.info(f'Predicting for {key}, returning {v}')
+            v = predictor.subscript(iid, full_name)
             kind_and_name_to_value[key] = v
             return v[state]
 

@@ -71,3 +71,11 @@ class CodeT5ValuePredictor(ValuePredictor):
         self.stats.inject_value(
             iid, f"Inject {abstract_v} for attribute {attr_name}")
         return v
+
+    def subscript(self, iid, name):
+        entry = {"iid": iid, "name": name, "kind": "subscript"}
+        abstract_v, v = self._query_model(entry)
+        logger.info(f"{iid}: Predicting for name {name}: {v}")
+        self.stats.inject_value(
+            iid, f"Inject {abstract_v} for variable {name}")
+        return v

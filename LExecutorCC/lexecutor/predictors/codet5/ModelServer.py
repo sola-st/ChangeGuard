@@ -2,7 +2,6 @@ from pathlib import Path
 import os
 import torch as t
 import numpy as np
-import subprocess
 from flask import Flask, json, request
 import requests
 from ..DLUtil import device
