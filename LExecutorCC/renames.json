@@ -26,11 +26,13 @@
   "scikit-learn_d498cdacef54aab6645706e2c79afe91e9b208f4": {
   "0": {
     "X": "renamed#X>X_train",
-    "y": "renamed#y>y_train"
+    "y": "renamed#y>y_train",
+    "sample_weight": "renamed#sample_weight>sample_weight_train"
   },
     "1":{
       "X_train": "renamed#X>X_train",
-      "y_train": "renamed#y>y_train"
+      "y_train": "renamed#y>y_train",
+      "sample_weight_train": "renamed#sample_weight>sample_weight_train"
     }
   },
   "scikit-learn_66ec10f341087ca05156f701e0ba90717cd252d2": {
