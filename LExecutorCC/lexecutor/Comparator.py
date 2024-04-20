@@ -44,12 +44,12 @@ def compare_exceptions(exception_old, exception_new):
         else:
             print(f'only old function raised unintentional exception: {repr(exception_old)}')
     elif isinstance(exception_old, AssertionError) and isinstance(exception_new, AssertionError):
-        if exception_old.args == exception_new.args:
+        if repr(exception_old) == repr(exception_new):
             print(f'both functions raised same AssertionError: {repr(exception_old)}')
         else:
             print(f'functions raised different AssertionError: {repr(exception_old)} -- {repr(exception_new)}')
     elif issubclass(type(exception_old), IntentionalException) and issubclass(type(exception_new), IntentionalException):
-        if exception_old.args == exception_new.args:
+        if repr(exception_old) == repr(exception_new):
             print(f'both functions raised same IntentionalException: {repr(exception_old)}')
         else:
             print(f'functions raised different IntentionalException: {repr(exception_old)} -- {repr(exception_new)}')
