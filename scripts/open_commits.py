@@ -5,8 +5,6 @@ import atexit
 import os
 import time
 
-from logger import get_logger
-
 
 TYPE = 'refactor'
 # TYPE = 'change'
@@ -19,7 +17,6 @@ else:
 if len(sys.argv) > 2:
     TYPE = sys.argv[2]
 
-logger = get_logger(__name__, f'{TYPE}_annotation')
 
 JSON_SUFFIX = f'_{TYPE}_commits.json'
 
