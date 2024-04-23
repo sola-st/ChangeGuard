@@ -9,9 +9,15 @@ __pycache__
 iids.json
 **/generated
 **/data
+LExecutorCC/data/*
+!LExecutorCC/data/released_models
+LExecutorCC/data/released_models/*
+!LExecutorCC/data/released_models/new_model_coarse-grained.bin
 **/lexecutor.egg-info
 **/.secret
 /evaluation/python_idiomatic_transformation/func_files
 /evaluation/python_idiomatic_transformation/RefactoringIdiomsOutputdir
 /evaluation/complexity
 /evaluation/accuracy
+**/.vscode
+**/*.log

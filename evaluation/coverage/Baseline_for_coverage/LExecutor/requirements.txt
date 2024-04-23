@@ -1,0 +1,12 @@
+libcst
+pandas
+tables
+pytest
+pytest-xdist
+gensim
+flask
+requests
+torch
+transformers
+GitPython
+beautifulsoup4
