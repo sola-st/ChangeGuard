@@ -3,12 +3,13 @@ import os
 from typing import List
 import re
 import time
+import matplotlib.pyplot as plt
 
 REPO_PATH = r'../Repos'
 REPOS: List[str] = [entry.name for entry in os.scandir(REPO_PATH) if entry.is_dir()]
 
 def evaluate_annotated_changes():
-    with open('../annotated_changes/annotated_changes.json') as f:
+    with open(ANNOTATED_CHANGES) as f:
         annotated_changes = json.load(f)
 
     preserving_changes = [change for change in annotated_changes if change['annotation'] == 'semantics_preserving']
@@ -86,7 +87,7 @@ def evaluate_coverage():
     with open('../annotated_changes/stdout_SuperObject.json') as f:
         outputs = json.load(f)
     covered_lines = [entry['err'].split('Lines executed: ')[1] for entry in outputs if 'Lines executed: ' in entry['err']]
-    covered_lines = [entry[:entry.index(']')+1] for entry in covered_lines]
+    covered_lines = [entry[:entry._index(']') + 1] for entry in covered_lines]
     print(covered_lines)
     covered_lines = [[int(line) for line in entry.strip('[]').split(', ')] for entry in covered_lines]
     print((sum(map(lambda x: len(x), covered_lines)))/len(covered_lines))
@@ -102,7 +103,7 @@ def evaluate_iter():
     for output in (output for output in outputs):
         iterations = [o['err'] for o in output['iterations'].values()]
         covered_lines = [iteration.split('Lines executed: ')[1] for iteration in iterations if 'Lines executed: ' in iteration]
-        covered_lines = [entry[:entry.index(']') + 1] for entry in covered_lines]
+        covered_lines = [entry[:entry._index(']') + 1] for entry in covered_lines]
         covered_lines = [{int(line) for line in entry.strip('[]').split(', ')} for entry in covered_lines]
         unique_lines = set().union(*covered_lines)
         # print(unique_lines)
@@ -202,11 +203,12 @@ def get_undetected_changes():
     undetected_changes = []
     for result in out:
         change = sha_to_change[result['sha']]
-        # annotated changing, but false negative
-        if change['annotation'] == 'semantics_changing' and result['final_result'] == 'preserving':
-            # changed lines covered but change not detected
-            if result['coverage']['old']['ratio'] == 0 and result['coverage']['new']['ratio'] == 0:
-                undetected_changes.append(change)
+        # # annotated changing, but false negative
+        # if change['annotation'] == 'semantics_changing' and result['final_result'] == 'preserving':
+        # changed lines covered but change not detected
+        if result['final_result'] != 'non_conclusive' and result['coverage']['old']['ratio'] == 0 and result['coverage']['new']['ratio'] == 0:
+            undetected_changes.append(change)
+    print('Undetected:', len(undetected_changes))
     with open('undetected_changes.json', 'w') as f:
         json.dump(undetected_changes, f, indent=4)
 
@@ -217,7 +219,7 @@ def get_confusion_matrix():
     sha_to_change = {change['sha']: change for change in changes}
     with open(JSON_PATH, 'r', encoding='utf-8') as f:
         out = json.load(f)
-    tp, fp, fn, tn = [], [], [], []
+    tp, fp, fn, tn, nrc, nrp = [], [], [], [], [], []
     for result in out:
         change = sha_to_change[result['sha']]
         if change['annotation'] == 'unclear':
@@ -232,15 +234,30 @@ def get_confusion_matrix():
                 fn.append(change)
             else:
                 tn.append(change)
+        elif result['final_result'] == 'not_reached':
+            if change['annotation'] == 'semantics_changing':
+                nrc.append(change)
+            else:
+                nrp.append(change)
+
     total_semantics_preserving = len([1 for change in changes if change['annotation'] == 'semantics_preserving'])
     total_semantics_changing = len([1 for change in changes if change['annotation'] == 'semantics_changing'])
     total_unclear = len([1 for change in changes if change['annotation'] == 'unclear'])
-    with open('fp.json', 'w') as f:
+    with open('./accuracy/fp.json', 'w') as f:
         json.dump(fp, f, indent=4)
-    with open('fn.json', 'w') as f:
+    with open('./accuracy/fn.json', 'w') as f:
         json.dump(fn, f, indent=4)
+    with open('./accuracy/tp.json', 'w') as f:
+        json.dump(tp, f, indent=4)
+    with open('./accuracy/tn.json', 'w') as f:
+        json.dump(tn, f, indent=4)
+    with open('./accuracy/nrc.json', 'w') as f:
+        json.dump(nrc, f, indent=4)
+    with open('./accuracy/nrp.json', 'w') as f:
+        json.dump(nrp, f, indent=4)
     print(total_semantics_preserving, total_semantics_changing, total_unclear)
-    print('tp:', len(tp), 'fp:', len(fp), 'fn:', len(fn), 'tn:', len(tn))
+    print('tp:', len(tp), 'fp:', len(fp), 'fn:', len(fn), 'tn:', len(tn), 'nrc:', len(nrc), 'nrp:', len(nrp))
+    print('not_reached:', len([x for x in out if x['final_result'] == 'not_reached']))
 
 
 def get_only_one_exception():
@@ -259,21 +276,112 @@ def get_only_one_exception():
     with open('only.json', 'w') as f:
         json.dump(only_results, f, indent=4)
 
+
+def get_length_of_functions():
+    with open(ANNOTATED_CHANGES, 'r', encoding='utf-8') as f:
+        changes = json.load(f)
+    sha_to_change = {change['sha']: change for change in changes}
+
+    with open(JSON_PATH, 'r', encoding='utf-8') as f:
+        results = json.load(f)
+    reached_lens = []
+    for result in results:
+        if result['final_result'] != 'not_reached':
+            change = sha_to_change[result['sha']]
+            lines = change['old_clean_function'].splitlines()
+            reached_lens.append(len(lines))
+    print('Total Average:', sum(reached_lens)/len(reached_lens))
+
+
+    not_reached_lens = []
+    for result in results:
+        if result['final_result'] == 'not_reached':
+            change = sha_to_change[result['sha']]
+            lines = change['old_clean_function'].splitlines()
+            not_reached_lens.append(len(lines))
+    print(sum(not_reached_lens)/len(not_reached_lens))
+    return reached_lens, not_reached_lens
+
+
+def get_complexity():
+    with open(ANNOTATED_CHANGES, 'r', encoding='utf-8') as f:
+        changes = json.load(f)
+    sha_to_change = {change['sha']: change for change in changes}
+    with open(JSON_PATH, 'r', encoding='utf-8') as f:
+        results = json.load(f)
+    reached_functions = []
+    not_reached_functions = []
+    for result in results:
+        change = sha_to_change[result['sha']]
+        if result['final_result'] != 'not_reached':
+            reached_functions.append(change['old_clean_function'])
+        else:
+            not_reached_functions.append(change['old_clean_function'])
+    if not os.path.exists('./complexity'):
+        os.mkdir('./complexity')
+    with open('./complexity/reached.py', 'w', encoding='utf-8') as f:
+        f.write('\n'.join(reached_functions))
+    with open('./complexity/not_reached.py', 'w', encoding='utf-8') as f:
+        f.write('\n'.join(not_reached_functions))
+
+def get_complexity_box_plots():
+    with open('complexity/reached.txt', 'r') as f:
+        lines = f.readlines()
+    reached_complexity = [int(re.search('\\(([0-9]+)\\)', line).group(1)) for line in lines]
+    print(sum(reached_complexity)/len(reached_complexity))
+    with open('./complexity/not_reached.txt', 'r') as f:
+        lines = f.readlines()
+    not_reached_complexity = [int(re.search('\\(([0-9]+)\\)', line).group(1)) for line in lines]
+    print(sum(not_reached_complexity) / len(not_reached_complexity))
+    return reached_complexity, not_reached_complexity
+
+
+def get_boxplots():
+    reached_lens, not_reached_lens = get_length_of_functions()
+    reached_complexity, not_reached_complexity = get_complexity_box_plots()
+    fig, axs = plt.subplots(2, 2, figsize=(12, 6))
+    axs[0, 0].boxplot([reached_lens, not_reached_lens], showfliers=False, showmeans=True, meanline=True, vert=True)
+    axs[0, 0].set_title('No Outliers', fontsize=16)
+    axs[0, 0].set_ylabel("Number of Lines", fontsize=14, labelpad=9)
+    axs[0, 0].tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
+    axs[0, 1].boxplot([reached_lens, not_reached_lens], showfliers=True, showmeans=True, meanline=True, vert=True)
+    axs[0, 1].set_title('Outliers', fontsize=16)
+    axs[0, 1].tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
+
+    axs[1, 0].boxplot([reached_complexity, not_reached_complexity], showfliers=False, showmeans=True, meanline=True, vert=True)
+    axs[1, 0].set_xticklabels(['Reached', 'Not Reached'])
+    axs[1, 0].set_ylabel("Cyclomatic Complexity", fontsize=14, labelpad=9)
+    axs[1, 0].tick_params(axis='x', labelsize=14)
+    bp = axs[1, 1].boxplot([reached_complexity, not_reached_complexity], showfliers=True, showmeans=True, meanline=True, vert=True)
+    axs[1, 1].set_xticklabels(['Reached', 'Not Reached'])
+    axs[1, 1].tick_params(labelsize=13)
+    fig.legend([bp['means'][0], bp['medians'][0], bp['fliers'][0]], ['Mean', 'Median', 'Outlier'], loc='upper center', shadow=False, ncol=3, fontsize=14)
+    fig.subplots_adjust(hspace=0.05)
+    for ax in axs.flat:
+        ax.tick_params(axis='y', which='both', labelsize=12)
+
+    fig.savefig('./complexity/boxplot.pdf', bbox_inches='tight', dpi=1200)
+    fig.show()
+
 if __name__ == '__main__':
     prefix = r'C:\Users\Lars\Uni\Master\Masterarbeit\history\call_args'
-    ANNOTATED_CHANGES = r'C:\Users\Lars\Uni\Master\Masterarbeit\master-thesis-lars-groeninger\annotated_changes\annotated_changes.json'
-    JSON_PATH = rf'C:\Users\Lars\Uni\Master\Masterarbeit\history\print_typed_sequences\std_out.json'
+    ANNOTATED_CHANGES = r'C:\Users\Lars\Uni\Master\Masterarbeit\master-thesis-lars-groeninger\LExecutorCC\annotated_changes.json'
+    JSON_PATH = rf'C:\Users\Lars\Uni\Master\Masterarbeit\history\final_questionmark\std_out.json'
     LOG_PATH = rf'{prefix}\LExecutorCC\logs\Runner.log'
     # evaluate_annotated_changes()
-    # evaluate_stdout()
+    evaluate_stdout()
     # evaluate_coverage()
     # evaluate_run_log()
     # evaluate_iter()
     # get_final_results()
-    get_errors()
+    # get_errors()
     # get_timing_profile()
     # get_changing_commits()
     # foo()
     # get_undetected_changes()
-    get_confusion_matrix()
-    get_only_one_exception()
+    # get_confusion_matrix()
+    # get_only_one_exception()
+    # get_length_of_functions()
+    # get_complexity()
+    # get_complexity_box_plots()
+    # get_boxplots()

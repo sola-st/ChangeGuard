@@ -29,10 +29,16 @@
 4. Use resulting changes as input to LExecutorCC
 
 ### Pythonic Transformations
-0. Assuming you are in `./python_idiomatic_transformation`
-1. Install RefactoringIdioms [link](https://pypi.org/project/RefactoringIdioms/)
-   * We had the most success with downloading the raw artifact directly, removing all the dependencies from the `pyproject.toml` and installing it locally (only dependency we needed to install was [pathos](https://pypi.org/project/pathos/)
-2. Run `python3 create_func_files.py`
-3. Execute RIdiom on created files
-4. Run `python3 create_changes.py`
-5. Use the resulting `transformation_changes.json` file as input to LExecutorCC
+
+1. Download artifact from PyPy [link](https://pypi.org/project/RefactoringIdioms/)
+2. Remove all dependencies from `pyproject.toml` and install project (`pip install .`)
+3. Manually add missing dependencies (you can test if it works by running `python3 main.py`).
+4. Run `python3 create_func_files.py` to create functions for transformations.
+5. Copy `func_files` directory and `runner.py` into source directory of RefactoringIdioms (same directory as main.py)
+6. In `main.py` comment out or delete all lines that delete "output_dir" (521, 522, 557, 558, 573, 574)
+7. Execute `python3 runner.py`.
+8. Manually fix syntax errors in created files
+9. Copy the `RefactoringIdiomsOutputdir` and `func_files` folder to `./python_idiomatic_transformation`.
+10. Run `python3 create_changes.py`
+11. Manually fix indentation errors in resulting transformations.
+12. Use the resulting `transformation_changes.json` file as input to LExecutorCC.
