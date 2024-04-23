@@ -1150,7 +1150,7 @@
         71
       ]
     ],
-    "annotation": "semantics_preserving"
+    "annotation": "semantics_changing"
   },
   {
     "repo": "cli",
@@ -2349,7 +2349,7 @@
         10
       ]
     ],
-    "annotation": "semantics_changing"
+    "annotation": "semantics_preserving"
   },
   {
     "repo": "flask",
@@ -6581,7 +6581,7 @@
         42
       ]
     ],
-    "annotation": "semantics_preserving"
+    "annotation": "semantics_changing"
   },
   {
     "repo": "black",
@@ -7111,7 +7111,7 @@
         6
       ]
     ],
-    "annotation": "semantics_preserving"
+    "annotation": "unclear"
   },
   {
     "repo": "fastapi",
@@ -9164,7 +9164,7 @@
         10
       ]
     ],
-    "annotation": "semantics_preserving"
+    "annotation": "semantics_changing"
   },
   {
     "repo": "python",
@@ -9866,7 +9866,7 @@
         31
       ]
     ],
-    "annotation": "semantics_preserving"
+    "annotation": "semantics_changing"
   },
   {
     "repo": "scikit-learn",
@@ -11133,7 +11133,7 @@
         4
       ]
     ],
-    "annotation": "semantics_preserving"
+    "annotation": "semantics_changing"
   },
   {
     "repo": "scrapy",
@@ -11343,7 +11343,7 @@
         3
       ]
     ],
-    "annotation": "semantics_preserving"
+    "annotation": "semantics_changing"
   },
   {
     "repo": "scrapy",
