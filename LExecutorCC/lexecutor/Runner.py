@@ -249,6 +249,7 @@ if __name__ == '__main__':
         commits = json.load(f)
     ROOT = r'generated'
     if args.action == 'instrument':
+        instrumentation_logger.info(f'Started instrumentation: {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}')
         if not os.path.exists(ROOT):
             os.mkdir(ROOT)
         for idx, commit in enumerate(commits, start=1):
@@ -257,6 +258,7 @@ if __name__ == '__main__':
                                                     commit['old_changed_lines'], commit['new_changed_lines'])
             print(f"creating compare.py: {idx} / {len(commits)}", end='\r' if idx < len(commits) else '\n', flush=True)
             run_instrumentation(cleaned_code_change)
+        instrumentation_logger.info(f'Finished instrumentation: {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}')
 
     if args.action == 'run':
         if not os.path.exists(ROOT):
