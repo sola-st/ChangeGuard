@@ -238,7 +238,7 @@ def run_commit(commit, dest_dir):
         offsets = get_offsets(compare_script)
     iterations = {}
     successful = False
-    for i in range(1, 501):
+    for i in range(1, 301):
         try:
             completed_process = subprocess.run(f'python {script_path}', cwd=os.path.abspath('./src'), capture_output=True, shell=True, timeout=60)
             output, error = completed_process.stdout.decode('utf-8'), completed_process.stderr.decode('utf-8')

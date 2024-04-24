@@ -27,9 +27,6 @@ class CodeRewriter(cst.CSTTransformer):
         line = location.start.line
         column_start = location.start.column
         column_end = location.end.column
-        # only use final line number for SimpleStatementLine because we use this to measure which lines have been
-        # executed and block nodes such as FunctionDef would otherwise falsely claim we executed the whole function
-        # instead of only the definition
         if end_node is not None:
             line_end = self.get_metadata(PositionProvider, end_node).end.line
         else:
