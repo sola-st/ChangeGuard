@@ -271,7 +271,8 @@ if __name__ == '__main__':
         commits = json.load(f)
     outputs = []
     logger.info(f'Started: {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}')
-    for commit in commits:
+    for idx, commit in enumerate(commits, start=1):
+        print(f'Script: {idx} / {len(commits)}', end='\r' if idx < len(commits) else '\n', flush=True)
         identifier = f"{commit['repo']}_{commit['source']}_{commit['sha']}"
         dest_dir = join(args.dest, identifier)
         if args.action == 'instrument':
