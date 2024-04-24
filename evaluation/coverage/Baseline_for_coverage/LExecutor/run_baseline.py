@@ -249,7 +249,8 @@ def run_commit(commit, dest_dir):
             successful = True
         old_executed_lines, new_executed_lines = extract_executed_lines(error, offsets)
         iterations[f'iteration_{i}'] = {'out': output, 'err': error, 'old_executed_lines': old_executed_lines, 'new_executed_lines': new_executed_lines}
-
+        if error == 'timeout':
+            break
     old_tot_executed_lines = list(
         set().union(*(set(it['old_executed_lines']) for it in iterations.values())))
     new_tot_executed_lines = list(
