@@ -15,6 +15,9 @@ import logging
 
 
 class ModelServer:
+
+    cache = {}
+
     def __init__(self):
         self._initialize_model()
         self._initialize_http_server()
@@ -59,6 +62,10 @@ class ModelServer:
                      "name": request.args.get("name"),
                      "kind": request.args.get("kind")}
 
+            entry_tuple = tuple(entry.values())
+            if entry_tuple in ModelServer.cache:
+                return ModelServer.cache[entry_tuple]
+
             # turn query into vectors
             input_ids, _ = self.input_factory.entry_to_inputs(entry)
             input_ids = [tensor.cpu() for tensor in input_ids]
@@ -78,8 +85,9 @@ class ModelServer:
                         f"Warning: CodeT5 likely produced a garbage value: {predicted_value}")
 
             # respond with a JSON object
-            result = {"v": predicted_value}
-            return json.dumps(result)
+            result = json.dumps({"v": predicted_value})
+            ModelServer.cache[entry_tuple] = result
+            return result
 
         api.run()
 
