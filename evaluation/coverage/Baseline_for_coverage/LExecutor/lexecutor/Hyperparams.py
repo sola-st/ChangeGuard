@@ -3,7 +3,7 @@ class Hyperparams(object):
     metadata_file = "metadata.json"
     verbose = False
 
-    nb_of_iterations = 1
+    nb_of_iterations = 300
     
     # data deduplication
     # dedup = "name-value"
