@@ -6,7 +6,7 @@ from .Logging import logger
 
 
 Location = namedtuple(
-    "Location", ["file", "line", "column_start", "column_end"])
+    "Location", ["file", "line", "column_start", "column_end", "line_end"])
 
 
 class IIDs:
@@ -22,9 +22,9 @@ class IIDs:
             self._iid_to_location = json_object["iid_to_location"]
         self.file_path = file_path
 
-    def new(self, file, line, column_start, column_end):
+    def new(self, file, line, column_start, column_end, line_end):
         self._iid_to_location[self.next_iid] = Location(
-            file, line, column_start, column_end)
+            file, line, column_start, column_end, line_end)
         self.next_iid += 1
         return self.next_iid - 1
 
@@ -39,6 +39,10 @@ class IIDs:
 
     def line(self, iid):
         return self._iid_to_location[str(iid)][1]
+
+    def all_lines(self, iid):
+        location = self._iid_to_location[str(iid)]
+        return list(range(location[1], location[4]+1))
 
     def location(self, iid):
         return Location(*self._iid_to_location[str(iid)])

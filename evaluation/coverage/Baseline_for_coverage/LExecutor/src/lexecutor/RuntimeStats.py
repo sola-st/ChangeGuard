@@ -51,7 +51,7 @@ class RuntimeStats:
         logger.info(f"Covered iids: {len(self.covered_iids)}")
         logger.info(f"Total uses: {self.total_uses}")
         logger.info(f"Guided uses : {self.guided_uses}/{self.total_uses}")
-        logger.info(f"Lines executed: {[self.iids.line(iid) for iid in self.executed_lines]}")
+        logger.info(f"Lines executed: {[line for iid in self.executed_lines for line in self.iids.all_lines(iid)]}")
 
     def _save_summary_metrics(self, file, predictor_name, execution_time):
         if write_metrics:

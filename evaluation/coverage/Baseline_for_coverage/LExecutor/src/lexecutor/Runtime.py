@@ -180,10 +180,14 @@ def _a_(iid, base, attr_name):
 
     return mode_branch(iid, perform_fct, record_fct, predict_fct, kind="attribute")
 
-def _l_(iid):
+
+def _l_(iid, expression=None):
     if runtime_stats is not None:
         runtime_stats.cover_line(iid)
         runtime_stats.save(file, predictor_name, start_time)
+    return expression
+
+
 
 def mode_branch(iid, perform_fct, record_fct, predict_fct, kind):
     if mode == "RECORD":

@@ -20,12 +20,18 @@ class CodeRewriter(cst.CSTTransformer):
         self.quotation_char = '"'  # flipped to "'" when inside an f-string with double quotes
         self.fstring_stack = []
 
-    def __create_iid(self, node):
+    def __create_iid(self, node, end_node=None):
         location = self.get_metadata(PositionProvider, node)
         line = location.start.line
         column_start = location.start.column
         column_end = location.end.column
-        iid = self.iids.new(self.file_path, line, column_start, column_end)
+
+        if end_node is not None:
+            line_end = self.get_metadata(PositionProvider, end_node).end.line
+        else:
+            line_end = location.start.line
+
+        iid = self.iids.new(self.file_path, line, column_start, column_end, line_end)
         return iid
 
     def __create_name_call(self, node, updated_node):
@@ -87,15 +93,15 @@ class CodeRewriter(cst.CSTTransformer):
         call = cst.Call(func=callee_name, args=[iid_arg, value_arg, attr_arg])
         return call
     
-    def __create_line_call(self, node, updated_node):
+    def __create_line_call(self, node, updated_node, end_node):
         callee_name = cst.Name(value="_l_")
-        iid = self.__create_iid(node)
+        iid = self.__create_iid(node, end_node)
         iid_arg = cst.Arg(value=cst.Integer(value=str(iid)))
         call = cst.Call(func=callee_name, args=[iid_arg])
         return call
     
-    def __create_line_call_stmt(self, node, updated_node):
-        statement_call = self.__create_line_call(node, updated_node)
+    def __create_line_call_stmt(self, node, updated_node, end_node):
+        statement_call = self.__create_line_call(node, updated_node, end_node)
         stmt = cst.SimpleStatementLine(body=[cst.Expr(value=statement_call)],
                                 trailing_whitespace=cst.TrailingWhitespace(
                                     whitespace=cst.SimpleWhitespace(value='',)
@@ -121,8 +127,8 @@ class CodeRewriter(cst.CSTTransformer):
         return aux_stmt
         
     
-    def __update_indented_block(self, node, updated_node):
-        stmt = self.__create_line_call_stmt(node, updated_node)
+    def __update_indented_block(self, node, updated_node, end_node):
+        stmt = self.__create_line_call_stmt(node, updated_node, end_node)
         body_content = [stmt, cst.Expr(cst.Newline())]
         body_content.extend(updated_node.body.body)
         new_body = cst.IndentedBlock(body=body_content)
@@ -138,7 +144,7 @@ class CodeRewriter(cst.CSTTransformer):
         return stmt
 
     def __wrap_import(self, node, updated_node):
-        statement_call = self.__create_line_call(node, updated_node)
+        statement_call = self.__create_line_call(node, updated_node, node)
         stmt = cst.SimpleStatementLine(body=[cst.Expr(value=statement_call)],
                                 trailing_whitespace=cst.TrailingWhitespace(
                                     whitespace=cst.SimpleWhitespace(value='',)
@@ -259,10 +265,14 @@ class CodeRewriter(cst.CSTTransformer):
                 if node.body[0].value.value.startswith('"""'):
                     return updated_node
             
-        statement_call = self.__create_line_call(node, updated_node)
+        statement_call = self.__create_line_call(node, updated_node, node)
         stmt = cst.SimpleStatementLine(body=[cst.Expr(value=statement_call)],
                                 trailing_whitespace=updated_node.trailing_whitespace)
-        
+
+        # Put line call in front of statements as it is otherwise never reached
+        if isinstance(node.body[0], (cst.Continue, cst.Break, cst.Raise)):
+            return cst.FlattenSentinel([stmt, updated_node])
+
         if isinstance(node.body[0], cst.Pass):
             return cst.FlattenSentinel([updated_node, stmt])
         if isinstance(node.body[0], cst.Return):
@@ -325,34 +335,49 @@ class CodeRewriter(cst.CSTTransformer):
         return cst.FlattenSentinel([updated_node, stmt])
     
     def leave_For(self, node, updated_node):
-        return self.__update_indented_block(node, updated_node)
+        line_call = self.__create_line_call(node, updated_node, node.iter)
+
+        # handle iteration over tuple without parens
+        if isinstance(updated_node.iter, cst.Tuple) and not updated_node.iter.lpar and not updated_node.iter.rpar:
+            for_iter = updated_node.iter.with_changes(lpar=[cst.LeftParen()], rpar=[cst.RightParen()])
+        else:
+            for_iter = updated_node.iter
+        line_call = line_call.with_changes(args=[*line_call.args, cst.Arg(value=for_iter)])
+        ws = node.whitespace_after_for if node.whitespace_after_for.value else cst.SimpleWhitespace(value=' ')
+        return updated_node.with_changes(iter=line_call, whitespace_after_for=ws)
     
     def leave_While(self, node, updated_node):
-        return self.__update_indented_block(node, updated_node)
+        line_call = self.__create_line_call(node, updated_node, node.test)
+        line_call = line_call.with_changes(args=[*line_call.args, cst.Arg(value=updated_node.test)])
+        ws = node.whitespace_after_while if node.whitespace_after_while.value else cst.SimpleWhitespace(value=' ')
+        return updated_node.with_changes(test=line_call, whitespace_after_while=ws)
     
     def leave_FunctionDef(self, node, updated_node):
-        return self.__update_indented_block(node, updated_node)
+        return self.__update_indented_block(node, updated_node, node.params)
 
     def leave_ClassDef(self, node, updated_node):
-        return self.__update_indented_block(node, updated_node)
+        return self.__update_indented_block(node, updated_node, node.bases[-1] if node.bases else None)
     
     def leave_With(self, node, updated_node):
-        return self.__update_indented_block(node, updated_node)
+        return self.__update_indented_block(node, updated_node, node.items[-1])
     
     def leave_If(self, node, updated_node):
-        return self.__update_indented_block(node, updated_node)
-    
-    def leave_Elif(self, node, updated_node):
-        return self.__update_indented_block(node, updated_node)
+        line_call = self.__create_line_call(node, updated_node, node.test)
+        line_call = line_call.with_changes(args=[*line_call.args, cst.Arg(value=updated_node.test)])
+        ws = node.whitespace_before_test if node.whitespace_before_test.value else cst.SimpleWhitespace(value=' ')
+        return updated_node.with_changes(test=line_call, whitespace_before_test=ws)
+
+    def leave_Else(self, node, updated_node):
+        return self.__update_indented_block(node, updated_node, None)
     
     def leave_Try(self, node, updated_node):
-        return self.__update_indented_block(node, updated_node)
+        return self.__update_indented_block(node, updated_node, None)
     
     def leave_ExceptHandler(self, node, updated_node):
-        return self.__update_indented_block(node, updated_node)
+        return self.__update_indented_block(node, updated_node, None)
     
     def leave_Finally(self, node, updated_node):
-        return self.__update_indented_block(node, updated_node)
+        return self.__update_indented_block(node, updated_node, None)
         
     def leave_Module(self, node, updated_node):
         if not self.instrument:
