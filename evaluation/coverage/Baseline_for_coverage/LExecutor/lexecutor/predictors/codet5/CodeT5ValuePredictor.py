@@ -27,11 +27,11 @@ class CodeT5ValuePredictor(ValuePredictor):
             response = get(entry)
         except ConnectionError:
             # model server not yet running; start it
-            logger.info("No model server running. Starting it now")
-            server_log = open("model_server.log", "w")
-            subprocess.Popen(
-                "python -m lexecutor.predictors.codet5.ModelServer".split(" "),
-                stderr=server_log, stdout=server_log)
+            logger.info("No model server running.")
+            # server_log = open("model_server.log", "w")
+            # subprocess.Popen(
+            #     "python -m lexecutor.predictors.codet5.ModelServer".split(" "),
+            #     stderr=server_log, stdout=server_log)
 
             # try to connect until it's responding (or we give up)
             attempts = 0

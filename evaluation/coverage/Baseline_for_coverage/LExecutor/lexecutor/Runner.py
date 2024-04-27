@@ -8,7 +8,7 @@ import logging
 
 import libcst as cst
 
-from lexecutor.Util import calc_changed_lines_coverage, extract_executed_lines
+from lexecutor.Util import extract_executed_lines, start_server, shutdown_server
 from lexecutor.CleanedCodeChange import CleanedCodeChange
 from lexecutor.Metadata import Metadata
 from lexecutor.Hyperparams import Hyperparams
@@ -53,59 +53,34 @@ def generate_compare_script(code_change, directory):
     comment = f"# {code_change.old_sha} -- {code_change.new_sha}\n\n"
     fct_def_code = old_fun + "\n\n" + new_fun
     main_code_template = f"""
-
-def _context_stdout():
-    import contextlib
-    import io
-    return contextlib.redirect_stdout(io.StringIO())
+def different(val1, val2):
+    if type(val1) == Wrapper1 and type(val2) == Wrapper2:
+        return False
+    if type(val1) != type(val2):
+        return True
+    if type(val1) == list and type(val2) == list and len(val1) != len(val2):
+        return True
+    if type(val1) == dict and type(val2) == dict and len(val1) != len(val2):
+        return True
+    if type(val1) == set and type(val2) == set and len(val1) != len(val2):
+        return True
+    if type(val1) == tuple and type(val2) == tuple and len(val1) != len(val2):
+        return True
+    if type(val1) in [int, float, str, bool, type(None)] and type(val2) in [int, float, str, bool, type(None)]:
+        return val1 != val2
+    return False
     
-def _context_stderr():
-    import contextlib
-    import io
-    return contextlib.redirect_stderr(io.StringIO())
-    
-def _exit_lexecutor():
-    import sys
-    sys.exit(0)
-
 if __name__ == "__main__":
-    from lexecutor.Runtime import switch_state
-    from lexecutor.Comparator import compare_exceptions, compare_main_args, compare_args, compare_return_values, compare_stdout, compare_stderr, unwrap_return_value
-    exception_old = None
-    old_stdout = ''
-    old_stderr = ''
     try:
-        with _context_stdout() as f_out, _context_stderr() as f_err:
-            val1 = {old_fun_name}()
-            val1 = unwrap_return_value(val1)
-        old_stdout = f_out.getvalue()
-        old_stderr = f_err.getvalue()
+        val1 = {old_fun_name}()
+        val2 = {new_fun_name}()
     except Exception as e:
-        exception_old = e
-    switch_state()
-    exception_new = None
-    new_stdout = ''
-    new_stderr = ''
-    try:
-        with _context_stdout() as f_out, _context_stderr() as f_err:
-            val2 = {new_fun_name}()
-            val2 = unwrap_return_value(val2)
-        new_stdout = f_out.getvalue()
-        new_stderr = f_err.getvalue()
-    except Exception as e:
-        exception_new = e
-    if compare_exceptions(exception_old, exception_new):
-        _exit_lexecutor()
-    if compare_main_args():
-        _exit_lexecutor()
-    if compare_args():
-        _exit_lexecutor()
-    if compare_stdout(old_stdout, new_stdout):
-        _exit_lexecutor()
-    if compare_stderr(old_stderr, new_stderr):
-        _exit_lexecutor()
-    if compare_return_values(val1, val2):
-        _exit_lexecutor()
+        print("Function(s) raised an exception: " + str(type(e)) + " -- " + str(e))
+    else:
+        if different(val1, val2):
+            print("Functions returned different values: " + str(val1) + " vs. " + str(val2))
+        else:
+            print("Both functions returned the same value: " + str(val1))
 """
 
     compare_script = comment + fct_def_code + main_code_template
@@ -114,22 +89,10 @@ if __name__ == "__main__":
     with open(script_path, 'w', encoding='utf-8') as f:
         f.write(compare_script)
 
-    func_to_excs = {}
-    for key in old_excs.keys() | new_excs.keys():
-        func_to_excs[key] = list(old_excs.get(key, set()) | new_excs.get(key, set()))
-
-    project_name = directory.split('/')[-1]
-
     meta = {
         os.path.abspath(script_path): {
             'old_params': old_params,
             'new_params': new_params,
-            'func_to_excs': func_to_excs,
-            'classes': list(old_classes | new_classes),
-            'renames': None,
-            'string_literals': list(old_literals[0] | new_literals[0]),  # currently buggy with bytes
-            'integer_literals':  list(old_literals[1] | new_literals[1]),
-            'float_literals':   list(old_literals[2] | new_literals[2]),
             'old_changed_lines': code_change.old_changed_lines,
             'new_changed_lines': code_change.new_changed_lines,
             'line_offsets': offsets,
@@ -219,7 +182,7 @@ if __name__ == '__main__':
         if not os.path.exists(ROOT):
             exit('Run Instrument first')
         logger.info(f'Started execution: {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}')
-        #start_server()
+        start_server()
         results = []
         for idx, commit in enumerate(commits, start=1):
             cleaned_code_change = CleanedCodeChange(commit['repo'], commit['old_commit'], commit['new_commit'],
@@ -227,7 +190,7 @@ if __name__ == '__main__':
                                                     commit['old_changed_lines'], commit['new_changed_lines'])
             print(f'Lexecuting script: {idx} / {len(commits)}', end='\r' if idx < len(commits) else '\n', flush=True)
             results.append(run_lexecutor(cleaned_code_change))
-        #shutdown_server()
+        shutdown_server()
         with open('../std_out.json', 'w') as f:
             json.dump(results, f, indent=4)
         logger.info(f'Finished execution: {time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())}')

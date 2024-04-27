@@ -1,4 +1,22 @@
 from datetime import datetime
+import subprocess
+import time
+
+process = None
+
+
+def start_server():
+    global process
+    server_log = open("model_server.log", "w")
+    process = subprocess.Popen(
+        "python -m lexecutor.predictors.codet5.ModelServer".split(" "),
+        stderr=server_log, stdout=server_log)
+    time.sleep(5)  # give server time to spin up
+
+
+def shutdown_server():
+    if process is not None:
+        process.kill()
 
 
 def gather_files(files_arg, suffix=".py"):
