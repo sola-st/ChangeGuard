@@ -144,6 +144,8 @@ def run_lexecutor(code_change):
         iterations[f'iteration_{i}'] = {'out': output, 'err': error, 'old_executed_lines': old_executed_lines, 'new_executed_lines': new_executed_lines}
         if output and 'Function(s) raised an exception' not in output:
             successful = True
+        if error == 'timeout':
+            break
 
     old_tot_executed_lines = list(
         set().union(*(set(it['old_executed_lines']) for it in iterations.values())))
