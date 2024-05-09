@@ -4,7 +4,7 @@ import time
 import random
 import requests
 from requests.exceptions import ConnectionError
-from ...ValueAbstraction import restore_value
+from ...ValueAbstraction import restore_value, LexecutorObject
 
 logger = get_logger(__name__)
 
@@ -51,7 +51,10 @@ class CodeT5ValuePredictor(ValuePredictor):
     def name(self, iid, name):
         entry = {"iid": iid, "name": name, "kind": "name"}
         abstract_v, v = self._query_model(entry)
-        logger.info(f"{iid}: Predicting for name {name}: {v}")
+        if isinstance(v[0], LexecutorObject):
+            logger.info(f"{iid}: Predicting for name {name}: {v}, internals: {v[0].repr_only_internals()}")
+        else:
+            logger.info(f"{iid}: Predicting for name {name}: {v}")
         self.stats.inject_value(
             iid, f"Inject {abstract_v} for variable {name}")
         return v
@@ -59,7 +62,10 @@ class CodeT5ValuePredictor(ValuePredictor):
     def call(self, iid, fct, fct_name, *args, **kwargs):
         entry = {"iid": iid, "name": fct_name, "kind": "call"}
         abstract_v, v = self._query_model(entry)
-        logger.info(f"{iid}: Predicting for call: {v}")
+        if isinstance(v[0], LexecutorObject):
+            logger.info(f"{iid}: Predicting for call: {v}, internals: {v[0].repr_only_internals()}")
+        else:
+            logger.info(f"{iid}: Predicting for call: {v}")
         self.stats.inject_value(
             iid, f"Inject {abstract_v} as return value of {fct_name}")
         return v
@@ -67,7 +73,10 @@ class CodeT5ValuePredictor(ValuePredictor):
     def attribute(self, iid, base, attr_name):
         entry = {"iid": iid, "name": attr_name, "kind": "attribute"}
         abstract_v, v = self._query_model(entry)
-        logger.info(f"{iid}: Predicting for attribute {attr_name}: {v}")
+        if isinstance(v[0], LexecutorObject):
+            logger.info(f"{iid}: Predicting for attribute {attr_name}: {v}, internals: {v[0].repr_only_internals()}")
+        else:
+            logger.info(f"{iid}: Predicting for attribute {attr_name}: {v}")
         self.stats.inject_value(
             iid, f"Inject {abstract_v} for attribute {attr_name}")
         return v
@@ -75,7 +84,10 @@ class CodeT5ValuePredictor(ValuePredictor):
     def subscript(self, iid, name):
         entry = {"iid": iid, "name": name, "kind": "subscript"}
         abstract_v, v = self._query_model(entry)
-        logger.info(f"{iid}: Predicting for name {name}: {v}")
+        if isinstance(v[0], LexecutorObject):
+            logger.info(f"{iid}: Predicting for subscript {name}: {v}, internals: {v[0].repr_only_internals()}")
+        else:
+            logger.info(f"{iid}: Predicting for subscript {name}: {v}")
         self.stats.inject_value(
             iid, f"Inject {abstract_v} for variable {name}")
         return v

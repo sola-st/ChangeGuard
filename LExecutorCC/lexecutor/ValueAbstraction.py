@@ -191,6 +191,9 @@ class LexecutorObject(Dummy):
         LexecutorObject.__comparing = False
         return self_repr
 
+    def repr_only_internals(self):
+        return ", ".join([attr + "=" + repr(getattr(self, attr)) for attr in LexecutorObject._internal_attributes])
+
     def __operation(self, other, operator, right=False):
         if isinstance(other, int):
             if right:
