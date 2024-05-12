@@ -20,4 +20,3 @@ LExecutorCC/data/released_models/*
 /evaluation/complexity
 /evaluation/accuracy
 **/.vscode
-**/*.log

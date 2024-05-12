@@ -2,11 +2,11 @@ import json
 import os
 from typing import List
 import re
-import time
 import matplotlib.pyplot as plt
 
 REPO_PATH = r'../Repos'
 REPOS: List[str] = [entry.name for entry in os.scandir(REPO_PATH) if entry.is_dir()]
+
 
 def evaluate_annotated_changes():
     with open(ANNOTATED_CHANGES) as f:
@@ -46,79 +46,14 @@ def evaluate_annotated_changes():
         print(f'{repo:^12} | {len(repo_total):^5} | {"{:02d}".format(len(repo_refactor)):^8} | {"{:02d}".format(len(repo_change)):^6} | {"{:02d}".format(len(repo_preserving)):^10} | {"{:02d}".format(len(repo_changing)):^8} | {"{:02d}".format(len(repo_unclear)):^7}')
 
 
-def evaluate_stdout():
-    with open('../annotated_changes/stdout_baseline.json') as f:
-        outputs = json.load(f)
-    error_outputs = [output for output in outputs if 'Function(s) raised an exception' in output['out']]
-    print('Total', len(outputs))
-    print('Num Commits_Exception', len(error_outputs))
-    error_per_repo = {repo: len(list(filter(lambda x: x['repo'] == repo, error_outputs))) for repo in set(map(lambda x: x['repo'], error_outputs))}
-    print('Num Error_Per_Repo', error_per_repo)
-    preserving_outputs = [output for output in outputs if 'Both functions returned the same value' in output['out']]
-    print('Num Commits_Preserving', len(preserving_outputs))
-    changing_outputs = [output for output in outputs if 'Functions returned different values' in output['out']]
-    print('Num Commits_Changing', len(changing_outputs))
-    print('Num timeouts', len([output for output in outputs if output['err'] == 'timeout']))
-    print('Num Failed_Function_Extraction (__init__)', len([output for output in outputs if "python: can't open file" in output['err']]))
-    annotated_preserving_outputs = [output for output in outputs if output['annotation'] == 'semantics_preserving']
-    annotated_preserving_outputs_exception = [output for output in annotated_preserving_outputs if 'Function(s) raised an exception' in output['out']]
-    annotated_preserving_outputs_preserving = [output for output in annotated_preserving_outputs if 'Both functions returned the same value' in output['out']]
-    annotated_preserving_outputs_changing = [output for output in annotated_preserving_outputs if 'Functions returned different values' in output['out']]
-    print('Annotated Preserving:')
-    print(' total:', len(annotated_preserving_outputs), '| exception:', len(annotated_preserving_outputs_exception), '| preserving:', len(annotated_preserving_outputs_preserving), '| changing:', len(annotated_preserving_outputs_changing))
-    annotated_changing_outputs = [output for output in outputs if output['annotation'] == 'semantics_changing']
-    annotated_changing_outputs_exception = [output for output in annotated_changing_outputs if 'Function(s) raised an exception' in output['out']]
-    annotated_changing_outputs_preserving = [output for output in annotated_changing_outputs if 'Both functions returned the same value' in output['out']]
-    annotated_changing_outputs_changing = [output for output in annotated_changing_outputs if 'Functions returned different values' in output['out']]
-    print('Annotated Changing:')
-    print(' total:', len(annotated_changing_outputs), '| exception:', len(annotated_changing_outputs_exception), '| preserving:', len(annotated_changing_outputs_preserving), '| changing:', len(annotated_changing_outputs_changing))
-    annotated_unclear_outputs = [output for output in outputs if output['annotation'] == 'unclear']
-    annotated_unclear_outputs_exception = [output for output in annotated_unclear_outputs if 'Function(s) raised an exception' in output['out']]
-    annotated_unclear_outputs_preserving = [output for output in annotated_unclear_outputs if 'Both functions returned the same value' in output['out']]
-    annotated_unclear_outputs_changing = [output for output in annotated_unclear_outputs if 'Functions returned different values' in output['out']]
-    print('Annotated Unclear:')
-    print(' total:', len(annotated_unclear_outputs), '| exception:', len(annotated_unclear_outputs_exception), '| preserving:', len(annotated_unclear_outputs_preserving), '| changing:', len(annotated_unclear_outputs_changing))
-    print([output['out'] for output in outputs if output['err'].count('Predicting for') == 0])
-    num_lexecutions = [output['err'].count('Predicting for') for output in outputs if  output['out'] != '']
-    print('Avarage_Num_LExections:', sum(num_lexecutions)/len(num_lexecutions))
-
-
-def evaluate_coverage():
-    with open('../annotated_changes/stdout_SuperObject.json') as f:
-        outputs = json.load(f)
-    covered_lines = [entry['err'].split('Lines executed: ')[1] for entry in outputs if 'Lines executed: ' in entry['err']]
-    covered_lines = [entry[:entry._index(']') + 1] for entry in covered_lines]
-    print(covered_lines)
-    covered_lines = [[int(line) for line in entry.strip('[]').split(', ')] for entry in covered_lines]
-    print((sum(map(lambda x: len(x), covered_lines)))/len(covered_lines))
-
-
-def evaluate_iter():
-    with open(JSON_PATH, 'r') as f:
-        outputs = json.load(f)
-    print('Final Result Preserving', len([output for output in outputs if output['final_result'] == 'preserving']))
-    print('Final Result Changing', len([output for output in outputs if output['final_result'] == 'changing']))
-    print('Final Result Error', len([output for output in outputs if output['final_result'] == 'non_conclusive']))
-    nb_lines_covered = 0
-    for output in (output for output in outputs):
-        iterations = [o['err'] for o in output['iterations'].values()]
-        covered_lines = [iteration.split('Lines executed: ')[1] for iteration in iterations if 'Lines executed: ' in iteration]
-        covered_lines = [entry[:entry._index(']') + 1] for entry in covered_lines]
-        covered_lines = [{int(line) for line in entry.strip('[]').split(', ')} for entry in covered_lines]
-        unique_lines = set().union(*covered_lines)
-        # print(unique_lines)
-        # print(len(unique_lines))
-        nb_lines_covered += len(unique_lines)
-    print(nb_lines_covered / len(outputs))
-
-
 def get_final_results():
-    with open(JSON_PATH, 'r') as f:
+    with open(r'accuracy/std_out.json', 'r') as f:
         results = json.load(f)
     results = [result['final_result'] for result in results]
-    print('Number preserving:', results.count('preserving'))
-    print('Number changing:', results.count('changing'))
-    print('Number non_conclusive:', results.count('non_conclusive'))
+    print('Number identified as preserving:', results.count('preserving'))
+    print('Number identified as changing:', results.count('changing'))
+    print('Number identified as non_conclusive:', results.count('non_conclusive'))
+    print('Number identified as not_reached:', results.count('not_reached'))
 
 
 def get_errors():
@@ -126,7 +61,7 @@ def get_errors():
         changes = json.load(f)
     preserving_error, changing_error, unclear_error = [], [], []
     sha_to_change = {change['sha']: change for change in changes}
-    with open(JSON_PATH, 'r') as f:
+    with open(r'accuracy/std_out.json', 'r') as f:
         results = json.load(f)
     for result in results:
         if result['final_result'] == 'non_conclusive':
@@ -153,71 +88,11 @@ def get_errors():
     #print(json.dumps(errors, indent=2))
 
 
-def get_timing_profile():
-    with open(LOG_PATH, 'r') as f:
-        lines = f.read().splitlines()
-    start_time = lines[0]
-    end_time = lines[-1]
-    fmt = '%Y-%m-%d %H:%M:%S'
-    print(f'Full Duration: {time.mktime(time.strptime(end_time.split(": ")[2], fmt)) - time.mktime(time.strptime(start_time.split(": ")[2], fmt))}s')
-    print(f'Time spent executing compare scripts: {sum(float(line.split(" ")[4]) for line in lines[1:-1] if "iteration" in line )}s')
-
-
-def evaluate_run_log():
-    with open(r'C:\Users\Lars\Uni\Master\Masterarbeit\history\isinstance_mock\LExecutorCC\logs\run.log', 'r') as f:
-        lines = f.read().splitlines()
-    print(sum(float(line.split(' ')[2]) for line in lines[1:-1]))
-
-
-def get_changing_commits():
-    with open(r'C:\Users\Lars\Uni\Master\Masterarbeit\master-thesis-lars-groeninger\annotated_changes\annotated_changes.json', 'r') as f:
-        commits = json.load(f)
-    commits = [commit for commit in commits if commit['annotation'] == 'semantics_changing' and 'return' in commit['old_clean_function']]
-    with open(r'changes.json', 'w') as f:
-        json.dump(commits, f, indent=4)
-
-
-def foo():
-    with open(ANNOTATED_CHANGES, 'r', encoding='utf-8') as f:
-        changes = json.load(f)
-    sha_to_change = {change['sha']: change for change in changes}
-    with open(r'C:\Users\Lars\Uni\Master\Masterarbeit\history\call_args\LExecutorCC\std_out.json') as f:
-        out = json.load(f)
-    counter = 0
-    important = []
-    for o in out:
-        if o['final_result'] == 'preserving' and sha_to_change[o['sha']]['annotation'] == 'semantics_changing':
-            counter += 1
-            important.append(sha_to_change[o['sha']])
-    print(f'Errors that would be changing: {counter}')
-    with open('important.json', 'w') as f:
-        json.dump(important, f, indent=4)
-
-
-def get_undetected_changes():
-    with open(ANNOTATED_CHANGES, 'r', encoding='utf-8') as f:
-        changes = json.load(f)
-    sha_to_change = {change['sha']: change for change in changes}
-    with open(JSON_PATH, 'r', encoding='utf-8') as f:
-        out = json.load(f)
-    undetected_changes = []
-    for result in out:
-        change = sha_to_change[result['sha']]
-        # # annotated changing, but false negative
-        # if change['annotation'] == 'semantics_changing' and result['final_result'] == 'preserving':
-        # changed lines covered but change not detected
-        if result['final_result'] != 'non_conclusive' and result['coverage']['old']['ratio'] == 0 and result['coverage']['new']['ratio'] == 0:
-            undetected_changes.append(change)
-    print('Undetected:', len(undetected_changes))
-    with open('undetected_changes.json', 'w') as f:
-        json.dump(undetected_changes, f, indent=4)
-
-
 def get_confusion_matrix():
     with open(ANNOTATED_CHANGES, 'r', encoding='utf-8') as f:
         changes = json.load(f)
     sha_to_change = {change['sha']: change for change in changes}
-    with open(JSON_PATH, 'r', encoding='utf-8') as f:
+    with open(r'accuracy/std_out.json', 'r', encoding='utf-8') as f:
         out = json.load(f)
     tp, fp, fn, tn, nrc, nrp = [], [], [], [], [], []
     for result in out:
@@ -255,26 +130,9 @@ def get_confusion_matrix():
         json.dump(nrc, f, indent=4)
     with open('./accuracy/nrp.json', 'w') as f:
         json.dump(nrp, f, indent=4)
-    print(total_semantics_preserving, total_semantics_changing, total_unclear)
+    print('Number annotated', f'preserving: {total_semantics_preserving}', f'changing: {total_semantics_changing}', f'unclear: {total_unclear}')
     print('tp:', len(tp), 'fp:', len(fp), 'fn:', len(fn), 'tn:', len(tn), 'nrc:', len(nrc), 'nrp:', len(nrp))
     print('not_reached:', len([x for x in out if x['final_result'] == 'not_reached']))
-
-
-def get_only_one_exception():
-    with open(JSON_PATH, 'r') as f:
-        j = json.load(f)
-    only_results = []
-    for result in j:
-        for idx in range(1, 301):
-            iteration = result['iterations'].get(f'iteration_{idx}')
-            if iteration is None:
-                break
-            if iteration['out'].startswith('only'):
-                only_results.append(result)
-                break
-    print(len(only_results))
-    with open('only.json', 'w') as f:
-        json.dump(only_results, f, indent=4)
 
 
 def get_length_of_functions():
@@ -282,7 +140,7 @@ def get_length_of_functions():
         changes = json.load(f)
     sha_to_change = {change['sha']: change for change in changes}
 
-    with open(JSON_PATH, 'r', encoding='utf-8') as f:
+    with open(r'accuracy/std_out.json', 'r', encoding='utf-8') as f:
         results = json.load(f)
     reached_lens = []
     for result in results:
@@ -303,11 +161,11 @@ def get_length_of_functions():
     return reached_lens, not_reached_lens
 
 
-def get_complexity():
+def create_functions_py():
     with open(ANNOTATED_CHANGES, 'r', encoding='utf-8') as f:
         changes = json.load(f)
     sha_to_change = {change['sha']: change for change in changes}
-    with open(JSON_PATH, 'r', encoding='utf-8') as f:
+    with open(r'accuracy/std_out.json', 'r', encoding='utf-8') as f:
         results = json.load(f)
     reached_functions = []
     not_reached_functions = []
@@ -324,7 +182,8 @@ def get_complexity():
     with open('./complexity/not_reached.py', 'w', encoding='utf-8') as f:
         f.write('\n'.join(not_reached_functions))
 
-def get_complexity_box_plots():
+
+def get_complexity():
     with open('complexity/reached.txt', 'r') as f:
         lines = f.readlines()
     reached_complexity = [int(re.search('\\(([0-9]+)\\)', line).group(1)) for line in lines]
@@ -336,16 +195,16 @@ def get_complexity_box_plots():
     return reached_complexity, not_reached_complexity
 
 
-def get_boxplots():
+def get_complexity_boxplots():
     reached_lens, not_reached_lens = get_length_of_functions()
-    reached_complexity, not_reached_complexity = get_complexity_box_plots()
-    fig, axs = plt.subplots(2, 2, figsize=(12, 6))
+    reached_complexity, not_reached_complexity = get_complexity()
+    fig, axs = plt.subplots(2, 2, figsize=(8, 8))
     axs[0, 0].boxplot([reached_lens, not_reached_lens], showfliers=False, showmeans=True, meanline=True, vert=True)
-    axs[0, 0].set_title('No Outliers', fontsize=16)
+    axs[0, 0].set_title('Without Outliers', fontsize=16)
     axs[0, 0].set_ylabel("Number of Lines", fontsize=14, labelpad=9)
     axs[0, 0].tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
     axs[0, 1].boxplot([reached_lens, not_reached_lens], showfliers=True, showmeans=True, meanline=True, vert=True)
-    axs[0, 1].set_title('Outliers', fontsize=16)
+    axs[0, 1].set_title('With Outliers', fontsize=16)
     axs[0, 1].tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
 
     axs[1, 0].boxplot([reached_complexity, not_reached_complexity], showfliers=False, showmeans=True, meanline=True, vert=True)
@@ -363,25 +222,191 @@ def get_boxplots():
     fig.savefig('./complexity/boxplot.pdf', bbox_inches='tight', dpi=1200)
     fig.show()
 
+
+def draw_robustness_plot():
+    bars = [122, 257]
+    fig = plt.figure()
+    axes = fig.add_axes([0.1, 0.1, 0.5, 0.5])
+    axes.spines['top'].set_visible(False)
+    axes.spines['right'].set_visible(False)
+    axes.spines['left'].set_visible(False)
+
+    axes.spines['bottom'].set_color('#DDDDDD')
+    axes.set_axisbelow(True)
+    axes.yaxis.grid(True, color='#CCCCCC')
+    axes.xaxis.grid(False)
+    axes.tick_params(axis='y', color='#CCCCCC')
+    axes.tick_params(bottom=False)
+    bs = axes.bar([1, 2], bars, color='#00689d')
+    for bar in bs:
+        axes.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height() + 3.9,
+            round(bar.get_height(), 1),
+            horizontalalignment='center',
+            color='#00689d',
+            weight='bold'
+        )
+    axes.set_xlim(0.5, 2.5)
+    axes.plot([0, 3], [299, 299], '--', color=(0., 0., 0.))
+    axes.set_xticks([1, 2], ['Baseline', 'LExecutorCC'])
+    axes.tick_params(axis='x', labelsize=12)
+    axes.set_yticks([0, 50, 100, 150, 200, 250, 299])
+    axes.set_ylabel('Number of successful code changes', fontsize=10.5)
+    fig.savefig(f'./coverage/robustness.pdf', bbox_inches='tight', dpi=1200)
+    fig.show()
+
+
+def get_coverage():
+    with open(r'coverage/std_out_baseline.json', 'r', encoding='utf-8') as f:
+        baseline = json.load(f)
+    with open(r'coverage/std_out_approach.json', 'r', encoding='utf-8') as f:
+        approach = json.load(f)
+    with open(ANNOTATED_CHANGES, 'r', encoding='utf-8') as f:
+        changes = json.load(f)
+    sha_to_change = {change['sha']: change for change in changes}
+    baseline_tot_covered = 0
+    baseline_tot_lines = 0
+    baseline_ratios = []
+    approach_ratios = []
+    for result in zip(baseline, approach):
+        # comment out to obtain coverage across all code changes not just successful
+        if not result[0]['successful']:
+            continue
+        change = sha_to_change[result[0]['sha']]
+        lines = len(change['old_clean_function'].splitlines())
+        print('all:', lines)
+        approach_covered = len(set(result[1]['coverage']['old']['executed_lines']))
+        baseline_covered = len(set(result[0]['old_tot_executed_lines']))
+        print('covered:', baseline_covered, approach_covered)
+        baseline_tot_covered += baseline_covered
+        baseline_tot_lines += lines
+        baseline_ratios.append(baseline_covered/lines)
+        approach_ratios.append(approach_covered/lines)
+    print(baseline_tot_covered)
+    print('RATIO:', baseline_tot_covered/baseline_tot_lines)
+    print('AVG', sum(baseline_ratios)/len(baseline_ratios))
+    fig = plt.figure()
+    axes = fig.add_axes([0.1, 0.1, 0.5, 0.5])
+    bp = axes.boxplot([baseline_ratios, approach_ratios], showfliers=True, showmeans=True, meanline=True)
+    axes.tick_params(axis='y', labelsize=12)
+    axes.set_ylabel('Lines Covered (%)', fontsize=13, labelpad=9)
+    axes.set_xticks([1, 2], ['Baseline', 'LExecutorCC'])
+    axes.tick_params(axis='x', labelsize=12)
+    axes.legend([bp['means'][0], bp['medians'][0], bp['fliers'][0]], ['Mean', 'Median', 'Outlier'], loc='upper center',
+               shadow=False, ncol=3, fontsize=12 , bbox_to_anchor=(0.5, 1.2), )
+    axes.tick_params(bottom=False)
+    fig.show()
+    fig.savefig(f'./coverage/coverage.pdf', bbox_inches='tight', dpi=1200)
+
+
+def draw_box_plot(data, name, label):
+    fig = plt.figure()
+    axes = fig.add_axes([0.1, 0.1, 0.5, 0.5])
+    bp = axes.boxplot(data, showfliers=False, showmeans=True, meanline=True)
+    axes.tick_params(axis='y', labelsize=12)
+    axes.set_ylabel(label, fontsize=14, labelpad=9)
+    axes.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
+    axes.set_ylim([0,3.07])
+    axes.legend([bp['means'][0], bp['medians'][0]], ['Mean', 'Median'], loc='upper center',
+               shadow=False, ncol=3, fontsize=14 , bbox_to_anchor=(0.5, 1.2))
+    fig.show()
+    fig.savefig(f'./efficiency/{name}.pdf', bbox_inches='tight', dpi=1200)
+
+
+def get_time_data():
+
+    with open(r'efficiency/Instrumentation.log', 'r') as f:
+        log = f.read().splitlines()
+    times = [float(re.search('([0-9]+(?:.[0-9]+|))', line).group(1)) for line in log if 'took:' in line]
+    print('MAX INSTRUMENTATION:', max(times))
+    print('AVERAGE INSTRUMENTATION:', sum(times)/len(times))
+    draw_box_plot(times, 'instrumentation_plot', 'Instrumentation Time (s)')
+
+    with open(r'efficiency/Runner.log', 'r') as f:
+        log = f.read().splitlines()
+
+    first_iterations = [line for line in log if "iteration_1 " in line]
+    first_iterations = [float(re.search('([0-9]+(?:.[0-9]+|)) seconds', line).group(1)) for line in first_iterations]
+    first_iterations[0] -= 10  # adjust for time it takes for model server to start
+    print('AVG FIRST:', sum(first_iterations)/len(first_iterations))
+    draw_box_plot(first_iterations, 'first_iter_plot', 'Lexecution Time (s)')
+    #print(sorted(first_iterations, reverse=True))
+    remaining_iterations = [line for line in log if re.search('iteration_(?:[023456789]|1[0-9]+)', line)]
+    remaining_iterations = [float(re.search('([0-9]+(?:.[0-9]+|)) seconds', line).group(1)) for line in remaining_iterations]
+    print('AVG REMAINING:', sum(remaining_iterations)/len(remaining_iterations))
+    #print(sorted(remaining_iterations, reverse=True))
+    draw_box_plot(remaining_iterations, 'remaining_iter_plot', 'Lexecution Time (s)')
+    totals = [line for line in log if "Total" in line]
+    totals = [float(re.search('([0-9]+(?:.[0-9]+|))', line).group(1)) for line in totals]
+    print('TOTAL TIME:', sum(totals))
+    iterations = [line for line in log if "iteration_" in line]
+    iterations = [float(re.search('([0-9]+(?:.[0-9]+|)) seconds', line).group(1)) for line in iterations]
+    print('MAX ITERATION:', max(iterations))
+    print('AVERAGE ITERATION:', sum(iterations)/len(iterations))
+    print('PROPORTION ITERATION TO EVERYTHING:', sum(iterations)/sum(totals))
+    before = 1
+    total_nb = []
+    total_total = []
+    for idx, line in enumerate(log):
+        if "Total" not in line:
+            continue
+        nb_of_iterations = idx - before - 1
+        time = re.search('([0-9]+(?:.[0-9]+|))', line).group(1)
+        before = idx + 1
+        total_nb.append(nb_of_iterations)
+        total_total.append(float(time))
+    print('AVERAGE NB ITERATIONS:', sum(total_nb)/len(total_nb))
+    exactly_one = len([number for number in total_nb if number == 1])
+    less_than_ten = len([number for number in total_nb if 2 <= number < 10])
+    less_than_twentyfive = len([number for number in total_nb if 10 <=number < 25])
+    less_than_fifty = len([number for number in total_nb if 25 <= number < 50])
+    less_than_onehundred = len([number for number in total_nb if 50 <= number < 100])
+    less_than_twohundred = len([number for number in total_nb if 100 <= number < 200])
+    less_than_threehundred = len([number for number in total_nb if 200 <= number < 300])
+    exactly_three_hundred = len([number for number in total_nb if number == 300])
+    bars = [exactly_one, less_than_ten, less_than_twentyfive, less_than_fifty, less_than_onehundred, less_than_twohundred, less_than_threehundred, exactly_three_hundred]
+
+    fig = plt.figure()
+    axes = fig.add_axes([0.1, 0.1, 0.5, 0.5])
+    bs = axes.bar([i for i in range(len(bars))], bars, linewidth=1,
+            edgecolor='black', color='#00689d')
+    axes.set_xticks([0, 1, 2, 3, 4, 5, 6, 7], ['1', '2-9', '10-24', '25-49', '51-99', '100-199', '200-299', '300'], rotation=30)
+    axes.tick_params(axis='x')
+    axes.set_xlabel('Number of lexecutions', fontsize=13, labelpad=7)
+    axes.set_ylabel('Frequency', fontsize=13, labelpad=7)
+    axes.spines['top'].set_visible(False)
+    axes.spines['right'].set_visible(False)
+    axes.spines['left'].set_visible(False)
+    axes.spines['bottom'].set_color('#DDDDDD')
+    axes.set_axisbelow(True)
+    axes.yaxis.grid(True, color='#CCCCCC')
+    axes.xaxis.grid(False)
+    axes.tick_params(axis='y', color='#CCCCCC')
+    axes.tick_params(bottom=False)
+    for bar in bs:
+        axes.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height() + 0.9,
+            round(bar.get_height(), 1),
+            horizontalalignment='center',
+            color='#00689d',
+            weight='bold'
+        )
+    fig.show()
+    fig.savefig(f'./efficiency/nb_iterations.pdf', bbox_inches='tight', dpi=1200)
+
+
 if __name__ == '__main__':
-    prefix = r'C:\Users\Lars\Uni\Master\Masterarbeit\history\call_args'
     ANNOTATED_CHANGES = r'C:\Users\Lars\Uni\Master\Masterarbeit\master-thesis-lars-groeninger\LExecutorCC\annotated_changes.json'
-    JSON_PATH = rf'C:\Users\Lars\Uni\Master\Masterarbeit\history\final_questionmark\std_out.json'
-    LOG_PATH = rf'{prefix}\LExecutorCC\logs\Runner.log'
     # evaluate_annotated_changes()
-    evaluate_stdout()
-    # evaluate_coverage()
-    # evaluate_run_log()
-    # evaluate_iter()
     # get_final_results()
     # get_errors()
-    # get_timing_profile()
-    # get_changing_commits()
-    # foo()
-    # get_undetected_changes()
     # get_confusion_matrix()
-    # get_only_one_exception()
     # get_length_of_functions()
+    # create_functions_py()
     # get_complexity()
-    # get_complexity_box_plots()
-    # get_boxplots()
+    # get_complexity_boxplots()
+    # get_coverage()
+    # get_time_data()
+    # draw_robustness_plot()
