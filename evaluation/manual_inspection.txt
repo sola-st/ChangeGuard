@@ -33,11 +33,12 @@ https://github.com/scrapy/scrapy/commit/b06d0706e6644187b4c4a6f7ac80e8adbf376907
 1x remove redundant write to attribute
 1x change pos arg to keyword arg
 1x order changed
-1x nested catch statment
-summarzied:
+1x nested catch statement
+summarized:
   11x do not make redundant function call without side effect
   10x equivalent functions
   6x misc
+
 
 FN:
 
@@ -48,7 +49,6 @@ https://github.com/python-poetry/poetry/commit/75757635c855fbe6391709a856d1c9127
 https://github.com/psf/black/commit/72a25591b04b40d1c9b67844120457297c93ecb8 - incorrect type not added to call store
 https://github.com/httpie/cli/commit/e6d0bfec7c0811f3260dfa8455c53d6dbcff76c7 - incorrect type cannot trigger correct behavior
 https://github.com/tiangolo/fastapi/commit/30b3905ef38532c867036c1b650a9ceef5bfb1cc - incorrect type
-
 
 https://github.com/tiangolo/fastapi/commit/acf8a91c258003f3ff487bed0974c479f7136333 - change only in default arg
 https://github.com/tiangolo/fastapi/commit/b8e6d18385fbe51a671f40b7606e8cd7faa49be0 - change only in default arg
@@ -67,7 +67,6 @@ Transformatiom_changes:
 267: change is x == 0 to not x but x is predicted to be object
 
 
-
 LLM gpt3.5:
 
 60: True - if checks changed
@@ -81,7 +80,7 @@ LLM gpt3.5:
 32: True changes whitespace in string
 118: False full name different but same call
 282: True None check changed
-167: True exception wird nicht mehr geworfen
+167: True exception is no longer raised
 194: True
 211: True fixed typo
 5: True
@@ -101,6 +100,7 @@ LLM gpt3.5:
 260: True imports numpy in the function and uses it instead of old functions
 198: False? adds import
 
+
 LLM gpt4:
 
 261: True, different for 1d data?
@@ -115,7 +115,7 @@ LLM gpt4:
 49: True, HTML changed a bit (technically not really a change but we do not interpret the html and according to our definition the "string content changes"
 239: True, different behavior for shift_amount 0
 273: FP, equivalent functions
-267: FP, eqivalent functions
+267: FP, equivalent functions
 207: True, always sets "parse_dates" based on "date_parser" even if "parse_dates" exists
 209: FP, changed Dataframe, to pd.Dataframe but should not make a difference
 297: True, changed such that it no longer yields None
@@ -130,7 +130,7 @@ LLM gpt4:
 258: Unclear, again numpy things
 118: True, no longer sets base_score in constructor
 218: FP, full_name problem
-236: FP, reduntant function calls
+236: FP, redundant function calls
 2: True, self modified differently
 130: True, exchanged self.init with init?
 265: True, safe_as array exchanged with unsafe variant?

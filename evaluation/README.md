@@ -1,5 +1,12 @@
 # Steps to reproduce evaluation
 
+All results from the experiments can be found [here](https://github.com/sola-st/master-thesis-lars-groeninger/releases/tag/evaluation).
+
+> [!IMPORTANT]
+> In order to repeat the evaluation steps the results from the experiments (corresponding `std_out.json` file) are required.
+
+
+
 ## RQ1: Retraining model
 
 1. Get DyPyBench [link](https://github.com/sola-st/DyPyBench)
