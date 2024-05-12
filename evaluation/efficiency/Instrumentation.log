@@ -1,0 +1,1496 @@
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_8ea094f1f5c814a37ae8fc014bec47774b9fb18f/compare.py
+
+"Instrumentation" : "lexecutor.IIDs" : Creating new iid file at iids.json
+
+"Instrumentation" : Instrumentation took: 0.7008965015411377s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_543db7004ee593605e250265b0722917cef296d3/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.5986621379852295s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_4c8c85ccc2e52436276f692964abff4a3dc8495d/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.6760907173156738s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_ec6d945aa31af30726d8affaa8b30af330da1085/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.6411924362182617s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_18eb1fc072f83c6b43e63d0327a62709b9e7a380/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7820863723754883s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_16afba7eed609834df3091a53df85b00318b3033/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7367739677429199s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_bb81c45aebbe1856d78ac0b159e18abe4b80c15d/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.558537483215332s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_9c1e8c28307cc808739a3535e0d7901d0699dcf4/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8311574459075928s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_d4de5c39bce0a5193ed117ccd8359925999e5bbb/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8252120018005371s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_a1a23528da0edbd9587c8ab922ba325cfde79976/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8831362724304199s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_08bfa08273822ce18e01f70f9929130735022583/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.6289787292480469s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_e5325cd2b70af832dcb1dd8aac7bf81b50adcac7/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.5836353302001953s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_a5f5e2fc7f7b7f461458645c8826f015c1fa8d78/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8295226097106934s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_97de019995185cba1e7e63ea525d099ff5c94ea7/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7411303520202637s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_a09d0c4e3885282861d6fd42121e4a4641519374/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9104290008544922s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_dba3c2695c59fdb11825dbdf8f3b0ab6e0b368b2/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9109506607055664s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_72a25591b04b40d1c9b67844120457297c93ecb8/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8827078342437744s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_fa6caa6ca8489103d22d23f8f4ae4d3569bb115e/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7648231983184814s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_f51e53726b39a177355a7917c91c56f390dda7ef/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0276358127593994s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_e66e0f8ff046e532e8129c78894ca1c4095c5c8b/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7868943214416504s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_7a2956811534d7d20128ba6e911721749052b627/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.6094920635223389s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_d9eee31ec81c42d9953aee0d7f0adaf211519a10/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.6505074501037598s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_72a84d4099f2930979bd1ca1d9e441140b0a304d/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.753685474395752s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_f80f49767cacafaeb20016d483b8315474504e6a/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9350183010101318s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_ab9baf0d65dedb87a853f87afc63d40276e10b3b/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.6598639488220215s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_e1c86f987eca7e532f7d69f7ff4b9c70432fabbf/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7505209445953369s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_24e8dad575f2ae373e64b583f6ad103cf9193781/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8518483638763428s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_0cbe19c813559d6642e71832242264ab8d5a5d59/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8537681102752686s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_22127c633eba10d41519fb562c1252f859e2d7fa/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9083364009857178s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_e0d766727dc87f5c5f39ef751d0bf23fc5ff31a0/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8775982856750488s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_e6d0bfec7c0811f3260dfa8455c53d6dbcff76c7/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7629294395446777s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_f08c1bee178bade4a1a67213580dab2f6b00f6d5/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7499971389770508s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_ec203b1face4fb7e606a60880b6e80b4051bc41c/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.6375789642333984s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_7e0bed4e54c6c13f4ef8e0c8317163f0b124787a/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.6155121326446533s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_a62391e789e1137901228b57c98eb50f2453ca01/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.110987901687622s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_aae596d4724b39d3ad0da0ef4d6a5e7eb98ae418/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8144571781158447s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_c9d770017e7156ec46978bdf8bf48cd4124affc8/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9491422176361084s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_381dd4f619bfde1e2c3306cc6e7bef0a70f1f862/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.673626184463501s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_25798274189de5767a4508fb47414ac93b5a5bc9/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.6487336158752441s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_0aab796960647886522a41c48d247595802c887a/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7010073661804199s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_64af72eb887cee5217c766c140d189c570ed51a8/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8845257759094238s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_963b2746f55c5d94c9a81647e5840b98882ea9b8/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.6985375881195068s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_557911b606d1609016985fdb67aae6970b7363ed/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7066125869750977s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_e2751e5fa38b5e5cd53a607e5e82dd58ae9904bf/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7216081619262695s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_cc0ba032908efeaefea47300cce0596f69229ab6/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.6931746006011963s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_9bfbacfe98c877ba661e0e40c8dcac7571de819a/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7015025615692139s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_e9326de1619ecff41fe15b4e84714168ea68aaa7/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8092937469482422s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_884203676dfaf1d03c08fc79945493458b53e675/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8516719341278076s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_30b3905ef38532c867036c1b650a9ceef5bfb1cc/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7223126888275146s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_de6ccd77544b0c6e5bdcf2f470e6fd1a068344ef/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7127554416656494s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_e3c055ba8f1339faa1b0d931069c028b4e36fa17/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.697157621383667s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_00bdf533ef387b85a85df298de8537992c7d7c45/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9758782386779785s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_a64387c3fc03120e3424fb12bfa64df8d949da43/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.263810396194458s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_9359a8d65fdff4460d01d652ccafd31507c6c426/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0445101261138916s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_ec072d75fe0aae16caec3a8aa3f57ca8d6f05de5/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.6606836318969727s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_acf8a91c258003f3ff487bed0974c479f7136333/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8204488754272461s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_273b2cd6462ef8c3baa38997bb13f5fe4f15c892/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8444039821624756s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_b8e6d18385fbe51a671f40b7606e8cd7faa49be0/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7167150974273682s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_8650dee4bc6bbd868bfb09face4412aa7179f621/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.1813721656799316s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_0dfde6e284b221bf6695a98762a56d13a995e807/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.1775240898132324s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_65271c105f7c247ecffc9a7121815276e092bd10/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7652699947357178s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_17e146ad949b3d80438faf95e81b53c543cb50f5/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8014388084411621s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_00b07c863ec147256b68f71c3fe9b6b2f9dbe6bc/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7315106391906738s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_e3df23374cdb9342a823556170c53c9d987d0d33/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8442850112915039s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_cb13128cf03b2f1b3c5b48eab518e57e7b5f6516/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7560350894927979s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_cf3089a8f82d50430da4cbe690c1ef11d30241ec/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8612570762634277s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_aa7e15dcbab208ca404bcecd94cbe6fc583150dc/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.769334077835083s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_f13870731c100d3ed7daa5d96a75b697973def77/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8034744262695312s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_3666a584fd24dc14585648f215a82ce1e8b71baa/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9448063373565674s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_18c9db47940c1195809a0c82fcb85601c3f4df46/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7513332366943359s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_f7983ae96a5da9c7763ebd65947fb6032e2df36c/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8045432567596436s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_4f30cb7c57c4b5d74ba98953f59670a647623f7a/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8538806438446045s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_8f3563cf79024056987864ad4229f03e6c1aec99/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8016314506530762s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_4f689c41d9d5aa1161b185de9bd7fb6d85b6cc25/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7463033199310303s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_b4eb6534d52e86af3979b06734e5779f6bb9a4f6/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9247689247131348s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_ecf449b503b51f6344f7dfcaac8d58d2967f52a4/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.1995482444763184s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_d01669f5cdfff4edc889994331901b1f97946fdd/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8767874240875244s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_417a5e7fcfdc36385c0599f40bd1b0b8e96a3720/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7684817314147949s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_e3e1325efadaf5fb4b5b09c180e8a3bc9732de68/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7625377178192139s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_2bca01853c84d6b18b3e841f70e574de819857df/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8841445446014404s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_cc76b5207c30e86078cb14b2cc01cde0956bc6fc/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8335261344909668s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_1f94a1be0135be708541cd1fb9e877313b8676c0/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.2318239212036133s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_2957999afbdcdea5eef8a9927918f9f193c39121/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8385570049285889s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_2b608283838aff6f2b0d5d74c602f68f40e6c519/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9274032115936279s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_291c5e3d2663e01a68019fd4eb2cb24a1e89ab71/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7771806716918945s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_9afa6f17ff1a4cfe8b790a308fd0d824f0e97bb3/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9144365787506104s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_3e913c27faeb76cf3c6f01e688a2eeee3762980f/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0680153369903564s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_1771b0f0781ffe8a4d4f0d45bb085586a37da66a/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.931969404220581s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_54fb77b8856ad2482ec971af0e5b8e2d85c5a0a2/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.945819616317749s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_607316c9b6f5839389161441da8cff2eff5eccd0/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8267116546630859s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_75757635c855fbe6391709a856d1c9127af0a0a9/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.5761797428131104s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_ebb91e235eec67897ef44af532241055fb0f30be/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.051804542541504s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_38efaeacec85952b0a0e9235a75748580ed06c49/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0151937007904053s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_17454be4afc987ef837fd62078f078ffca292a95/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.7815835475921631s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_c5d2c6bdaccb3e0ae52c83f4b71b8b057a5ef67d/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9390313625335693s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_a5f542b2bc2ac2a4941715a6109e94f6aae9fc4e/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9038009643554688s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_ff77e26c5a0172062e04f5070b375e2807e0e5b0/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9918045997619629s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_f6e1f93691eb4b0292ac0a54b659b5516084bd11/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9601578712463379s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_4a27e8fcad8ceaa88101ae7bfd718f4e1a4e9439/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8952653408050537s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_3e32a4f83e89b2b2bede68e0d375a70931b04a8e/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9967522621154785s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_33b8b5a480de739e29938503209e404e0fa2a2a8/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3843135833740234s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_d222411ae9d01a04ec8eda348a65aa83852c37d0/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0269560813903809s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_b48c025d90395bc5bf380f56a083e7ad17feaf66/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9212572574615479s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_c0b1e379fa492abae020cb6781526769db0ebb8a/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9624180793762207s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_80296c2e48682259a9eb823943a1a78828fc6f1a/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0354902744293213s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_5a1305b6fe98808bf534c54e12ac64c1e4e4ce0f/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.837425947189331s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_69707bf6939d63a93b0d4b278cc367c42a976c6d/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8510124683380127s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_b6b45eb1cee564e3c563966244f124051c28b8e7/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8816063404083252s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_3ecad36f92d26676cc73276553cd99763b025b33/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8280119895935059s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_71b372f5e2fd313268018df237d401efd7795464/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8679788112640381s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_9fb0cd271efec0fc651a5143aedda42f3dc93ea8/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8250856399536133s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_00707392332b90cc9babf7258b1de3e0efa0a580/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.600511074066162s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_0b440285e813c54cda188eac278bda6fa4b1169f/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8694264888763428s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_24dbdd0b88bdfd4ddb940cf0b681075c66842cc3/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8368997573852539s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_97154cfa351e35ddf0727691a92998cfd7be4e5b/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8628416061401367s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_89a65a861724d2eb8c6a60a9e1655d7af9cdc836/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8555967807769775s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_280dfc1a22adb08aa71984ee4b22e4df220a8e68/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8797602653503418s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_5f8d1cb5c99cccf6e5ce62fbca9c3dcd60a75292/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8525378704071045s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_dc50add8a78ebf34bc7bb050c1a0e61d207b9544/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.863755464553833s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_4246da387f8b48da5147320344d336886787aea1/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0746400356292725s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_4cf0d3a15a754550fa755403de14b6f850389abe/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.8328800201416016s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_14bc3fd241e2796cd0cc8b00c17d32755c690fbd/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.8237156867980957s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_0856062d1410e55eb7b463958ea23117f1ca09e6/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.4604763984680176s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_80c39a4966ee88150d7e5849ab21a8e17bb1fbc8/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 2.9200024604797363s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_06a6b931f359fb894c0750ed932a147d42eff049/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9958689212799072s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_438b919749e618e739e2aeedf332baa46718dbfc/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0234956741333008s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_5ecfa8d696c58d2b0dd9fcdbc705e4809c610cb8/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9056267738342285s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_aa36aac69f9a98a8e538d70598a6bc4f34255df6/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9001922607421875s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_d498cdacef54aab6645706e2c79afe91e9b208f4/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3904292583465576s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_7437d9522a39588b8ac73fdf006d47dbafc94c3d/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.1905786991119385s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_043d3d45a13cffbb8c14cf64021246b26a1f7d0d/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0536777973175049s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_d85e22224c0e50b242f5186d6e6434df91df1cb7/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.9157392978668213s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_165818a9b3d8e9ec39d1f45ad3b124e557a3f7bf/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0206844806671143s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_a2b85716728da2596ee2275cbea939497af9146d/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0474958419799805s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_188267212cb5459bfba947c9ece083c0b5f63518/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9307913780212402s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_0630e4aaa10c3fb8c79c2542a229f5c0632cddde/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9895107746124268s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_19867659f3eb8a3e018e9b38fd9520f9fa4392cd/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.899294376373291s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_f05657e54245eff9f912914014c51b37b0bc6b34/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0678327083587646s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_a689fe5baf35e50d47270e9a402b1d67b6e95ffe/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.1397686004638672s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_53f8570786fbc7c90bc9990a22279d90a52025b3/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9370574951171875s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_2f787a27dc1f7551b98d322b6b93b3cb8bad4e2e/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9282219409942627s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_7ce3d8f98ad6b28d138757bdc5655d8c91ffd042/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9282481670379639s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_f1ed5598f4d312337a9dd76e0c1a5856cabea8bc/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.010063648223877s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_315861c31d1bb1b2430883267b6973604b34a147/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9401051998138428s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_82cf00bbc931723320c9aca3cf0305372027d0a0/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9456346035003662s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_639c2bcc47ecd700917aa2a48b9c63f41327f977/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.081916332244873s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_3f92882be4b35cf476f0c7c284e4fe1ba498e873/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.989457368850708s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_1eb44604853e24f7b526853d5e95414949fd88c6/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9114115238189697s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_b7ecec18099ace6ba77161302cca85c3e58a2ae7/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9432792663574219s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_7e1814faf836757933afec4c7c394f43f34c3567/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.948662281036377s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_dd39f846537e1a3558a596866424ca4304cb2438/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0320155620574951s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_50cccbdf4422c7a394709f5ce2f3d833dee16e9d/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0000734329223633s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_a6a7a89fda258dfa68e67c00828a3550d66efd7f/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.066532850265503s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_b1c2b07e581d7040859bc44abea8bacde2705627/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0629572868347168s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_badcf24e177b52ac87dd87c7e4ebad2727b2a4e7/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0931649208068848s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_01a6c1e7f8b0ed736d7c6f661e0c29ec023016b2/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9883167743682861s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_55424d41b446270539a6c5b00d0d376f951893b8/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.017378807067871s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_7b096483fa20df921101a09816a1d2701e9ae1dd/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.1486866474151611s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_3316eb9fbb3790ac7ed7b42332d8b806b4299bbc/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.7371704578399658s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_4acf810872c5533a206b6629425b9964f431b49b/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.997847318649292s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_0a2d16b545b8a0145dcf3c31c6320c1e7ba4c28c/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.1036500930786133s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_d2f62d7cd5c2b2c141b5db5594a95e6bf0148442/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.4902637004852295s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_a3de721e2f084913e853aff39d04adc00f0b82ea/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.001777172088623s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_db20423eec5b5c465ed052058a704afe44dd3bbe/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9677512645721436s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_60c2a3bf82b4fe923b8006f6694f74823af87537/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0805909633636475s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_8e3d6c30e2409f56f9e4a55fe16769d23f5e3012/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.1184415817260742s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_9517342b727b977bcc7a99197c802bc084584c5d/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.088548183441162s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_6e101317a22bb58a9edf512bbda662c862e53c78/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0320460796356201s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_622b4f4162507b1b207b7e1a8ef847f8fc6fb8c0/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.6874501705169678s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_506ee1f06c9771b3459c129266187599b21db05f/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.4002535343170166s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_782b8b374f191b13fa971db6bae501661139ed10/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0643494129180908s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_32ef0cd717d181b9f0c37caae312404385a5c9dd/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.412583351135254s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_d02ee3a2010175e40d4d562fb1c0723181fc8ba0/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 0.9998300075531006s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_8644a6f94c345b10dce46b9c71a02c2c1285bc85/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3995091915130615s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_61aed43a3f37332d323d6209f106900876eefc4f/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0317432880401611s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_7cc6d8a5645b8974f07e132cc3c4820e880fd3ce/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.680077314376831s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_6ac2963fb4bf61774ed856ed7f0a922acf9487be/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.404463529586792s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_3b84bcb3eef629da69d10db8a99418afd0386193/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.2309808731079102s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_749ce20399e042e42421f9ddccfd5e877d35b060/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.160374641418457s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_1a6d069a65040bf7a546f9ad1fc45520f345a502/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.000183343887329s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/airflow_4ea04831760bde058a73d37431c61409a3f93155/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.1229195594787598s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_afed2c01903465f9a486ac481a66aa3413cc1b01/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.2918732166290283s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_811de5f36bb1bb2bc7e14c186cf1af6badb77475/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.2087621688842773s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/black_1aa14c5db05681a2c25b2c3757d3f8d8f3bbe85f/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3321027755737305s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_6bd664854559fd4fbafeecff662bc8a8bd58b3dc/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0550305843353271s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_aee77a23af61ff6b625f5c5cf9e80d0d47cc4476/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.252457857131958s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_65081b2f12cc78a3c8ef1c80043dfc0cd5c65e55/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0716700553894043s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_c301305a59ddff7fc17c3fba1ce2b1418deddb28/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0837252140045166s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_2078ece95ac32442e316a6458338814957c6e0bd/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0799086093902588s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/cli_6e848b3203b16fe858b0d32a3fe330cc45cd19ed/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.2244963645935059s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_17e49bc9f75d9f596eb3fea42a3f51f3a716475c/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0668232440948486s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_010d44ee1bbe82b431225d57d77455643a24a2d0/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.161541223526001s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_35d93d59d82f2b2073d492ac335553f1d7c3cc55/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0839605331420898s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_52b5b08910356b22cb9837bda88f73f517dd8652/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.1389923095703125s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_c8124496fc34c024e411f293d3893219005d409f/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3280951976776123s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_82775f7cd01f93ca10ed7dcf0081d5c746e62068/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0688385963439941s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_3063ad83ec006a41f2ed8f4168d5d6efbddbee6b/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0801472663879395s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_b344cc9415a600a816f004a26e4f9dd48bc5dcf6/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.297104835510254s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/fastapi_434d32b8917b3f1e45f36a9ea72bb8b45d7266ab/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0228049755096436s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_491ea32803cb05fb8fc4dfb81ec6c96f94529eb0/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.0959527492523193s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_eb42655c46f8a598f2e0ead624ba5a65a8a66e90/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.1231434345245361s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/flask_a69b437af705dc8fa4e1b38b86ddad77d6dedb54/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.071300745010376s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_a952b0533ff0ef7322d6b1dad21b94cb1a7d2732/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.380427360534668s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_779a0ffb14ee3237fdb7b9d53ef5b7b0b8ebe473/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.1512055397033691s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_8a4096045c7fd9f1508e27fa93c03ce3beaaf316/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.4609379768371582s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_b196a09de231248b315a1ac2c76281c4c6e0b43d/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.284461498260498s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_6a4957d19a3ed5ad3ca9c35cffeab6721e2bf6a4/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.4392921924591064s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_6a2272b3cf4d798fb80f4e3568575b5e768cb015/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.224219560623169s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_389a04b6899c153ae59acb2bbbf8b1a48e9cf01d/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.9959464073181152s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_52d9bb9ed84442cc89df302a200e136819735e5f/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3043239116668701s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_0e225851cc712c47291c0b4538481372c414c59a/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.13576340675354s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_4a6c3c56f54bf1f85f35aaae76dc76e7cf567b8f/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.7803983688354492s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_49b342b90d6a8a940d260803e31a5f189a336909/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.459413766860962s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_dec529008b73f33913b08ec01be2f8698ff66bba/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3833496570587158s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_4db253ace7bd06b79b4415856d82000c3466ac9d/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.336963176727295s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_a448b97804a25d7ae6c2eb1c60ac7dbc18d7740b/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.271061658859253s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_673b1f8dec1c51ab6870f42b844dc9f5faa97909/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.1885671615600586s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_a12ab063e2e6eaf6a10518e4374d62fb4c7727eb/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 2.1910550594329834s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_8e1dd1ea03e1e1de1ec42c273d4837dee52e118b/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.2931935787200928s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_a8eaebfed39a13588e590cdb8c12f16b3141a147/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.1469497680664062s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_002da29c7727cd3b1f9ac2664ee71261d2fe5570/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 2.0708799362182617s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_fab2c90985dfbd68a4bbc5a0c7ccc7616e0b5f8f/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.9623141288757324s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_de2e0864a1e333d1dc9385d788a375d1aaaae1a5/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 2.128160238265991s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_0ab32e88481440bfb4a102bb7731cbde2e5ceafe/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.451585292816162s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_b879b7f1971a68a0494fe11ccca840e7ef8fd998/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.6039683818817139s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_f00905ecf1b4801a525774b8f8c8c9d94d37d7b6/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.5668773651123047s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_cbf715e0bcd5868612359434685a0ca2614f631c/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.717395305633545s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_e60ddfe92a73b050896346acd2d7498a1a703fad/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.687474250793457s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/pandas_f96732b8b1441b3a15b6bb65c553f044c932b1d7/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.2084629535675049s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_6a6034e10d65fb5bcebd9ca66cfee357e657a4b9/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.2118306159973145s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_a60dcf0bfc515ebf09e452d40bff26bf1a7e056a/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.807539463043213s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/poetry_c7e8cb9e597e8c6203f53fc61fb2ecf01fa55646/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.5324211120605469s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_3c14e6ae3aa6506ca8e5baa73321f3a04caf83d0/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.361332893371582s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_72f600036511c4999fa56bf007bf92ec465e94d7/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.6331334114074707s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_1984d9717158c89f9acca2b635a373bad7048633/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.2682452201843262s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_00dfad9d20abf755a91abc0ba35f5d92fcab9149/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.2526099681854248s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_20587750051c3699b051579d7e97e5508958ea5a/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.2239038944244385s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_ba974810d601254091d2f8076b96d7bb584a80f1/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.195077896118164s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_806b3864c36e24459cb4685b400e74c5685f5674/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.2360141277313232s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_0992498a107267ccbfc7ab2c72045c31a537ab25/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3050074577331543s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_f4a7c5066c1921842a158976e349b4c6a6955d72/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.8592548370361328s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/python_08cbd113a4a4aa87ee1bc278ff19791806763492/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3153948783874512s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_5b44065ede23f47ea33bce87b2d4281c9d2b3319/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3465027809143066s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_c991e30c96ace1565604b429de22e36ed6b1e7bd/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.4579734802246094s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_b20e474caf6616fb0e210861d2d3cdd8964d614c/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.5167839527130127s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_c13ed7c9e5e217148b3e67f1f64a702590b35715/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.4743776321411133s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_c927f5a87134ddebe3ede0b47fedeafed0b1592f/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.4008898735046387s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_4685cf624582cbc9a35d646f239347e54db798dc/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.4342188835144043s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_3d0a98d7765ccaf5aede89d0ec1088fda24e0465/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3334307670593262s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_66ec10f341087ca05156f701e0ba90717cd252d2/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.7445933818817139s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_88b1fa6f0ede7e53e00a78b563a062e2c74e14b1/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.491274118423462s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_70829b34df8a1d98a15250f041102c6c0b10e2d1/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.389169692993164s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_0a0db97470b634f841121fe0be23bfe87432cf44/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.503431797027588s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_77b8e554c7b1de182f422785e664164b7b7641e3/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.5155401229858398s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_9a5e160332bb79cd7e7c8015c7dd25a654788528/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.7444336414337158s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_528533dab7bbf0a6ba6b646bae486b8639321da9/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.52756667137146s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_bd9d16b5eee87d8f98f9caea429b1d6f23aaae3a/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.2917463779449463s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_59648f337bd75eca955d442526aa8cf993458421/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3207447528839111s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_ec663e6cf0ba1e9c70c68642c31b7b30230afc6f/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3865537643432617s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_701a87fcfe83c95e97daa6e99aca546deac4867d/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.5281970500946045s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_d9288f012ffd8739504cf6335b487ff1b3980b26/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3390567302703857s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_ee59a0c4878e27873e6a910866596f762441a71d/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.4936549663543701s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_fedff321ceff946886776ed3b1f74d62c937b1ed/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3550114631652832s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_112befd2bd950c43db4a68922c9db72fa3cba757/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3406307697296143s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_c96c6ae4746ced9263c92a4a341ab2695c6489f3/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.5935826301574707s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_551625fad7d3371f667995a12a33db7f48b17e7d/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.5013389587402344s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_fd1df8e43a03ff806fa1487de27db065b629faf1/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.7206714153289795s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_9c6aab4cf1937f81234c231eeedb1e2ecd7ab0c0/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.8470141887664795s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_547c8f582f61c08d332fa6e48fecb8da5b233472/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 2.58109712600708s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_9c162a86d2526109508242ca74b01c7d9c2f7a99/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.7008121013641357s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_c7c4d53d84f6e3e4bbd80c623061c9a90e8c0464/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3187313079833984s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_72c360ceb4843b8e79272bf46d3623de7b86d330/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.521590232849121s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_b2e6e19e4d175dd56e91cedf1848044148c11654/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.5657539367675781s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_56c6bfb61d009a3c324ccca24febf2d90cd9e33b/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3571734428405762s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_c2eeca76ae78d404cf678890e77224c303d39202/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3837323188781738s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_564134ed898e0104c7dccb68d933de658c8ab01c/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.6189532279968262s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_fedc8b91c3d745b0bcb915ae4f9952dc0af0a404/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3312859535217285s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_583dfcc1ec3362d36e7da6340ef6c68bde4397bf/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.5646135807037354s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scikit-learn_d01f64da964f2f0b651ebb491aaa581f955b9089/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.487475872039795s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_12d52a4f089798f266cbc6f86df3cc9c1cd58257/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.4654769897460938s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_0905d42e33871e976760d880316210d4953cd5df/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3210623264312744s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_64261d9e389737621caa85f320cf81ef2aef1faa/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.6099767684936523s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_4418f78941fc9d89ada9ad0436ebd0ae4ece1017/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3445026874542236s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_44f0fde9057256dc16f24f22cfebc61626a94450/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.5161027908325195s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_c887fe37adfe529ed2afabd2d08c3aac00a819c0/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.4641709327697754s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_9770ca35fb494503298270902569ed897a365d32/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.790959119796753s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_2a4d4a466aa6cede4829b62c7287332a627877ed/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.5208299160003662s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_97fc68fa1699b1c782c6e6d888e21d995bdf071d/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.5333788394927979s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_694c6d3d7460ab80ace979c4563af8f310614d37/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.5018510818481445s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_15d0c89159851ae9916e49a27cbcb36335b1bc2e/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.4125490188598633s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_35fb630c4ec6c996a90cc4f50085275525ec9105/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.4295377731323242s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_f0cf5463c85bd38243ac1539487d7118003a790e/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.477116346359253s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_b06d0706e6644187b4c4a6f7ac80e8adbf376907/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.5366840362548828s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_44bd01d51cc0d2008a73e67845922a23d7aee344/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.572371482849121s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_bd126be3569ddd77c458c79ef9e066cacf3a3af1/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.3436601161956787s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_7be3479c204c2b110bc79cd8bdc9c7bdd1519163/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.5561213493347168s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_46edfd4a9d47f765310555220e21c92f32d33a61/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.5198612213134766s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_cd8470b3092a4d84a883edf1b7e1221a1e6b3104/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.4711618423461914s
+"Instrumentation" : Found 1 file(s) to instrument
+Instrumenting /home/groenils/master-thesis-lars-groeninger/LExecutorCC/generated/scrapy_bd59748de604b272dd459602df3621df93f08c5b/compare.py
+
+"Instrumentation" : 
+"Instrumentation" : Instrumentation took: 1.4078483581542969s
