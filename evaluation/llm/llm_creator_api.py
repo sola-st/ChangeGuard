@@ -11,8 +11,8 @@ except (json.decoder.JSONDecodeError, FileNotFoundError):
 
 p_tokens = 0
 r_tokens = 0
-price_per_p_token = 0.5 / 1_000_000
-price_per_r_token = 1.5 / 1_000_000
+price_per_p_token = 10 / 1_000_000
+price_per_r_token = 30 / 1_000_000
 
 
 def save():
@@ -43,7 +43,8 @@ for idx, function in enumerate(functions[len(responses):], start=len(responses))
             {'role': 'user', 'content': text}
         ],
         #response_format={"type": "json_object"},
-        model='gpt-3.5-turbo-0125'
+        #model='gpt-3.5-turbo-0125'
+        model='gpt-4-turbo-2024-04-09'
 
     )
     print(response.choices[0].finish_reason)

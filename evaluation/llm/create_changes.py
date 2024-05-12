@@ -89,6 +89,16 @@ class CodeCleaner(cst.CSTTransformer):
         return updated_node
 
 
+def single_function(code):
+    try:
+        tree = cst.parse_module(code)
+    except Exception:
+        print('Invalid Python')
+        return False
+    if len(tree.body) != 1:
+        return False
+    return isinstance(tree.body[0], cst.FunctionDef)
+
 def same_ast(old, new):
     try:
         code = cst.MetadataWrapper(cst.parse_module(new))
@@ -102,7 +112,7 @@ def same_ast(old, new):
     return ast.dump(old_tree) == ast.dump(new_tree)
 
 
-with open('responses.json', 'r', encoding='utf-8') as f:
+with open('response_cleaned.json', 'r', encoding='utf-8') as f:
     responses = json.load(f)
 
 changes = []
@@ -112,6 +122,10 @@ for idx, response in enumerate(responses):
     new = response['new'] if response['new'][-1] == '\n' else response['new'] + '\n'
     changed_lines_old = []
     changed_lines_new = []
+
+    if not single_function(new):
+        continue
+
     if same_ast(old, new):
         print('Skipped because same AST')
         continue
@@ -139,5 +153,5 @@ for idx, response in enumerate(responses):
         'new_changed_lines': changed_lines_new
     })
 
-with open('llm_changes.json', 'w', encoding='utf-8') as f:
+with open('llm_changes_gpt4.json', 'w', encoding='utf-8') as f:
     json.dump(changes, f, indent=2)
