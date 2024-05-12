@@ -29,7 +29,7 @@ class ModelServer:
     def _fetch_model(self, model_path):
         path_to_url = {
             "data/released_models/codet5_model_20230105_fine-grained.bin": "https://github.com/michaelpradel/LExecutor/releases/download/Models_20230105/codet5_model_20230105_fine-grained.bin",
-            "data/released_models/codet5_model_20230105_coarse-grained.bin": "https://github.com/michaelpradel/LExecutor/releases/download/Models_20230105/codet5_model_20230105_coarse-grained.bin"
+            "data/released_models/new_model_coarse-grained.bin": "https://github.com/sola-st/master-thesis-lars-groeninger/releases/download/model/new_model_coarse-grained.bin"
         }
         if Path(model_path).exists():
             return
@@ -45,7 +45,7 @@ class ModelServer:
         if params.value_abstraction == "fine-grained":
             model_path = "data/released_models/codet5_model_20230105_fine-grained.bin"
         elif params.value_abstraction == "coarse-grained-deterministic" or params.value_abstraction == "coarse-grained-randomized":
-            model_path = "data/released_models/codet5_model_20230105_coarse-grained.bin"
+            model_path = "data/released_models/new_model_coarse-grained.bin"
         self._fetch_model(model_path)
         self.model.load_state_dict(t.load(model_path, map_location=device))
 
