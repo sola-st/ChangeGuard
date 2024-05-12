@@ -17,6 +17,4 @@ LExecutorCC/data/released_models/*
 **/.secret
 /evaluation/python_idiomatic_transformation/func_files
 /evaluation/python_idiomatic_transformation/RefactoringIdiomsOutputdir
-/evaluation/complexity
-/evaluation/accuracy
 **/.vscode
