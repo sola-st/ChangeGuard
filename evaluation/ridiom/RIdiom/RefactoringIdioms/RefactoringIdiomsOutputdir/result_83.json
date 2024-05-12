@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_83.py", "cl": "", "me": "apply_standard", "idiom": "Assign Multi Targets", "compli_code": ["func = cast(Callable, self.func)", "obj = self.obj"], "simple_code": ["func , obj  = cast(Callable, self.func), self.obj", ""], "lineno": [[[2, 4], [2, 36]], [[3, 4], [3, 18]]], "keyno": null}]

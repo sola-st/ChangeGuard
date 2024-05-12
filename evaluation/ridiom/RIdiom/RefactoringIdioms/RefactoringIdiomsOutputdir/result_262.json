@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_262.py", "cl": "", "me": "_fit_ovo_binary", "idiom": "Assign Multi Targets", "compli_code": ["y_binary[y == i] = 0", "y_binary[y == j] = 1", "ind = np.arange(X.shape[0])"], "simple_code": ["y_binary[y , y_binary[y , ind  = 0, 1, np.arange(X.shape[0])", "", ""], "lineno": [[[5, 4], [5, 24]], [[6, 4], [6, 24]], [[7, 4], [7, 31]]], "keyno": null}]

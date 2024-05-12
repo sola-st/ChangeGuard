@@ -1,0 +1,175 @@
+[
+  {
+    "file_path": "./func_files/fun_9.py",
+    "cl": "",
+    "me": "_read",
+    "idiom": "Truth Value Test",
+    "compli_code": [
+      "int(next_offset) == 0"
+    ],
+    "simple_code": [
+      "not int(next_offset)"
+    ],
+    "lineno": [
+      [
+        [
+          20,
+          11
+        ],
+        [
+          20,
+          32
+        ]
+      ]
+    ],
+    "keyno": null
+  },
+  {
+    "file_path": "./func_files/fun_9.py",
+    "cl": "",
+    "me": "_read",
+    "idiom": "Assign Multi Targets",
+    "compli_code": [
+      "offset = metadata[\"offset\"]",
+      "log_id = self._render_log_id(ti, try_number)"
+    ],
+    "simple_code": [
+      "offset , log_id  = metadata['offset'], self._render_log_id(ti, try_number)",
+      ""
+    ],
+    "lineno": [
+      [
+        [
+          8,
+          4
+        ],
+        [
+          8,
+          31
+        ]
+      ],
+      [
+        [
+          9,
+          4
+        ],
+        [
+          9,
+          48
+        ]
+      ]
+    ],
+    "keyno": null
+  },
+  {
+    "file_path": "./func_files/fun_9.py",
+    "cl": "",
+    "me": "_read",
+    "idiom": "Assign Multi Targets",
+    "compli_code": [
+      "logs_by_host = self._group_logs_by_host(logs)",
+      "next_offset = offset if not logs else attrgetter(self.offset_field)(logs[-1])"
+    ],
+    "simple_code": [
+      "logs_by_host , next_offset  = self._group_logs_by_host(logs), offset if not logs else attrgetter(self.offset_field)(logs[-1])",
+      ""
+    ],
+    "lineno": [
+      [
+        [
+          11,
+          4
+        ],
+        [
+          11,
+          49
+        ]
+      ],
+      [
+        [
+          12,
+          4
+        ],
+        [
+          12,
+          81
+        ]
+      ]
+    ],
+    "keyno": null
+  },
+  {
+    "file_path": "./func_files/fun_9.py",
+    "cl": "",
+    "me": "_read",
+    "idiom": "Assign Multi Targets",
+    "compli_code": [
+      "metadata[\"offset\"] = str(next_offset)",
+      "metadata[\"end_of_log\"] = False"
+    ],
+    "simple_code": [
+      "metadata['offset'] , metadata['end_of_log']  = str(next_offset), False",
+      ""
+    ],
+    "lineno": [
+      [
+        [
+          13,
+          4
+        ],
+        [
+          13,
+          41
+        ]
+      ],
+      [
+        [
+          14,
+          4
+        ],
+        [
+          14,
+          34
+        ]
+      ]
+    ],
+    "keyno": null
+  },
+  {
+    "file_path": "./func_files/fun_9.py",
+    "cl": "",
+    "me": "_read",
+    "idiom": "Assign Multi Targets",
+    "compli_code": [
+      "metadata[\"end_of_log\"] = True",
+      "missing_log_message = (\n                f\"*** Log {log_id} not found in Elasticsearch. \"\n                \"If your task started recently, please wait a moment and reload this page. \"\n                \"Otherwise, the logs for this task instance may have been removed.\"\n            )"
+    ],
+    "simple_code": [
+      "metadata['end_of_log'] , missing_log_message  = True, f'*** Log {log_id} not found in Elasticsearch. If your task started recently, please wait a moment and reload this page. Otherwise, the logs for this task instance may have been removed.'",
+      ""
+    ],
+    "lineno": [
+      [
+        [
+          21,
+          12
+        ],
+        [
+          21,
+          41
+        ]
+      ],
+      [
+        [
+          22,
+          12
+        ],
+        [
+          26,
+          13
+        ]
+      ]
+    ],
+    "keyno": null
+  }
+]

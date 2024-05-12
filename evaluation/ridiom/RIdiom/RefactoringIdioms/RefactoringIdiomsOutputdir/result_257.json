@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_257.py", "cl": "", "me": "_rescale_data", "idiom": "Assign Multi Targets", "compli_code": ["X = safe_sparse_dot(sw_matrix, X)", "y = safe_sparse_dot(sw_matrix, y)"], "simple_code": ["X , y  = safe_sparse_dot(sw_matrix, X), safe_sparse_dot(sw_matrix, y)", ""], "lineno": [[[7, 4], [7, 37]], [[8, 4], [8, 37]]], "keyno": null}]

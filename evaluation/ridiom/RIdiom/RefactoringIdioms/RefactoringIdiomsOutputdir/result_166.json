@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_166.py", "cl": "", "me": "create_pool", "idiom": "Assign Multi Targets", "compli_code": ["pool.slots = slots", "pool.description = description"], "simple_code": ["pool.slots , pool.description  = slots, description", ""], "lineno": [[[17, 8], [17, 26]], [[18, 8], [18, 38]]], "keyno": null}]

@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_69.py", "cl": "", "me": "main", "idiom": "Assign Multi Targets", "compli_code": ["name = 'python -m ' + this_module", "sys.argv = ['-m', this_module] + args"], "simple_code": ["name , sys.argv  = 'python -m ' + this_module, ['-m', this_module] + args", ""], "lineno": [[[7, 8], [7, 41]], [[8, 8], [8, 45]]], "keyno": null}]

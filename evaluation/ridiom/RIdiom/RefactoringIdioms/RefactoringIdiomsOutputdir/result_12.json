@@ -1,0 +1,39 @@
+[
+  {
+    "file_path": "./func_files/fun_12.py",
+    "cl": "",
+    "me": "connections_export",
+    "idiom": "Assign Multi Targets",
+    "compli_code": [
+      "default_format = \".json\"",
+      "provided_file_format = None"
+    ],
+    "simple_code": [
+      "default_format , provided_file_format  = '.json', None",
+      ""
+    ],
+    "lineno": [
+      [
+        [
+          7,
+          4
+        ],
+        [
+          7,
+          28
+        ]
+      ],
+      [
+        [
+          8,
+          4
+        ],
+        [
+          8,
+          31
+        ]
+      ]
+    ],
+    "keyno": null
+  }
+]

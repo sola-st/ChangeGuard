@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_251.py", "cl": "", "me": "_check_sample_weight", "idiom": "Chain Compare", "compli_code": ["dtype is not None and dtype not in [np.float32, np.float64]"], "simple_code": ["None is not dtype not in [np.float32, np.float64]"], "lineno": [[[3, 7], [3, 66]]], "keyno": null}]

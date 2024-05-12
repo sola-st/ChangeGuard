@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_295.py", "cl": "", "me": "add_cookie_header", "idiom": "Truth Value Test", "compli_code": ["self.processed % self.check_expired_frequency == 0"], "simple_code": ["not self.processed % self.check_expired_frequency"], "lineno": [[[22, 7], [22, 57]]], "keyno": null}]

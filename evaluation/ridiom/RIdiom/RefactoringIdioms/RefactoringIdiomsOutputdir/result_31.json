@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_31.py", "cl": "", "me": "upgrade_session", "idiom": "Truth Value Test", "compli_code": ["len(fixers) == 0"], "simple_code": ["not len(fixers)"], "lineno": [[[19, 7], [19, 23]]], "keyno": null}]

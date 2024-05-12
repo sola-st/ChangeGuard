@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_133.py", "cl": "", "me": "_check_params_vs_input", "idiom": "Assign Multi Targets", "compli_code": ["self._tol = _tolerance(X, self.tol)", "self._n_init = self.n_init"], "simple_code": ["self._tol , self._n_init  = _tolerance(X, self.tol), self.n_init", ""], "lineno": [[[6, 4], [6, 39]], [[7, 4], [7, 30]]], "keyno": null}]

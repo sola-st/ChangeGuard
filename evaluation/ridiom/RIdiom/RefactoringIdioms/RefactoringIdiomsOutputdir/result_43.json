@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_43.py", "cl": "", "me": "log_error", "idiom": "Assign Multi Targets", "compli_code": ["msg = msg % args", "level = kwargs.get('level', 'error')"], "simple_code": ["msg , level  = msg % args, kwargs.get('level', 'error')", ""], "lineno": [[[2, 4], [2, 20]], [[3, 4], [3, 40]]], "keyno": null}]

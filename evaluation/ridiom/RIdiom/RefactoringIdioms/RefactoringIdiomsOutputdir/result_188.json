@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_188.py", "cl": "", "me": "tokenize", "idiom": "Assign Multi Targets", "compli_code": ["backslash = '\\\\'", "tokens = ['']", "characters = iter(string)"], "simple_code": ["backslash , tokens , characters  = '\\\\', [''], iter(string)", "", ""], "lineno": [[[2, 4], [2, 20]], [[3, 4], [3, 17]], [[4, 4], [4, 29]]], "keyno": null}]

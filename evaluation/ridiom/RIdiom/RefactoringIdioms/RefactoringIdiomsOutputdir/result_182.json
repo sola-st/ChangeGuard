@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_182.py", "cl": "", "me": "_maybe_empty_lines_for_class_or_def", "idiom": "Truth Value Test", "compli_code": ["before == 0"], "simple_code": ["not before"], "lineno": [[[19, 12], [19, 23]]], "keyno": null}]

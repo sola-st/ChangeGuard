@@ -1,0 +1,113 @@
+[
+  {
+    "file_path": "./func_files/fun_76.py",
+    "cl": "",
+    "me": "_transform",
+    "idiom": "Assign Multi Targets",
+    "compli_code": [
+      "orig_func = func",
+      "func = com.get_cython_func(func) or func"
+    ],
+    "simple_code": [
+      "orig_func , func  = func, com.get_cython_func(func) or func",
+      ""
+    ],
+    "lineno": [
+      [
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          20
+        ]
+      ],
+      [
+        [
+          3,
+          4
+        ],
+        [
+          3,
+          44
+        ]
+      ]
+    ],
+    "keyno": null
+  },
+  {
+    "file_path": "./func_files/fun_76.py",
+    "cl": "",
+    "me": "_transform",
+    "idiom": "Assign Multi Targets",
+    "compli_code": [
+      "kwargs[\"engine\"] = engine",
+      "kwargs[\"engine_kwargs\"] = engine_kwargs"
+    ],
+    "simple_code": [
+      "kwargs['engine'] , kwargs['engine_kwargs']  = engine, engine_kwargs",
+      ""
+    ],
+    "lineno": [
+      [
+        [
+          13,
+          12
+        ],
+        [
+          13,
+          37
+        ]
+      ],
+      [
+        [
+          14,
+          12
+        ],
+        [
+          14,
+          51
+        ]
+      ]
+    ],
+    "keyno": null
+  },
+  {
+    "file_path": "./func_files/fun_76.py",
+    "cl": "",
+    "me": "_transform",
+    "idiom": "Assign Multi Targets",
+    "compli_code": [
+      "kwargs[\"engine\"] = engine",
+      "kwargs[\"engine_kwargs\"] = engine_kwargs"
+    ],
+    "simple_code": [
+      "kwargs['engine'] , kwargs['engine_kwargs']  = engine, engine_kwargs",
+      ""
+    ],
+    "lineno": [
+      [
+        [
+          19,
+          16
+        ],
+        [
+          19,
+          41
+        ]
+      ],
+      [
+        [
+          20,
+          16
+        ],
+        [
+          20,
+          55
+        ]
+      ]
+    ],
+    "keyno": null
+  }
+]

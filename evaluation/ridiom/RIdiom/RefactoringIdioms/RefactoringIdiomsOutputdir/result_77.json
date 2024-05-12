@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_77.py", "cl": "", "me": "warn_alias_replacement", "idiom": "Assign Multi Targets", "compli_code": ["full_alias = f\"{type(obj).__name__}.{alias}\"", "alias = f'\"{alias}\"'"], "simple_code": ["full_alias , alias  = f'{type(obj).__name__}.{alias}', f'\"{alias}\"'", ""], "lineno": [[[9, 8], [9, 52]], [[10, 8], [10, 28]]], "keyno": null}]

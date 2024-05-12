@@ -1,0 +1,84 @@
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name        = "RefactoringIdioms"
+license     = {text = "MIT License"}
+description = "code refactorings with Python idioms"
+readme      = "README.md"
+# version     = "0.0.1"
+# version     = "0.0.2"
+# version     = "0.0.3"
+# version     = "0.0.4"
+# version     = "0.0.5"
+# version     = "0.0.6"
+# version     = "0.0.7"
+# version     = "0.0.8"
+version     = "0.0.11"
+
+
+
+
+# authors     = [
+#     {name = "Python Code Quality Authority", email = "code-quality@python.org"}
+# ]
+# keywords    = ["static code analysis", "linter", "python", "lint"]
+# classifiers = [
+#     "Development Status :: 6 - Mature",
+#     "Environment :: Console",
+#     "Intended Audience :: Developers",
+#     "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+#     "Operating System :: OS Independent",
+#     "Programming Language :: Python",
+#     "Programming Language :: Python :: 3",
+#     "Programming Language :: Python :: 3 :: Only",
+#     "Programming Language :: Python :: 3.7",
+#     "Programming Language :: Python :: 3.8",
+#     "Programming Language :: Python :: 3.9",
+#     "Programming Language :: Python :: 3.10",
+#     "Programming Language :: Python :: Implementation :: CPython",
+#     "Programming Language :: Python :: Implementation :: PyPy",
+#     "Topic :: Software Development :: Debuggers",
+#     "Topic :: Software Development :: Quality Assurance",
+#     "Topic :: Software Development :: Testing",
+# ]
+requires-python = ">=3.9"
+dependencies    = []
+# dynamic = ["version"]
+
+# [project.optional-dependencies]
+# testutils = ["gitpython>3"]
+# spelling = ["pyenchant~=3.2"]
+
+[project.urls]
+# "Docs: User Guide"  = "https://pylint.pycqa.org/en/latest/"
+# "Source Code"       = "https://github.com/PyCQA/pylint"
+"homepage"          = "https://github.com/idiomaticrefactoring/pythonidiomsrefactor"
+# "What's New"        = "https://pylint.pycqa.org/en/latest/whatsnew/2/"
+# "Bug Tracker"       = "https://github.com/PyCQA/pylint/issues"
+# "Discord Server"    = "https://discord.com/invite/Egy6P8AMB5"
+# "Docs: Contributor Guide" = "https://pylint.pycqa.org/en/latest/development_guide/contributor_guide/index.html"
+
+#https://stackoverflow.com/questions/63326840/specifying-command-line-scripts-in-pyproject-toml
+#https://martin-thoma.com/pyproject-toml/
+#https://github.com/python-poetry/poetry/blob/master/pyproject.toml
+[project.scripts]
+RIdiom        = "RefactoringIdioms:run_main"
+
+[options]
+# packages = find:
+# packages= ['transform_c_s', 'extract_simp_cmpl_data', 'extract_transform_complicate_code_new']
+
+[tool.setuptools]
+license-files = ["LICENSE"]  # Keep in sync with setup.cfg
+
+# [tool.setuptools.packages.find]
+
+# include = ["pylint*"]
+
+# [tool.setuptools.package-data]
+# pylint = ["testutils/testing_pylintrc"]
+#
+# [tool.setuptools.dynamic]
+# version = {attr = "pylint.__pkginfo__.__version__"}

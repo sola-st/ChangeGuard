@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_40.py", "cl": "", "me": "get_requests_kwargs", "idiom": "Assign Multi Targets", "compli_code": ["headers = finalize_headers(headers)", "cert = None"], "simple_code": ["headers , cert  = finalize_headers(headers), None", ""], "lineno": [[[13, 4], [13, 39]], [[14, 4], [14, 15]]], "keyno": null}]

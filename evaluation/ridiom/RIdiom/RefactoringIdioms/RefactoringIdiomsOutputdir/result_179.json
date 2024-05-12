@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_179.py", "cl": "", "me": "__init__", "idiom": "Assign Multi Targets", "compli_code": ["self.presto_conn_id = presto_conn_id", "self.sql = sql"], "simple_code": ["self.presto_conn_id , self.sql  = presto_conn_id, sql", ""], "lineno": [[[6, 4], [6, 40]], [[7, 4], [7, 18]]], "keyno": null}]

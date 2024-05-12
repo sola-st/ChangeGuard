@@ -1,0 +1,247 @@
+[
+  {
+    "file_path": "./func_files/fun_34.py",
+    "cl": "",
+    "me": "program",
+    "idiom": "Assign Multi Targets",
+    "compli_code": [
+      "exit_status = ExitStatus.SUCCESS",
+      "downloader = None",
+      "initial_request = None",
+      "final_response = None"
+    ],
+    "simple_code": [
+      "exit_status , downloader , initial_request , final_response  = ExitStatus.SUCCESS, None, None, None",
+      "",
+      "",
+      ""
+    ],
+    "lineno": [
+      [
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          36
+        ]
+      ],
+      [
+        [
+          3,
+          4
+        ],
+        [
+          3,
+          21
+        ]
+      ],
+      [
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          26
+        ]
+      ],
+      [
+        [
+          5,
+          4
+        ],
+        [
+          5,
+          25
+        ]
+      ]
+    ],
+    "keyno": null
+  },
+  {
+    "file_path": "./func_files/fun_34.py",
+    "cl": "",
+    "me": "program",
+    "idiom": "Assign Multi Targets",
+    "compli_code": [
+      "messages = collect_messages(args=args, config_dir=env.config.directory,\n                                    request_body_read_callback=request_body_read_callback)",
+      "force_separator = False",
+      "prev_with_body = False"
+    ],
+    "simple_code": [
+      "messages , force_separator , prev_with_body  = collect_messages(args=args, config_dir=env.config.directory, request_body_read_callback=request_body_read_callback), False, False",
+      "",
+      ""
+    ],
+    "lineno": [
+      [
+        [
+          25,
+          8
+        ],
+        [
+          26,
+          90
+        ]
+      ],
+      [
+        [
+          27,
+          8
+        ],
+        [
+          27,
+          31
+        ]
+      ],
+      [
+        [
+          28,
+          8
+        ],
+        [
+          28,
+          30
+        ]
+      ]
+    ],
+    "keyno": null
+  },
+  {
+    "file_path": "./func_files/fun_34.py",
+    "cl": "",
+    "me": "program",
+    "idiom": "Assign Multi Targets",
+    "compli_code": [
+      "msg.is_body_upload_chunk = True",
+      "msg.body = chunk",
+      "msg.headers = initial_request.headers"
+    ],
+    "simple_code": [
+      "msg.is_body_upload_chunk , msg.body , msg.headers  = True, chunk, initial_request.headers",
+      "",
+      ""
+    ],
+    "lineno": [
+      [
+        [
+          16,
+          12
+        ],
+        [
+          16,
+          43
+        ]
+      ],
+      [
+        [
+          17,
+          12
+        ],
+        [
+          17,
+          28
+        ]
+      ],
+      [
+        [
+          18,
+          12
+        ],
+        [
+          18,
+          49
+        ]
+      ]
+    ],
+    "keyno": null
+  },
+  {
+    "file_path": "./func_files/fun_34.py",
+    "cl": "",
+    "me": "program",
+    "idiom": "Assign Multi Targets",
+    "compli_code": [
+      "do_write_body = not is_streamed_upload",
+      "force_separator = is_streamed_upload and env.stdout_isatty"
+    ],
+    "simple_code": [
+      "do_write_body , force_separator  = not is_streamed_upload, is_streamed_upload and env.stdout_isatty",
+      ""
+    ],
+    "lineno": [
+      [
+        [
+          41,
+          20
+        ],
+        [
+          41,
+          58
+        ]
+      ],
+      [
+        [
+          42,
+          20
+        ],
+        [
+          42,
+          78
+        ]
+      ]
+    ],
+    "keyno": null
+  },
+  {
+    "file_path": "./func_files/fun_34.py",
+    "cl": "",
+    "me": "request_body_read_callback",
+    "idiom": "Assign Multi Targets",
+    "compli_code": [
+      "msg.is_body_upload_chunk = True",
+      "msg.body = chunk",
+      "msg.headers = initial_request.headers"
+    ],
+    "simple_code": [
+      "msg.is_body_upload_chunk , msg.body , msg.headers  = True, chunk, initial_request.headers",
+      "",
+      ""
+    ],
+    "lineno": [
+      [
+        [
+          16,
+          12
+        ],
+        [
+          16,
+          43
+        ]
+      ],
+      [
+        [
+          17,
+          12
+        ],
+        [
+          17,
+          28
+        ]
+      ],
+      [
+        [
+          18,
+          12
+        ],
+        [
+          18,
+          49
+        ]
+      ]
+    ],
+    "keyno": null
+  }
+]

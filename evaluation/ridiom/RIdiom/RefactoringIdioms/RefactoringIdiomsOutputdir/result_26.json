@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_26.py", "cl": "", "me": "format_file_in_place", "idiom": "Assign Multi Targets", "compli_code": ["src_name = f\"{src}\\t{then} +0000\"", "dst_name = f\"{src}\\t{now} +0000\""], "simple_code": ["src_name , dst_name  = f'{src}\\t{then} +0000', f'{src}\\t{now} +0000'", ""], "lineno": [[[22, 8], [22, 41]], [[23, 8], [23, 40]]], "keyno": null}]

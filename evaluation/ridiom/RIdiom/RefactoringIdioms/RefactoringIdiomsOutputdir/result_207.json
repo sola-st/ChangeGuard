@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_207.py", "cl": "", "me": "_read", "idiom": "Assign Multi Targets", "compli_code": ["iterator = kwds.get(\"iterator\", False)", "chunksize = kwds.get(\"chunksize\", None)"], "simple_code": ["iterator , chunksize  = kwds.get('iterator', False), kwds.get('chunksize', None)", ""], "lineno": [[[9, 4], [9, 42]], [[10, 4], [10, 43]]], "keyno": null}]

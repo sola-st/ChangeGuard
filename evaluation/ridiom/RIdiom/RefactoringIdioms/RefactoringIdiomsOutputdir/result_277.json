@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_277.py", "cl": "", "me": "euclidean_distances", "idiom": "Assign Multi Targets", "compli_code": ["X = safe_asanyarray(X)", "Y = safe_asanyarray(Y)"], "simple_code": ["X , Y  = safe_asanyarray(X), safe_asanyarray(Y)", ""], "lineno": [[[5, 8], [5, 30]], [[6, 8], [6, 30]]], "keyno": null}]

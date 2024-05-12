@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_254.py", "cl": "", "me": "check_classifiers_train", "idiom": "Assign Multi Targets", "compli_code": ["y_b = y_m[y_m != 2]", "X_b = X_m[y_m != 2]"], "simple_code": ["y_b , X_b  = y_m[y_m != 2], X_m[y_m != 2]", ""], "lineno": [[[5, 4], [5, 23]], [[6, 4], [6, 23]]], "keyno": null}]

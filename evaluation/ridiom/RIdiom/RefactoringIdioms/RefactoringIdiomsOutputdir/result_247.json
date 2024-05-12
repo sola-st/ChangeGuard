@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_247.py", "cl": "", "me": "_assert_all_finite", "idiom": "Assign Multi Targets", "compli_code": ["has_inf = np.isinf(X).any()", "has_nan = np.isnan(X).any()"], "simple_code": ["has_inf , has_nan  = np.isinf(X).any(), np.isnan(X).any()", ""], "lineno": [[[12, 8], [12, 35]], [[13, 8], [13, 35]]], "keyno": null}]

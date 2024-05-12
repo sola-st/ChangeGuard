@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_228.py", "cl": "", "me": "__init__", "idiom": "Assign Multi Targets", "compli_code": ["self.data = data", "self.aes = make_aes(**kwds)", "self.legend = {}"], "simple_code": ["self.data , self.aes , self.legend  = data, make_aes(**kwds), {}", "", ""], "lineno": [[[2, 4], [2, 20]], [[3, 4], [3, 31]], [[4, 4], [4, 20]]], "keyno": null}]

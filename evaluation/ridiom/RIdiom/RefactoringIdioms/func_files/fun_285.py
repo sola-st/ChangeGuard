@@ -1,0 +1,66 @@
+def scrape_response(self, scrape_func, response, request, spider):
+    def process_spider_input(response):
+        for method in self.methods['process_spider_input']:
+            try:
+                result = method(response=response, spider=spider)
+                if result is not None:
+                    msg = "Middleware {} must return None or raise an exception, got {}"
+                    raise _InvalidOutput(msg.format(_fname(method), type(result)))
+            except _InvalidOutput:
+                raise
+            except Exception:
+                return scrape_func(Failure(), request, spider)
+        return scrape_func(response, request, spider)
+    def _evaluate_iterable(iterable, method_index, recover_to):
+        try:
+            for r in iterable:
+                yield r
+        except Exception as ex:
+            exception_result = process_spider_exception(Failure(ex), method_index)
+            if isinstance(exception_result, Failure):
+                raise
+            recover_to.extend(exception_result)
+    def process_spider_exception(_failure, start_index=0):
+        exception = _failure.value
+        if isinstance(exception, _InvalidOutput):
+            return _failure
+        method_list = islice(self.methods['process_spider_exception'], start_index, None)
+        for method_index, method in enumerate(method_list, start=start_index):
+            if method is None:
+                continue
+            result = method(response=response, exception=exception, spider=spider)
+            if _isiterable(result):
+                return process_spider_output(result, method_index+1)
+            elif result is None:
+                continue
+            else:
+                msg = "Middleware {} must return None or an iterable, got {}"
+                raise _InvalidOutput(msg.format(_fname(method), type(result)))
+        return _failure
+    def process_spider_output(result, start_index=0):
+        recovered = MutableChain()
+        method_list = islice(self.methods['process_spider_output'], start_index, None)
+        for method_index, method in enumerate(method_list, start=start_index):
+            if method is None:
+                continue
+            try:
+                result = method(response=response, result=result, spider=spider)
+            except Exception as ex:
+                exception_result = process_spider_exception(Failure(ex), method_index+1)
+                if isinstance(exception_result, Failure):
+                    raise
+                return exception_result
+            else:
+                if _isiterable(result):
+                    result = _evaluate_iterable(result, method_index+1, recovered)
+                else:
+                    msg = "Middleware {} must return an iterable, got {}"
+                    raise _InvalidOutput(msg.format(_fname(method), type(result)))
+        return MutableChain(result, recovered)
+    def process_callback_output(result):
+        recovered = MutableChain()
+        result = _evaluate_iterable(result, 0, recovered)
+        return MutableChain(process_spider_output(result), recovered)
+    dfd = mustbe_deferred(process_spider_input, response)
+    dfd.addCallbacks(callback=process_callback_output, errback=process_spider_exception)
+    return dfd

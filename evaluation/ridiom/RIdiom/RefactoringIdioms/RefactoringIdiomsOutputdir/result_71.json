@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_71.py", "cl": "", "me": "locate_app", "idiom": "Assign Multi Targets", "compli_code": ["module = app_id", "app_obj = None"], "simple_code": ["module , app_obj  = app_id, None", ""], "lineno": [[[6, 8], [6, 23]], [[7, 8], [7, 22]]], "keyno": null}]

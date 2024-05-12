@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_154.py", "cl": "", "me": "generate_back_references", "idiom": "Assign Multi Targets", "compli_code": ["file_name = new", "dest_dir = versioned_provider_path"], "simple_code": ["file_name , dest_dir  = new, versioned_provider_path", ""], "lineno": [[[19, 20], [19, 35]], [[20, 20], [20, 54]]], "keyno": null}]

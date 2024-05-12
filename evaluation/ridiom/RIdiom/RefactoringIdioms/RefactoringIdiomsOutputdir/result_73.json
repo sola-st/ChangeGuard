@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_73.py", "cl": "", "me": "call_factory", "idiom": "Assign Multi Targets", "compli_code": ["arg_names = args_spec.args", "arg_defaults = args_spec.defaults"], "simple_code": ["arg_names , arg_defaults  = args_spec.args, args_spec.defaults", ""], "lineno": [[[3, 4], [3, 30]], [[4, 4], [4, 37]]], "keyno": null}]

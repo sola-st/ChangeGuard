@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_52.py", "cl": "", "me": "jsonable_encoder", "idiom": "Assign Multi Targets", "compli_code": ["encoded_dict = {}", "allowed_keys = set(obj.keys())"], "simple_code": ["encoded_dict , allowed_keys  = {}, set(obj.keys())", ""], "lineno": [[[54, 8], [54, 25]], [[55, 8], [55, 38]]], "keyno": null}]

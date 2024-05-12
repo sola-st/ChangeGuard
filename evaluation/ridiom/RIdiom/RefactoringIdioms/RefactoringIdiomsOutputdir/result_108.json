@@ -1,0 +1,1 @@
+[{"file_path": "./func_files/fun_108.py", "cl": "", "me": "find_missing_number", "idiom": "Assign Multi Targets", "compli_code": ["low = min(nums)", "high = max(nums)"], "simple_code": ["low , high  = min(nums), max(nums)", ""], "lineno": [[[2, 4], [2, 19]], [[3, 4], [3, 20]]], "keyno": null}]
