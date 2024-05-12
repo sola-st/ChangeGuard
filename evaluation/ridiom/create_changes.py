@@ -23,7 +23,7 @@ idioms = {}
 results = []
 for i in range(299):
     try:
-        with open(f'RefactoringIdiomsOutputdir/result_{i}.json', encoding='utf-8') as f:
+        with open(f'RIdiom/RefactoringIdioms/RefactoringIdiomsOutputdir/result_{i}.json', encoding='utf-8') as f:
             data = json.load(f)
         changed_lines_old = []
         changed_lines_new = []
@@ -32,9 +32,9 @@ for i in range(299):
             #lines = d['lineno']
             #changed_lines.append((lines[0][0][0], lines[0][-1][0]))
         if data:
-            with open(f'func_files/fun_{i}.py', encoding='utf-8') as f:
+            with open(f'RIdiom/RefactoringIdioms/func_files/fun_{i}.py', encoding='utf-8') as f:
                 old_code = f.read()
-            with open(f'RefactoringIdiomsOutputdir/fun_{i}.py', encoding='utf-8') as f:
+            with open(f'RIdiom/RefactoringIdioms/RefactoringIdiomsOutputdir/fun_{i}.py', encoding='utf-8') as f:
                 new_code = f.read()
             process = subprocess.run(f'git diff --no-index --unified=0 -p func_files/fun_{i}.py RefactoringIdiomsOutputdir/fun_{i}.py', capture_output=True)
             diffs = process.stdout.decode('utf-8')
