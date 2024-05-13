@@ -9,9 +9,17 @@ However, as some of the data is too large we added it as a release. All results 
 
 Alternatively one can repeat the experiments by following the steps at the bottom.
 
+Everything required for the evaluation is part of the `evaluation.py` script.
+Assuming that all the results of the experiments are copied in their respective directory,
+the evaluation can simply be run by uncommenting the desired function and executing the
+`evaluation.py` script.
+```
+python3 evaluation.py
+```
 
+---
 # Experiments
-If you want to repeat the experiments you can follow the steps below.
+If you want to repeat the experiments you can follow the steps below. For some steps functionality is provided in `evaluation.py`.
 ## RQ1 Effectiveness
 
 ### Base Dataset
