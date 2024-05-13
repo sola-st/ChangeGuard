@@ -148,8 +148,7 @@ def get_length_of_functions():
             change = sha_to_change[result['sha']]
             lines = change['old_clean_function'].splitlines()
             reached_lens.append(len(lines))
-    print('Total Average:', sum(reached_lens)/len(reached_lens))
-
+    print('Reached Average:', sum(reached_lens)/len(reached_lens))
 
     not_reached_lens = []
     for result in results:
@@ -157,7 +156,7 @@ def get_length_of_functions():
             change = sha_to_change[result['sha']]
             lines = change['old_clean_function'].splitlines()
             not_reached_lens.append(len(lines))
-    print(sum(not_reached_lens)/len(not_reached_lens))
+    print('Not Reached Average:', sum(not_reached_lens)/len(not_reached_lens))
     return reached_lens, not_reached_lens
 
 
@@ -253,7 +252,7 @@ def draw_robustness_plot():
     axes.tick_params(axis='x', labelsize=12)
     axes.set_yticks([0, 50, 100, 150, 200, 250, 299])
     axes.set_ylabel('Number of successful code changes', fontsize=10.5)
-    fig.savefig(f'./coverage/robustness.pdf', bbox_inches='tight', dpi=1200)
+    fig.savefig('./coverage/robustness.pdf', bbox_inches='tight', dpi=1200)
     fig.show()
 
 
@@ -297,7 +296,7 @@ def get_coverage():
                shadow=False, ncol=3, fontsize=12 , bbox_to_anchor=(0.5, 1.2), )
     axes.tick_params(bottom=False)
     fig.show()
-    fig.savefig(f'./coverage/coverage.pdf', bbox_inches='tight', dpi=1200)
+    fig.savefig('./coverage/coverage.pdf', bbox_inches='tight', dpi=1200)
 
 
 def draw_box_plot(data, name, label):
@@ -394,11 +393,11 @@ def get_time_data():
             weight='bold'
         )
     fig.show()
-    fig.savefig(f'./efficiency/nb_iterations.pdf', bbox_inches='tight', dpi=1200)
+    fig.savefig('./efficiency/nb_iterations.pdf', bbox_inches='tight', dpi=1200)
 
 
 if __name__ == '__main__':
-    ANNOTATED_CHANGES = r'C:\Users\Lars\Uni\Master\Masterarbeit\master-thesis-lars-groeninger\LExecutorCC\annotated_changes.json'
+    ANNOTATED_CHANGES = r'../LExecutorCC/annotated_changes.json'
     # evaluate_annotated_changes()
     # get_final_results()
     # get_errors()
