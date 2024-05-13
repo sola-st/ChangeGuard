@@ -14,6 +14,9 @@ arbitrary Python code.
 
 ### Installation
 Since LExecutorCC contains its own version of LExecutor it is enough to install LExecutorCC.
+
+Make sure you are in the `./LExecutorCC/` directory. 
+
 1. Create virtual environment
 ```
 virtualenv -p /usr/bin/python3.8 myenv
