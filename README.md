@@ -79,7 +79,8 @@ The results are stored in the file `std_out.json`.
 Below are instructions on how to repeat the data collection steps used to obtain the code changes in `annotated_changes.json`:
 
 ### Data Collection
-
+> [!IMPORTANT]
+> Git must be installed 
 1. Starting from the root directory, navigate to the repos directory `cd repos`.
 2. Clone all repositories for which you want to collect data, alternatively you can execute the clone_repos script `python clone_repos.py` to use the same repositories as we did.
 3. Navigate to the scripts directory `cd ../scripts`.
