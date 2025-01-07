@@ -1,7 +1,10 @@
-# master-thesis-lars-groeninger
-Repository for the master thesis with the title "Reasoning about Code Change via Pairwise Learning-Guided Execution" by Lars Gröninger.
+# ChangeGuard
+ChangeGuard is an approach that automatically identifies for a function-level code change whether it is semantics-preserving or semantics-changing. To achieve this it uses LExecutor a learning-guided approach that makes it possible to execute arbitrary Python code.
+
+Paper pre-print: https://arxiv.org/abs/2410.16092
 
 This repository contains the implementation of the approach, as well as all scripts for data collection and experiments used for the evaluation.
+Note: The code calls the project "LExecutorCC".
 
 This file focuses on how to use our Approach LExecutorCC, instructions on how to repeat the evaluations are found in
 [here](evaluation/README.md)
