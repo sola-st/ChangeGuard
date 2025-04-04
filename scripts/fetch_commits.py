@@ -16,7 +16,7 @@ REFACTOR = True
 log_info = ()  # global place holder for logging information
 logger = get_logger(__name__, 'refactor' if REFACTOR else 'change')
 
-REPO_PATH = r'../Repos'
+REPO_PATH = r'../repos'
 REPOS = [(entry.name, entry.path) for entry in os.scandir(REPO_PATH) if entry.is_dir()]
 
 KEYWORDS = ['refactor', 'simplify', 'cleanup', 'optimize']
