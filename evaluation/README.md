@@ -79,7 +79,7 @@ correctly identify a code change as semantics-preserving or semantics-changing, 
     * Manually go through each annotation in `annotated_changes.json`. For each commit version, i.e. old and new, identify if they have associated continuous integration logs on the GitHub Workflows platform. If such logs exists, we compare the test execution results for the commits of the two versions and add the verdict to a file in `./evaluation/regression_tests/project_name_github_verdict.json`. Notice we save three filds for each code change: *repo*, *sha*, and *final_result*. E.g. `./evaluation/regression_tests/airflow_github_verdict.json`.
 
 2. Try to run the tests locally:  
-    * For each project with tests, execute its corresponding script in `python3 repos/evaluate_tests_project_name.py`. 
+    * For each project with tests, execute its corresponding script in `python3 repos/evaluate_tests_project_name.py`.  The results will be saved in `./evaluation/regression_tests/project_name_tests_verdict.json`.
 
 Finally, summarize the results running:
 `python3 repos/summarize_tests_verdict.py`
