@@ -39,7 +39,7 @@ pip install -e .
 5. Download the newly trained model from [here](https://github.com/sola-st/master-thesis-lars-groeninger/releases/tag/model)
 and store it in `./LExecutorCC/data/released_models/`
 ### Usage
-The **input** of LExecutor is a list of code changes in JSON format. The format of a code change is as follows:
+The **input** of LExecutorCC is a list of code changes in JSON format. The format of a code change is as follows:
 ```json
 {
    "repo": "Project from which the code change originates",
@@ -63,7 +63,7 @@ indicates that 2 changes happen one from line 2 to 5 and one at line 8.
 
 We provide a list of 299 annotated code changes that we used for our evaluation in `annotated_changes.json`.
 
-To run LExecutor one needs to execute the `Runner` module this works in two steps:
+To run LExecutorCC one needs to execute the `Runner` module this works in two steps:
 
 1. The compare scripts are created and instrumented
 ```

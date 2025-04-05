@@ -1,0 +1,18 @@
+[
+    {
+        "repo": "flask",
+        "sha": "65271c105f7c247ecffc9a7121815276e092bd10",
+        "old_commit_passing": 481,
+        "new_commit_passing": 481,
+        "succesful_execution": false,
+        "final_result": "preserving"
+    },
+    {
+        "repo": "flask",
+        "sha": "17e146ad949b3d80438faf95e81b53c543cb50f5",
+        "old_commit_passing": 241,
+        "new_commit_passing": 241,
+        "succesful_execution": false,
+        "final_result": "preserving"
+    }
+]

@@ -1,0 +1,34 @@
+[
+    {
+        "repo": "poetry",
+        "sha": "75757635c855fbe6391709a856d1c9127af0a0a9",
+        "old_commit_passing": 1432,
+        "new_commit_passing": 1432,
+        "succesful_execution": false,
+        "final_result": "preserving"
+    },
+    {
+        "repo": "poetry",
+        "sha": "ebb91e235eec67897ef44af532241055fb0f30be",
+        "old_commit_passing": 1430,
+        "new_commit_passing": 1430,
+        "succesful_execution": false,
+        "final_result": "preserving"
+    },
+    {
+        "repo": "poetry",
+        "sha": "38efaeacec85952b0a0e9235a75748580ed06c49",
+        "old_commit_passing": null,
+        "new_commit_passing": null,
+        "succesful_execution": false,
+        "final_result": "preserving"
+    },
+    {
+        "repo": "poetry",
+        "sha": "17454be4afc987ef837fd62078f078ffca292a95",
+        "old_commit_passing": 1375,
+        "new_commit_passing": 1375,
+        "succesful_execution": false,
+        "final_result": "preserving"
+    }
+]

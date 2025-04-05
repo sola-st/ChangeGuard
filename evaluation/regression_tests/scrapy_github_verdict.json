@@ -1,0 +1,32 @@
+[
+    {
+        "repo": "scrapy",
+        "sha": "f05657e54245eff9f912914014c51b37b0bc6b34",
+        "final_result": "preserving"
+    },
+    {
+        "repo": "scrapy",
+        "sha": "2f787a27dc1f7551b98d322b6b93b3cb8bad4e2e",
+        "final_result": "changing"
+    },
+    {
+      "repo": "scrapy",
+      "sha": "7ce3d8f98ad6b28d138757bdc5655d8c91ffd042",
+      "final_result": "preserving"
+    },
+    {
+      "repo": "scrapy",
+      "sha": "f1ed5598f4d312337a9dd76e0c1a5856cabea8bc",
+      "final_result": "changing"
+    },
+    {
+      "repo": "scrapy",
+      "sha": "82cf00bbc931723320c9aca3cf0305372027d0a0",
+      "final_result": "changing"
+    },
+    {
+      "repo": "scrapy",
+      "sha": "3f92882be4b35cf476f0c7c284e4fe1ba498e873",
+      "final_result": "changing"
+    }
+]
