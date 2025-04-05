@@ -85,7 +85,7 @@ Finally, summarize the results running:
 `python3 repos/summarize_tests_verdict.py`
 
 
-## RQ2: Retraining model
+## RQ3: Retraining model
 
 1. Get DyPyBench [link](https://github.com/sola-st/DyPyBench)
    * Follow instructions on how to set up DyPyBench, including adding the patches.
@@ -102,13 +102,13 @@ Finally, summarize the results running:
 6. Copy tensors (train.pt, validate.pt) to gpu machine and install [LExecutor](https://github.com/michaelpradel/LExecutor/) if necessary (make sure to also replace the necessary files see step 2).
 7. run `python3 -m lexecutor.predictors.codeT5.FineTune --train_tensors train.pt --validate_tensors validate.pt --output_dir . --stats_dir .` to start the finetuning.
 
-## RQ3: LExecutor Improvements (coverage)
+## RQ4: LExecutor Improvements (coverage)
 1. For obtaining the results of the baseline run the baseline version of LExecutorCC `./coverage/Baseline_for_coverage/LExecutor/` on the `annotated_changes.json` dataset.
 2. The baseline is executed in the same way as the regular LExceutorCC, i.e., `python -m lexecutor.Runner --commits annotated_changes.json --action [instrument|run]` (make sure to install the baseline in a separate virtual environment).
 3. For obtaining the results of for LExecutorCC, simply run LExecutorCC on the `annotated_changes.json` dataset, but make sure to remove the condition
 `result == 'changing'` from line 212 in `Runner.py` to make sure that the approach does not stop as soon as it detects a change in semantics.
 
-## RQ4: Efficiency
+## RQ5: Efficiency
 The Results for RQ4 are obtained by analyzing the logs obtained from running LExecutorCC on `annotated_changes.json`.
 
 
