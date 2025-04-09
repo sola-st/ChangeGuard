@@ -178,26 +178,73 @@ If you want to stop early, simply press `ctrl + c` to interrupt the process. The
 
 #### Rule-based refactorings
 
-1. For this we use [RIdiom](https://pypi.org/project/RefactoringIdioms/). However since it is difficult to set up we include our adjusted version in the `ridiom` directory.
-2. Install RIdiom as module: in `./evaluation/ridiom/RIdiom` directory by executing `pip install .` (requires Python 3.9).
-3. Manually add missing dependencies (you can test if it works by running `python3 main.py` in `./evaluation/ridiom/RIdiom/RefactoringIdioms/`).
-We needed to install pathos: `pip install pathos`
-5. Run `python3 create_func_files.py` to create functions for transformations.
-6. Copy `./func_files` directory into source directory of RIdiom (same directory as main.py).
-7. In the same directory run `python3 runner.py`.
-8. Manually fix errors in transformed code in `./RefactoringIdioms/RefactoringIdiomsOutputdir/`. Function 34, 212, 220, 223, 224, 231, 262, 268, and 285 needs to be fixed.
-9. Navigate back to the `ridiom` directory and run `python3 create_changes.py`.
-10. Use the resulting `transformation_changes.json` file as input to LExecutorCC.
+> [!IMPORTANT]
+> For this we use [RIdiom](https://pypi.org/project/RefactoringIdioms/).
+> Requires Python 3.9
+
+Install RIdiom as module in the `./evaluation/ridiom/RIdiom` directory 
+```
+pip install .
+```
+
+Manually add missing dependencies (you can test if it works by running `python3 main.py` in `./evaluation/ridiom/RIdiom/RefactoringIdioms/`).
+We needed to install pathos
+
+```
+pip install pathos
+```
+
+Create functions for transformations
+
+```
+python3 create_func_files.py
+```
+
+Copy `./func_files` directory into source directory of RIdiom (`RIdiom/RefactoringIdioms/`)
+
+Transform the functions
+
+```
+python3 runner.py
+```
+
+Manually fix errors in transformed code in `./RefactoringIdioms/RefactoringIdiomsOutputdir/`. 
+Function 34, 212, 220, 223, 224, 231, 262, 268, and 285 needs to be fixed.
+
+Navigate back to the `ridiom` directory and create the changes
+
+```
+python3 create_changes.py
+```
+
+The results are stored in the `transformation_changes.json` file.
 
 #### Refactorings created by GPT-3.5 and GPT-4
 
-0. Navigate to`./llm` directory.
-1. Create file .secret and paste your API token (first line) and organization id (second line) into it.
-2. Make sure the correct model in `llm_creator_api.py` is selected.
-3. Run `python3 llm_creator_api.py`.
-4. Clean the resulting `response.json`, e.g., by running the `remove_text.py` script. The cleaned version should only contain the changed function and no additional text from the model.
-5. Run `python3 create_changes.py`.
-6. Use resulting changes as input to LExecutorCC.
+> [!IMPORTANT]
+> For this you need and API token from OpenAI.
+> The model can be selected in the `llm_creator_api.py` file.
+
+From the `./llm` directory, create a `.secret` file and paste your API token (first line) and organization id (second line) into it.
+
+Transform the functions
+
+```
+python3 llm_creator_api.py
+```
+
+Clean the resulting `response.json`
+> [!IMPORTANT]
+> The cleaned version should only contain the changed function and no additional text from the model.
+
+```
+python3 remove_text.py
+```
+```
+python3 create_changes.py
+```
+
+The results are stored in the `llm_changes_gpt*.json` file.
 
 ### Reproduce RQ1 - Effectiveness
 
