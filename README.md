@@ -176,6 +176,8 @@ Look at the commit and as soon as you have decided on whether the code change is
 The next commit opens and the process repeats until all the extracted commits of the repository have been processed.
 If you want to stop early, simply press `ctrl + c` to interrupt the process. The script stores the index so the next time you execute it, you can continue where you left off.
 
+The results are stored in the `annotated_changes.json` file.
+
 #### Rule-based refactorings
 
 > [!IMPORTANT]
@@ -247,6 +249,10 @@ python3 create_changes.py
 The results are stored in the `llm_changes_gpt*.json` file.
 
 ### Reproduce RQ1 - Effectiveness
+
+Run ChangeGuard on the above datasets using the steps described in [Running](#running).
+
+To evaluate the results of the manually annotated and derived datasets, i.e., RIdiom, gpt-3.5, and gpt-4, either analyze them manually by looking at their respective `std_out.json` or use the functions in `evaluation.py` by adjusting the paths.
 
 ### Reproduce RQ2 - Regression Testing
 
