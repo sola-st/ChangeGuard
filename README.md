@@ -35,8 +35,9 @@ Make sure you are in the `./LExecutorCC/` directory
 cd LExecutorCC
 ```
 
-Create a virtual environment (Python 3.8 must be installed)
-
+Create a virtual environment
+> [!IMPORTANT]
+> Python 3.8 must be installed 
 ```
 virtualenv -p /usr/bin/python3.8 myenv
 ```
