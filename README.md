@@ -24,7 +24,8 @@ Note: The code calls the project "LExecutorCC".
 ## Installation
 
 Clone ChangeGuard from GitHub
-
+> [!IMPORTANT]
+> Git must be installed 
 ```bash
 git clone https://github.com/sola-st/ChangeGuard && cd ChangeGuard
 ```
@@ -68,7 +69,7 @@ and store it in `./LExecutorCC/data/released_models/`
 
 ### Input format
 
-The **input** of LExecutorCC is a list of code changes in JSON format. The format of a code change is as follows:
+The **input** of ChangeGuard is a list of code changes in JSON format. The format of a code change is as follows:
 ```json
 {
    "repo": "Project from which the code change originates",
@@ -108,7 +109,7 @@ Execute the compare scripts using LExecutor
 python -m lexecutor.Runner --commits annotated_changes.json --action run
 ```
 
-The results are stored in the file `std_out.json`.
+The results are stored in the `std_out.json` file.
 
 ## Reproducibility
 
@@ -116,18 +117,37 @@ The results are stored in the file `std_out.json`.
 
 #### Manually annotated code changes
 
-Below are instructions on how to repeat the data collection steps used to obtain the code changes in `annotated_changes.json`:
+Below are instructions on how to repeat the data collection steps used to obtain the code changes in `annotated_changes.json`.
 
 ##### Data Collection
+
+Starting from the root directory, navigate to the repos directory
+
+```
+cd repos
+```
+
+Clone all repositories for which we collect data
+
+```
+python clone_repos.py
+```
+
+Navigate to the scripts directory 
+
+```
+cd ../scripts
+```
+
+Fetch the commits of interest
 > [!IMPORTANT]
-> Git must be installed 
-1. Starting from the root directory, navigate to the repos directory `cd repos`.
-2. Clone all repositories for which you want to collect data, alternatively you can execute the clone_repos script `python clone_repos.py` to use the same repositories as we did.
-3. Navigate to the scripts directory `cd ../scripts`.
-4. Execute the fetch_commits script `python fetch_commits.py`.
-    - To switch from collecting refactor commits to change commits, simply set the *REFACTOR* flag at top of the `fetch_commit.py` script to **False**.
-    - After the script is finished executing the collected code changes are stored in a newly created directory called `extracted_commits` in JSON format.
-    - Information about which commits have been skipped and for which reasons can be found in the `logs` directory.
+> To switch from collecting refactor commits to change commits, simply set the *REFACTOR* flag at top of the `fetch_commit.py` script to **False**
+```
+python fetch_commits.py
+```
+
+After the script is finished executing, the collected code changes are stored in a newly created directory called `extracted_commits` in JSON format.
+Information about which commits have been skipped and for which reasons can be found in the `logs` directory.
 
 ##### Annotating Code Changes
 0. Make sure all the data Collection steps have been completed.
