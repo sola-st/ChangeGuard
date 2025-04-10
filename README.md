@@ -113,6 +113,9 @@ The results are stored in the `std_out.json` file.
 
 ## Reproducibility
 
+> [!IMPORTANT]
+> The steps bellow can be skipped by inspecting the results given in the [released dataset](#download-data).
+
 ### Reproduce Dataset Creation
 
 #### Manually annotated code changes
@@ -256,6 +259,8 @@ Run ChangeGuard on the above datasets using the steps described in [Running](#ru
 
 To evaluate the results of the manually annotated and derived datasets, i.e., RIdiom, gpt-3.5, and gpt-4, either analyze them manually by looking at their respective `std_out.json` or use the functions in `evaluation.py` by adjusting the paths.
 
+Our [released dataset](#download-data) contains the `std_out.json` generated for each dataset in `evaluation_base_dataset.zip`, `evaluation_RIdiom.zip`, `evaluation_gpt35.zip`, and `evaluation_gpt4.zip`.
+
 ### Reproduce RQ2 - Comparison with Regression Testing
 
 To check whether the existing regressions tests, of all 224 code changes that are manually annotated,
@@ -310,6 +315,8 @@ python3 -m lexecutor.predictors.codeT5.PrepareData --iids iids.json --traces tra
 python3 -m lexecutor.predictors.codeT5.FineTune --train_tensors train.pt --validate_tensors validate.pt --output_dir . --stats_dir .
 ```
 
+The model we fine-tuned is available [here](https://github.com/sola-st/master-thesis-lars-groeninger/releases/tag/model).
+
 ### Reproduce RQ4 - Robustness and Coverage
 
 Run the baseline, i.e. original LExecutor, on the `annotated_changes.json` dataset
@@ -324,6 +331,8 @@ Run ChangeGuard on the `annotated_changes.json` dataset using the steps describe
 > [!IMPORTANT]
 > Remove the condition `result == 'changing'` from line 212 in `Runner.py` to make sure that the approach does not stop as soon as it detects a change in semantics.
 
+Our [released dataset](#download-data) contains the `std_out.json` generated with each approach in `coverage_approach.zip` and `coverage_baseline.zip`.
+
 ### Reproduce RQ5 - Efficiency
 
 The Results for RQ5 are obtained by analyzing the logs obtained from running ChangeGuard on the `annotated_changes.json` dataset.
@@ -334,5 +343,3 @@ We refer to [Reproduce RQ1 - Effectiveness](#reproduce-rq1---effectiveness).
 Most results of our evaluation can be found in their corresponding directories.
 However, as some of the data is too large, we added it as a release. 
 All results from the experiments can be found [here](https://github.com/sola-st/master-thesis-lars-groeninger/releases/tag/evaluation).
-
-
