@@ -251,6 +251,8 @@ The results are stored in the `llm_changes_gpt*.json` file.
 ### Reproduce RQ1 - Effectiveness
 
 Run ChangeGuard on the above datasets using the steps described in [Running](#running).
+> [!IMPORTANT]
+> Replace the input file according to the used dataset, e.g. `annotated_changes.json` for the manually anottated dataset.
 
 To evaluate the results of the manually annotated and derived datasets, i.e., RIdiom, gpt-3.5, and gpt-4, either analyze them manually by looking at their respective `std_out.json` or use the functions in `evaluation.py` by adjusting the paths.
 
