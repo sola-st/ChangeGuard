@@ -15,10 +15,10 @@ Note: The code calls the project "LExecutorCC".
   * [Reproducibility](#reproducibility)
     + [Reproduce Datasets Creation](#reproduce-datasets-creation)
     + [Reproduce RQ1 - Effectiveness](#reproduce-rq1---effectiveness)
-    + [Reproduce RQ2 - Regression Testing](#reproduce-rq2---regression-testing)
-    + [Reproduce RQ3 - Retraining model](#reproduce-rq3---retraining-model)
-    + [Reproduce RQ4 - LExecutor Improvements (coverage)](#reproduce-rq4---lexecutor-improvements-(coverage))
-    + [Reproduce RQ5 - Efficiency](#reproduce-rq4---efficiency)
+    + [Reproduce RQ2 - Comparison with Regression Testing](#reproduce-rq2---comparison-with-regression-testing)
+    + [Reproduce RQ3 - Accuracy of the Neural Model](#reproduce-rq3---accuracy-of-the-neural-model)
+    + [Reproduce RQ4 - Robustness and Coverage](#reproduce-rq4---robustness-and-coverage)
+    + [Reproduce RQ5 - Efficiency](#reproduce-rq5---efficiency)
   * [Download Data](#download-data)
 
 ## Installation
@@ -254,7 +254,7 @@ Run ChangeGuard on the above datasets using the steps described in [Running](#ru
 
 To evaluate the results of the manually annotated and derived datasets, i.e., RIdiom, gpt-3.5, and gpt-4, either analyze them manually by looking at their respective `std_out.json` or use the functions in `evaluation.py` by adjusting the paths.
 
-### Reproduce RQ2 - Regression Testing
+### Reproduce RQ2 - Comparison with Regression Testing
 
 To check whether the existing regressions tests, of all 224 code changes that are manually annotated,
 correctly identify a code change as semantics-preserving or semantics-changing, we proceed as follows:
@@ -275,7 +275,7 @@ Finally, summarize the results
 python3 repos/summarize_tests_verdict.py
 ```
 
-### Reproduce RQ3 - Retraining model
+### Reproduce RQ3 - Accuracy of the Neural Model
 
 1. Get DyPyBench [link](https://github.com/sola-st/DyPyBench)
 > [!IMPORTANT]
@@ -308,7 +308,7 @@ python3 -m lexecutor.predictors.codeT5.PrepareData --iids iids.json --traces tra
 python3 -m lexecutor.predictors.codeT5.FineTune --train_tensors train.pt --validate_tensors validate.pt --output_dir . --stats_dir .
 ```
 
-### Reproduce RQ4 - LExecutor Improvements (coverage)
+### Reproduce RQ4 - Robustness and Coverage
 
 Run the baseline, i.e. original LExecutor, on the `annotated_changes.json` dataset
 > [!IMPORTANT]
