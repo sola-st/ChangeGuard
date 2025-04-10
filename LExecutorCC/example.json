@@ -1,0 +1,33 @@
+[
+    {
+      "repo": "airflow",
+      "source": "change",
+      "sha": "8ea094f1f5c814a37ae8fc014bec47774b9fb18f",
+      "url": "https://github.com/apache/airflow/commit/8ea094f1f5c814a37ae8fc014bec47774b9fb18f",
+      "message": "Remove leftover mesos reference in generic hooks (#35232)\n\n",
+      "insertions": 0,
+      "deletions": 1,
+      "changed_lines": 1,
+      "old_commit": "3592ff40465032fa041600be740ee6bc25e7c242",
+      "new_commit": "8ea094f1f5c814a37ae8fc014bec47774b9fb18f",
+      "old_file": "airflow/providers_manager.py",
+      "new_file": "airflow/providers_manager.py",
+      "old_function": "\ndef _init_airflow_core_hooks(self):\n    \"\"\"Initializes the hooks dict with default hooks from Airflow core.\"\"\"\n    core_dummy_hooks = {\n        \"generic\": \"Generic\",\n        \"email\": \"Email\",\n        \"mesos_framework-id\": \"Mesos Framework ID\",\n    }\n    for key, display in core_dummy_hooks.items():\n        self._hooks_lazy_dict[key] = HookInfo(\n            hook_class_name=None,\n            connection_id_attribute_name=None,\n            package_name=None,\n            hook_name=display,\n            connection_type=None,\n            connection_testable=False,\n        )\n    for cls in [FSHook, PackageIndexHook]:\n        package_name = cls.__module__\n        hook_class_name = f\"{cls.__module__}.{cls.__name__}\"\n        hook_info = self._import_hook(\n            connection_type=None,\n            provider_info=None,\n            hook_class_name=hook_class_name,\n            package_name=package_name,\n        )\n        self._hook_provider_dict[hook_info.connection_type] = HookClassProvider(\n            hook_class_name=hook_class_name, package_name=package_name\n        )\n        self._hooks_lazy_dict[hook_info.connection_type] = hook_info\n",
+      "new_function": "\ndef _init_airflow_core_hooks(self):\n    \"\"\"Initializes the hooks dict with default hooks from Airflow core.\"\"\"\n    core_dummy_hooks = {\n        \"generic\": \"Generic\",\n        \"email\": \"Email\",\n    }\n    for key, display in core_dummy_hooks.items():\n        self._hooks_lazy_dict[key] = HookInfo(\n            hook_class_name=None,\n            connection_id_attribute_name=None,\n            package_name=None,\n            hook_name=display,\n            connection_type=None,\n            connection_testable=False,\n        )\n    for cls in [FSHook, PackageIndexHook]:\n        package_name = cls.__module__\n        hook_class_name = f\"{cls.__module__}.{cls.__name__}\"\n        hook_info = self._import_hook(\n            connection_type=None,\n            provider_info=None,\n            hook_class_name=hook_class_name,\n            package_name=package_name,\n        )\n        self._hook_provider_dict[hook_info.connection_type] = HookClassProvider(\n            hook_class_name=hook_class_name, package_name=package_name\n        )\n        self._hooks_lazy_dict[hook_info.connection_type] = hook_info\n",
+      "old_clean_function": "def _init_airflow_core_hooks(self):\n    core_dummy_hooks = {\n        \"generic\": \"Generic\",\n        \"email\": \"Email\",\n        \"mesos_framework-id\": \"Mesos Framework ID\",\n    }\n    for key, display in core_dummy_hooks.items():\n        self._hooks_lazy_dict[key] = HookInfo(\n            hook_class_name=None,\n            connection_id_attribute_name=None,\n            package_name=None,\n            hook_name=display,\n            connection_type=None,\n            connection_testable=False,\n        )\n    for cls in [FSHook, PackageIndexHook]:\n        package_name = cls.__module__\n        hook_class_name = f\"{cls.__module__}.{cls.__name__}\"\n        hook_info = self._import_hook(\n            connection_type=None,\n            provider_info=None,\n            hook_class_name=hook_class_name,\n            package_name=package_name,\n        )\n        self._hook_provider_dict[hook_info.connection_type] = HookClassProvider(\n            hook_class_name=hook_class_name, package_name=package_name\n        )\n        self._hooks_lazy_dict[hook_info.connection_type] = hook_info\n",
+      "new_clean_function": "def _init_airflow_core_hooks(self):\n    core_dummy_hooks = {\n        \"generic\": \"Generic\",\n        \"email\": \"Email\",\n    }\n    for key, display in core_dummy_hooks.items():\n        self._hooks_lazy_dict[key] = HookInfo(\n            hook_class_name=None,\n            connection_id_attribute_name=None,\n            package_name=None,\n            hook_name=display,\n            connection_type=None,\n            connection_testable=False,\n        )\n    for cls in [FSHook, PackageIndexHook]:\n        package_name = cls.__module__\n        hook_class_name = f\"{cls.__module__}.{cls.__name__}\"\n        hook_info = self._import_hook(\n            connection_type=None,\n            provider_info=None,\n            hook_class_name=hook_class_name,\n            package_name=package_name,\n        )\n        self._hook_provider_dict[hook_info.connection_type] = HookClassProvider(\n            hook_class_name=hook_class_name, package_name=package_name\n        )\n        self._hooks_lazy_dict[hook_info.connection_type] = hook_info\n",
+      "old_changed_lines": [
+        [
+          5,
+          5
+        ]
+      ],
+      "new_changed_lines": [
+        [
+          4,
+          4
+        ]
+      ],
+      "annotation": "semantics_changing"
+    }
+]
