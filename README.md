@@ -14,7 +14,7 @@ Note: The code calls the project "LExecutorCC".
     + [Running](#running)
   * [Reproducibility](#reproducibility)
     + [Reproduce Datasets Creation](#reproduce-datasets-creation)
-    + [Reproduce RQ1 - Effectiveness](#reproduce-rq1---anomaly-detection-effectiveness)
+    + [Reproduce RQ1 - Effectiveness](#reproduce-rq1---effectiveness)
     + [Reproduce RQ2 - Regression Testing](#reproduce-rq2---regression-testing)
     + [Reproduce RQ3 - Retraining model](#reproduce-rq3---retraining-model)
     + [Reproduce RQ4 - LExecutor Improvements (coverage)](#reproduce-rq4---lexecutor-improvements-(coverage))
@@ -263,27 +263,50 @@ correctly identify a code change as semantics-preserving or semantics-changing, 
     * Manually go through each annotation in `annotated_changes.json`. For each commit version, i.e. old and new, identify if they have associated continuous integration logs on the GitHub Workflows platform. If such logs exists, we compare the test execution results for the commits of the two versions and add the verdict to a file in `./evaluation/regression_tests/project_name_github_verdict.json`. Notice we save three filds for each code change: *repo*, *sha*, and *final_result*. E.g. `./evaluation/regression_tests/airflow_github_verdict.json`.
 
 2. Try to run the tests locally:  
-    * For each project with tests, execute its corresponding script in `python3 repos/evaluate_tests_project_name.py`.  The results will be saved in `./evaluation/regression_tests/project_name_tests_verdict.json`.
+    * For each project with tests, execute its corresponding script
+    ```
+    python3 repos/evaluate_tests_project_name.py
+    ```
 
-Finally, summarize the results running:
-`python3 repos/summarize_tests_verdict.py`
+    The results will be saved in `./evaluation/regression_tests/project_name_tests_verdict.json`.
+
+Finally, summarize the results
+```
+python3 repos/summarize_tests_verdict.py
+```
 
 ### Reproduce RQ3 - Retraining model
 
 1. Get DyPyBench [link](https://github.com/sola-st/DyPyBench)
-   * Follow instructions on how to set up DyPyBench, including adding the patches.
+   > [!IMPORTANT]
+   > Follow instructions on how to set up DyPyBench, including adding the patches.
+
 2. Exchange LExecutor files in `./retraining/files_to_replace` with corresponding files in DyPyBench container.
+
 3. Copy `./retraining/all_files_test.txt` into container.
+
 4. Collect traces:
-    * Note: we used all projects available in DyPyBench except 3 and 19 as those are already part of our evaluation data.
-    * run `python3 dypybench.py --test 1 2 ... 50`
-    * run `python3 dypybench.py --lex_instrument 1 2 ... 50 --lex_file all_files_test.txt`
-    * run `python3 dypybench.py --lex_test 1 2 ... 50`
-    * Note: if due to limited disk space it is not possible to run all projects at once, do them in batches and store the temp folder for later use.
-    * run `find ./temp -type f -name "trace_*.h5" > traces.txt` to collect all paths to the traces.
-5. run `python3 -m lexecutor.predictors.codeT5.PrepareData --iids iids.json --traces traces.txt --output_dir .` to obtain the training tensors.
+   > [!IMPORTANT]
+   > We used all projects available in DyPyBench, except 3 and 19 as those are already part of our evaluation data.
+   > If due to limited disk space it is not possible to run all projects at once, do them in batches and store the temp folder for later use.
+   ```
+   python3 dypybench.py --test 1 2 ... 50
+   python3 dypybench.py --lex_instrument 1 2 ... 50 --lex_file all_files_test.txt
+   python3 dypybench.py --lex_test 1 2 ... 50
+   find ./temp -type f -name "trace_*.h5" > traces.txt
+   ```
+   
+5. Obtain the training tensors
+```
+python3 -m lexecutor.predictors.codeT5.PrepareData --iids iids.json --traces traces.txt --output_dir .
+```
+
 6. Copy tensors (train.pt, validate.pt) to gpu machine and install [LExecutor](https://github.com/michaelpradel/LExecutor/) if necessary (make sure to also replace the necessary files see step 2).
-7. run `python3 -m lexecutor.predictors.codeT5.FineTune --train_tensors train.pt --validate_tensors validate.pt --output_dir . --stats_dir .` to start the finetuning.
+
+7. Fine-tune the model
+```
+python3 -m lexecutor.predictors.codeT5.FineTune --train_tensors train.pt --validate_tensors validate.pt --output_dir . --stats_dir .
+```
 
 ### Reproduce RQ4 - LExecutor Improvements (coverage)
 
