@@ -3,8 +3,8 @@
 We apply for the Available and Reusable badges.
 
 * **Available**: Our Software and Dataset artifacts are "Available" as they are publicly accessible through the following:
-  * Software Artifacts: []()
-  * Dataset Artifacts: []()
+  * [Artifacts snapshot](https://doi.org/10.5281/zenodo.15189247)
+  * [Artifacts repository](https://github.com/sola-st/ChangeGuard)
 
 
 * **Reusable**: Our artifact is "Reusable" (and also "Functional") as we meet the five criteria (the first four are the criteria for "Functional" badge) mentioned in the [artifact submission guideline](https://conf.researchr.org/track/fse-2025/fse-2025-artifacts).
