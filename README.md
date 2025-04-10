@@ -278,24 +278,24 @@ python3 repos/summarize_tests_verdict.py
 ### Reproduce RQ3 - Retraining model
 
 1. Get DyPyBench [link](https://github.com/sola-st/DyPyBench)
-   > [!IMPORTANT]
-   > Follow instructions on how to set up DyPyBench, including adding the patches.
+> [!IMPORTANT]
+> Follow instructions on how to set up DyPyBench, including adding the patches.
 
 2. Exchange LExecutor files in `./retraining/files_to_replace` with corresponding files in DyPyBench container.
 
 3. Copy `./retraining/all_files_test.txt` into container.
 
 4. Collect traces:
-   > [!IMPORTANT]
-   > We used all projects available in DyPyBench, except 3 and 19 as those are already part of our evaluation data.
-   > If due to limited disk space it is not possible to run all projects at once, do them in batches and store the temp folder for later use.
+> [!IMPORTANT]
+> We used all projects available in DyPyBench, except 3 and 19 as those are already part of our evaluation data.
+> If due to limited disk space it is not possible to run all projects at once, do them in batches and store the temp folder for later use.
    ```
    python3 dypybench.py --test 1 2 ... 50
    python3 dypybench.py --lex_instrument 1 2 ... 50 --lex_file all_files_test.txt
    python3 dypybench.py --lex_test 1 2 ... 50
    find ./temp -type f -name "trace_*.h5" > traces.txt
    ```
-   
+
 5. Obtain the training tensors
 ```
 python3 -m lexecutor.predictors.codeT5.PrepareData --iids iids.json --traces traces.txt --output_dir .
