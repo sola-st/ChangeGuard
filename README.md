@@ -13,7 +13,7 @@ This repository includes artifacts for reuse and reproduction of experimental re
     + [Input format](#input-format)
     + [Running](#running)
   * [Reproducibility](#reproducibility)
-    + [Reproduce Datasets Creation](#reproduce-datasets-creation)
+    + [Reproduce Dataset Creation](#reproduce-dataset-creation)
     + [Reproduce RQ1 - Effectiveness](#reproduce-rq1---effectiveness)
     + [Reproduce RQ2 - Comparison with Regression Testing](#reproduce-rq2---comparison-with-regression-testing)
     + [Reproduce RQ3 - Accuracy of the Neural Model](#reproduce-rq3---accuracy-of-the-neural-model)
@@ -113,7 +113,7 @@ The results are stored in the `std_out.json` file.
 
 ## Reproducibility
 
-### Reproduce Datasets Creation
+### Reproduce Dataset Creation
 
 #### Manually annotated code changes
 
@@ -252,7 +252,7 @@ The results are stored in the `llm_changes_gpt*.json` file.
 
 Run ChangeGuard on the above datasets using the steps described in [Running](#running).
 > [!IMPORTANT]
-> Replace the input file according to the used dataset, e.g. `annotated_changes.json` for the manually anottated dataset.
+> Replace the input file according to the used dataset, e.g. `annotated_changes.json` for the manually annotated dataset.
 
 To evaluate the results of the manually annotated and derived datasets, i.e., RIdiom, gpt-3.5, and gpt-4, either analyze them manually by looking at their respective `std_out.json` or use the functions in `evaluation.py` by adjusting the paths.
 
@@ -262,7 +262,7 @@ To check whether the existing regressions tests, of all 224 code changes that ar
 correctly identify a code change as semantics-preserving or semantics-changing, we proceed as follows:
 
 1. Check whether the corresponding commit has any associated continuous integration logs on the GitHub Workflows platform:
-    * Manually go through each annotation in `annotated_changes.json`. For each commit version, i.e. old and new, identify if they have associated continuous integration logs on the GitHub Workflows platform. If such logs exists, we compare the test execution results for the commits of the two versions and add the verdict to a file in `./evaluation/regression_tests/project_name_github_verdict.json`. Notice we save three filds for each code change: *repo*, *sha*, and *final_result*. E.g. `./evaluation/regression_tests/airflow_github_verdict.json`.
+    * Manually go through each annotation in `annotated_changes.json`. For each commit version, i.e. old and new, identify if they have associated continuous integration logs on the GitHub Workflows platform. If such logs exists, we compare the test execution results for the commits of the two versions and add the verdict to a file in `./evaluation/regression_tests/project_name_github_verdict.json`. Notice we save three fields for each code change: *repo*, *sha*, and *final_result*. E.g. `./evaluation/regression_tests/airflow_github_verdict.json`.
 
 2. Try to run the tests locally:  
     * For each project with tests, execute its corresponding script
