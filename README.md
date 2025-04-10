@@ -2,10 +2,10 @@
 
 **ChangeGuard** is an approach that automatically identifies for a function-level code change whether it is semantics-preserving or semantics-changing. To achieve this, it uses LExecutor which is a learning-guided approach that makes it possible to execute arbitrary Python code.
 
-Paper pre-print: https://arxiv.org/abs/2410.16092
+This repository includes artifacts for reuse and reproduction of experimental results presented in our [FSE'25 paper](https://arxiv.org/abs/2410.16092).
 
-This repository contains the implementation of the approach, as well as all scripts for data collection and experiments used for the evaluation.
-Note: The code calls the project "LExecutorCC".
+> [!IMPORTANT]
+> The code calls the project "LExecutorCC".
 
 **Table of Contents**
   * [Installation](#installation)
