@@ -310,14 +310,22 @@ python3 -m lexecutor.predictors.codeT5.FineTune --train_tensors train.pt --valid
 
 ### Reproduce RQ4 - LExecutor Improvements (coverage)
 
-1. For obtaining the results of the baseline run the baseline version of LExecutorCC `./coverage/Baseline_for_coverage/LExecutor/` on the `annotated_changes.json` dataset.
-2. The baseline is executed in the same way as the regular LExceutorCC, i.e., `python -m lexecutor.Runner --commits annotated_changes.json --action [instrument|run]` (make sure to install the baseline in a separate virtual environment).
-3. For obtaining the results of for LExecutorCC, simply run LExecutorCC on the `annotated_changes.json` dataset, but make sure to remove the condition
-`result == 'changing'` from line 212 in `Runner.py` to make sure that the approach does not stop as soon as it detects a change in semantics.
+Run the baseline, i.e. original LExecutor, on the `annotated_changes.json` dataset
+> [!IMPORTANT]
+> Make sure to install the baseline in a separate virtual environment following [these install instructions](https://github.com/michaelpradel/LExecutor/blob/main/INSTALL.md).
+```
+cd evaluation/coverage/Baseline_for_coverage/LExecutor/
+python -m lexecutor.Runner --commits annotated_changes.json --action [instrument|run]
+```
+
+Run ChangeGuard on the `annotated_changes.json` dataset using the steps described in [Running](#running)
+> [!IMPORTANT]
+> Remove the condition `result == 'changing'` from line 212 in `Runner.py` to make sure that the approach does not stop as soon as it detects a change in semantics.
 
 ### Reproduce RQ5 - Efficiency
 
-The Results for RQ4 are obtained by analyzing the logs obtained from running LExecutorCC on `annotated_changes.json`.
+The Results for RQ5 are obtained by analyzing the logs obtained from running ChangeGuard on the `annotated_changes.json` dataset.
+We refer to [Reproduce RQ1 - Effectiveness](#reproduce-rq1---effectiveness).
 
 ## Download Data
 
