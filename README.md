@@ -100,13 +100,13 @@ To run ChangeGuard, one needs to execute the `Runner` module. This works in two 
 Create and instrument the compare scripts
 
 ```
-python -m lexecutor.Runner --commits annotated_changes.json --action instrument
+python3 -m lexecutor.Runner --commits annotated_changes.json --action instrument
 ```
 
-Execute the compare scripts using LExecutor
+Execute the compare scripts
 
 ```
-python -m lexecutor.Runner --commits annotated_changes.json --action run
+python3 -m lexecutor.Runner --commits annotated_changes.json --action run
 ```
 
 The results are stored in the `std_out.json` file.
