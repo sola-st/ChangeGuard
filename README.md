@@ -40,13 +40,13 @@ Create a virtual environment
 > [!IMPORTANT]
 > Python 3.8 must be installed. 
 ```
-virtualenv -p /usr/bin/python3.8 myenv
+virtualenv -p /usr/bin/python3.8 changeGuard_env
 ```
 
 Enter the virtual environment
 
 ```
-source myenv/bin/activate
+source changeGuard_env/bin/activate
 ```
 
 Install requirements 
