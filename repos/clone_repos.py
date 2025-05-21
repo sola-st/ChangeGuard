@@ -14,4 +14,4 @@ repos = [
 ]
 
 for repo in repos:
-    subprocess.run(f'git clone {repo}')
+    subprocess.run(f'git clone {repo}', shell=True)
