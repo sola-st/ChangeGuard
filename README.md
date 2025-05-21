@@ -38,7 +38,7 @@ cd LExecutorCC
 
 Create a virtual environment
 > [!IMPORTANT]
-> Python 3.8 must be installed. 
+> Python 3.8 must be installed. We used Python 3.8.18. In case of more recent Python versions, e.g. Python 3.8.20, you might have to downgrade `setuptools` using the command `pip install setuptools==58.2.0`.
 ```
 virtualenv -p /usr/bin/python3.8 changeGuard_env
 ```
