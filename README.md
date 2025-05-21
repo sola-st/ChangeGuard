@@ -91,9 +91,9 @@ For example:
 ```
 indicates that 2 changes happen one from line 2 to 5 and one at line 8.
 
-We provide a list of 299 annotated code changes that we used for our evaluation in `annotated_changes.json`.
+We provide a list of 299 annotated code changes that we used for our evaluation in `./LExecutorCC/annotated_changes.json`.
 > [!IMPORTANT]
-> `annotated_changes.json` might contain extra fields than the ones mentioned above per code change. However, extra fields are not necessary to run the approach, e.g. see `example.json`
+> `./LExecutorCC/annotated_changes.json` might contain extra fields than the ones mentioned above per code change. However, extra fields are not necessary to run the approach, e.g. see `./LExecutorCC/example.json`
 
 ### Running
 
@@ -111,7 +111,7 @@ Execute the compare scripts
 python3 -m lexecutor.Runner --commits example.json --action run
 ```
 
-The results are stored in the `std_out.json` file.
+The results are stored in the `./LExecutorCC/std_out.json` file.
 
 ## Reproducibility
 
@@ -122,7 +122,7 @@ The results are stored in the `std_out.json` file.
 
 #### Manually annotated code changes
 
-Below are instructions on how to repeat the data collection steps used to obtain the code changes in `annotated_changes.json`.
+Below are instructions on how to repeat the data collection steps used to obtain the code changes in `./LExecutorCC/annotated_changes.json`.
 
 ##### Data Collection
 
@@ -181,7 +181,7 @@ Look at the commit and as soon as you have decided on whether the code change is
 The next commit opens and the process repeats until all the extracted commits of the repository have been processed.
 If you want to stop early, simply press `ctrl + c` to interrupt the process. The script stores the index so the next time you execute it, you can continue where you left off.
 
-The results are stored in the `annotated_changes.json` file.
+The results are stored in the `./LExecutorCC/annotated_changes.json` file.
 
 #### Rule-based refactorings
 
@@ -231,9 +231,9 @@ The results are stored in the `transformation_changes.json` file.
 
 > [!IMPORTANT]
 > For this you need and API token from OpenAI.
-> The model can be selected in the `llm_creator_api.py` file.
+> The model can be selected in the `./evaluation/llm/llm_creator_api.py` file.
 
-From the `./llm` directory, create a `.secret` file and paste your API token (first line) and organization id (second line) into it.
+From the `./evaluation/llm` directory, create a `.secret` file and paste your API token (first line) and organization id (second line) into it.
 
 Transform the functions
 
@@ -258,7 +258,7 @@ The results are stored in the `llm_changes_gpt*.json` file.
 
 Run ChangeGuard on the above datasets using the steps described in [Running](#running).
 > [!IMPORTANT]
-> Replace the input file according to the used dataset, e.g. `annotated_changes.json` for the manually annotated dataset.
+> Replace the input file according to the used dataset, e.g. `./LExecutorCC/annotated_changes.json` for the manually annotated dataset.
 
 To evaluate the results of the manually annotated and derived datasets, i.e., RIdiom, gpt-3.5, and gpt-4, either analyze them manually by looking at their respective `std_out.json` or use the functions in `evaluation.py` by adjusting the paths.
 
@@ -322,7 +322,7 @@ The model we fine-tuned is available [here](https://github.com/sola-st/master-th
 
 ### Reproduce RQ4 - Robustness and Coverage
 
-Run the baseline, i.e. original LExecutor, on the `annotated_changes.json` dataset
+Run the baseline, i.e. original LExecutor, on the `./LExecutorCC/annotated_changes.json` dataset
 > [!IMPORTANT]
 > Make sure to install the baseline in a separate virtual environment following [these install instructions](https://github.com/michaelpradel/LExecutor/blob/main/INSTALL.md).
 ```
@@ -330,7 +330,7 @@ cd evaluation/coverage/Baseline_for_coverage/LExecutor/
 python -m lexecutor.Runner --commits annotated_changes.json --action [instrument|run]
 ```
 
-Run ChangeGuard on the `annotated_changes.json` dataset using the steps described in [Running](#running)
+Run ChangeGuard on the `./LExecutorCC/annotated_changes.json` dataset using the steps described in [Running](#running)
 > [!IMPORTANT]
 > Remove the condition `result == 'changing'` from line 212 in `Runner.py` to make sure that the approach does not stop as soon as it detects a change in semantics.
 
@@ -338,7 +338,7 @@ Our [released dataset](#download-data) contains the `std_out.json` generated wit
 
 ### Reproduce RQ5 - Efficiency
 
-The Results for RQ5 are obtained by analyzing the logs obtained from running ChangeGuard on the `annotated_changes.json` dataset.
+The Results for RQ5 are obtained by analyzing the logs obtained from running ChangeGuard on the `./LExecutorCC/annotated_changes.json` dataset.
 We refer to [Reproduce RQ1 - Effectiveness](#reproduce-rq1---effectiveness).
 
 ## Download Data
