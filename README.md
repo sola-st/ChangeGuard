@@ -195,10 +195,11 @@ pip install .
 ```
 
 Manually add missing dependencies (you can test if it works by running `python3 main.py` in `./evaluation/ridiom/RIdiom/RefactoringIdioms/`).
-We needed to install pathos
+We needed to install pathos and sympy
 
 ```
 pip install pathos
+pip install sympy
 ```
 
 Create functions for transformations
