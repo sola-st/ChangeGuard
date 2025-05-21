@@ -4,7 +4,7 @@ from typing import List
 import re
 import matplotlib.pyplot as plt
 
-REPO_PATH = r'../Repos'
+REPO_PATH = r'../repos'
 REPOS: List[str] = [entry.name for entry in os.scandir(REPO_PATH) if entry.is_dir()]
 
 
