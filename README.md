@@ -73,10 +73,10 @@ The **input** of ChangeGuard is a list of code changes in JSON format. The forma
 ```json
 {
    "repo": "Project from which the code change originates",
-   "old_sha": "Identifier referencing old version of change",
-   "new_sha": "Identifier referencing new version of change",
-   "old_code": "Source code of old version",
-   "new_code": "Source code of new version",
+   "old_commit": "Identifier referencing old version of change",
+   "new_commit": "Identifier referencing new version of change",
+   "old_clean_function": "Source code of old version",
+   "new_clean_function": "Source code of new version",
    "old_changed_lines": "List of line numbers where changes happen in old version",
    "new_changed_lines": "List of line numbers where changes happen in new version"
 }
@@ -92,6 +92,8 @@ For example:
 indicates that 2 changes happen one from line 2 to 5 and one at line 8.
 
 We provide a list of 299 annotated code changes that we used for our evaluation in `annotated_changes.json`.
+> [!IMPORTANT]
+> `annotated_changes.json` might contain extra fields than the ones mentioned above per code change. However, extra fields are not necessary to run the approach, e.g. see `example.json`
 
 ### Running
 
