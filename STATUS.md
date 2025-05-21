@@ -3,7 +3,7 @@
 We apply for the Available and Reusable badges.
 
 * **Available**: Our Software and Dataset artifacts are "Available" as they are publicly accessible through the following:
-  * [Artifacts snapshot](https://doi.org/10.5281/zenodo.15189247)
+  * [Artifacts snapshot](https://zenodo.org/records/15482196)
   * [Artifacts repository](https://github.com/sola-st/ChangeGuard)
 
 
